@@ -3,7 +3,7 @@
 import React from 'react';
 import { PortfolioData } from '@/types/portfolio';
 
-// Core Templates
+// Core & Base Templates
 import MinimalTheme from '@/templates/minimal/MinimalTheme';
 import DeveloperTheme from '@/templates/developer/DeveloperTheme';
 import CreativeTheme from '@/templates/creative/CreativeTheme';
@@ -24,37 +24,53 @@ import JavaEnterpriseTheme from '@/templates/java-enterprise/JavaEnterpriseTheme
 import CsStudentTheme from '@/templates/cs-student/CsStudentTheme';
 import SpatialArVrTheme from '@/templates/spatial-arvr/SpatialArVrTheme';
 import CyberSentinelTheme from '@/templates/cyber-sentinel/CyberSentinelTheme';
-import AnimatedTheme from '@/templates/animated/AnimatedTheme';
 import AcademicResearchTheme from '@/templates/academic-research/AcademicResearchTheme';
 import OpenSourceContributorTheme from '@/templates/open-source-contributor/OpenSourceContributorTheme';
 import EngineeringShowcaseTheme from '@/templates/engineering-showcase/EngineeringShowcaseTheme';
 import Futuristic2025Theme from '@/templates/futuristic-2025/Futuristic2025Theme';
 
+// 10 Standalone Animated Theme Components
+import KineticTypeTheme from '@/templates/animated/KineticTypeTheme';
+import LaserNeonTheme from '@/templates/animated/LaserNeonTheme';
+import ThreeDOrbsTheme from '@/templates/animated/ThreeDOrbsTheme';
+import GlitchHackerTheme from '@/templates/animated/GlitchHackerTheme';
+import AuroraMeshTheme from '@/templates/animated/AuroraMeshTheme';
+import ElasticCardsTheme from '@/templates/animated/ElasticCardsTheme';
+import ParticleConstellationTheme from '@/templates/animated/ParticleConstellationTheme';
+import LiquidGlassTheme from '@/templates/animated/LiquidGlassTheme';
+import SynthwaveRetroTheme from '@/templates/animated/SynthwaveRetroTheme';
+import PrismRefractionTheme from '@/templates/animated/PrismRefractionTheme';
+
 export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
 
   switch (theme) {
-    // 10 ANIMATED PORTFOLIO THEMES
+    // 10 DISTINCT ANIMATED PORTFOLIO THEMES
     case 'animated-kinetic-type':
-      return <AnimatedTheme data={data} variant="marquee" />;
+      return <KineticTypeTheme data={data} />;
     case 'animated-laser-neon':
-      return <AnimatedTheme data={data} variant="laser" />;
+      return <LaserNeonTheme data={data} />;
     case 'animated-3d-orbs':
-      return <AnimatedTheme data={data} variant="tilt" />;
+      return <ThreeDOrbsTheme data={data} />;
+    case 'animated-[#1]':
     case 'animated-glitch-hacker':
-      return <AnimatedTheme data={data} variant="glitch" />;
+      return <GlitchHackerTheme data={data} />;
     case 'animated-aurora-mesh':
-      return <AnimatedTheme data={data} variant="aurora" />;
+      return <AuroraMeshTheme data={data} />;
+    case 'animated-[#2]':
     case 'animated-elastic-cards':
-      return <AnimatedTheme data={data} variant="elastic" />;
+      return <ElasticCardsTheme data={data} />;
     case 'animated-particle-constellation':
-      return <AnimatedTheme data={data} variant="constellation" />;
+      return <ParticleConstellationTheme data={data} />;
+    case 'animated-[#3]':
     case 'animated-liquid-glass':
-      return <AnimatedTheme data={data} variant="liquid" />;
+      return <LiquidGlassTheme data={data} />;
+    case 'animated-[#4]':
     case 'animated-synthwave-retro':
-      return <AnimatedTheme data={data} variant="synthwave" />;
+      return <SynthwaveRetroTheme data={data} />;
+    case 'animated-[#5]':
     case 'animated-prism-refraction':
-      return <AnimatedTheme data={data} variant="prism" />;
+      return <PrismRefractionTheme data={data} />;
 
     // DEDICATED INDIVIDUAL PORTFOLIO THEMES (44, 46, 47, 48)
     case 'cs-student-collection': // 44
