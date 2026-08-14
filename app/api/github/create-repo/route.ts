@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const readme = generateReadmeContent(portfolio, `https://${portfolio.slug}.vercel.app`, result.repoUrl);
+    const readme = generateReadmeContent(portfolio, `https://${portfolio.slug}.vercel.app`, result.repoUrl || '');
 
     return NextResponse.json({
       success: true,

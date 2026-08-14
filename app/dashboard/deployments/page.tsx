@@ -174,9 +174,12 @@ export default function DeploymentsPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const cleanUserHandle = githubUser.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/.*$/, '').replace(/^@/, '') || 'user';
+  const cleanSlugName = repoName.toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/(-portfolio)+$/g, '') + '-portfolio';
+
   const vercelImportUrl = createdGithubRepo
     ? `https://vercel.com/new/clone?repository-url=${encodeURIComponent(createdGithubRepo.url)}`
-    : `https://vercel.com/new/clone?repository-url=https://github.com/${githubUser || 'satyamapoorva06-blip'}/${repoName}`;
+    : `https://vercel.com/new/clone?repository-url=${encodeURIComponent(`https://github.com/${cleanUserHandle}/${cleanSlugName}`)}`;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">

@@ -163,9 +163,12 @@ export default function EditorPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const cleanUserHandle = inputGithubUser.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/.*$/, '').replace(/^@/, '') || 'user';
+  const cleanSlugName = portfolio.slug.toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/(-portfolio)+$/g, '') + '-portfolio';
+
   const vercelImportUrl = createdGithubRepo
     ? `https://vercel.com/new/clone?repository-url=${encodeURIComponent(createdGithubRepo.url)}`
-    : `https://vercel.com/new/clone?repository-url=https://github.com/${inputGithubUser || 'satyamapoorva06-blip'}/${portfolio.slug}-portfolio`;
+    : `https://vercel.com/new/clone?repository-url=${encodeURIComponent(`https://github.com/${cleanUserHandle}/${cleanSlugName}`)}`;
 
   return (
     <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans relative">
