@@ -10,6 +10,15 @@ interface StyleCustomizerProps {
 }
 
 const THEMES: { id: ThemeType; name: string; desc: string }[] = [
+  // 6 BASE CLASSIC THEMES
+  { id: 'minimal', name: 'Minimal Base', desc: 'Apple-inspired clean & whitespace focused' },
+  { id: 'developer', name: 'Developer Base', desc: 'Dark terminal & monospaced code theme' },
+  { id: 'creative', name: 'Creative Base', desc: 'Bold typography & vibrant card grids' },
+  { id: 'three-d', name: '3D Spatial Base', desc: 'Cinematic depth & glowing neon panels' },
+  { id: 'professional', name: 'Professional Base', desc: 'Recruiter-friendly executive layout' },
+  { id: 'glass', name: 'Glassmorphism Base', desc: 'Frosted glass & ambient gradient mesh' },
+
+  // 50 UNIQUE SHOWCASE PORTFOLIO THEMES (1-50)
   { id: 'kuber-ai-creative', name: '1. Kuber Mehta — AI Creative', desc: 'AI Spatial & Generative Creative Studio' },
   { id: 'tvnskm-aiml-fullstack', name: '2. Mohan VNSK — AI/ML + Full Stack', desc: 'Neural Network Matrix & Full Stack' },
   { id: 'priyanshu-creative', name: '3. Priyanshu Patel — AI/ML Creative', desc: 'Generative AI & Interactive Visuals' },
@@ -76,9 +85,9 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
       {/* Theme Selector */}
       <div className="space-y-4">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Unique Themes)
+          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Available)
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[480px] overflow-y-auto pr-1">
           {THEMES.map((t) => (
             <button
               key={t.id}
