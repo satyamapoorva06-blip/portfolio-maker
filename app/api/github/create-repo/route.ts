@@ -18,6 +18,16 @@ export async function POST(req: NextRequest) {
       githubUsername,
     });
 
+    if (!result.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: result.error || 'GitHub Personal Access Token required to create repository on user account.',
+        },
+        { status: 400 }
+      );
+    }
+
     const readme = generateReadmeContent(portfolio, `https://${portfolio.slug}.vercel.app`, result.repoUrl);
 
     return NextResponse.json({
