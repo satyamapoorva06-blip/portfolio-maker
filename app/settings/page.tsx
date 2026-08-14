@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/landing/Navbar';
 import { getStoredUser, setStoredUser } from '@/lib/storage/local-store';
 import { UserProfile } from '@/types/database';
-import { User, Mail, Shield, Github, Rocket, Trash2, CheckCircle2, Save, Key, ExternalLink } from 'lucide-react';
+import { User, Mail, Shield, Github, Rocket, Trash2, CheckCircle2, Save, Key, ExternalLink, HelpCircle, ArrowRight } from 'lucide-react';
 
 export default function SettingsPage() {
   const [user, setUser] = useState<UserProfile>(getStoredUser());
   const [savedMsg, setSavedMsg] = useState('');
+  const [showGithubGuide, setShowGithubGuide] = useState(true);
+  const [showVercelGuide, setShowVercelGuide] = useState(true);
 
   useEffect(() => {
     setUser(getStoredUser());
@@ -104,8 +106,37 @@ export default function SettingsPage() {
                 onChange={(e) => setUser({ ...user, github_token: e.target.value })}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
               />
-              <p className="text-[11px] text-slate-500 mt-1">Used to commit source code to your GitHub account.</p>
+              <p className="text-[11px] text-slate-500 mt-1">Used to commit source code directly to your GitHub account.</p>
             </div>
+          </div>
+
+          {/* Short Step-by-Step Guide for GitHub Token */}
+          <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold text-cyan-400 flex items-center gap-2">
+                <HelpCircle className="w-4 h-4 text-cyan-400" /> How to get your GitHub Access Token (3 Quick Steps):
+              </span>
+              <a
+                href="https://github.com/settings/tokens/new?description=Portify%20AI%20Token&scopes=repo,workflow"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 hover:underline"
+              >
+                Open GitHub Token Generator ↗
+              </a>
+            </div>
+
+            <ol className="list-decimal list-inside text-xs text-slate-300 space-y-1.5 font-light">
+              <li>
+                Click <strong className="text-white">Open GitHub Token Generator</strong> above (or go to <code className="text-cyan-300 bg-slate-900 px-1 py-0.5 rounded">github.com/settings/tokens</code>).
+              </li>
+              <li>
+                Set Token Name to <strong className="text-white">&quot;Portify AI&quot;</strong> and check the <code className="text-emerald-400 bg-slate-900 px-1 py-0.5 rounded font-mono">repo</code> scope (Full control of repositories).
+              </li>
+              <li>
+                Click <strong className="text-white">Generate token</strong> at the bottom and copy your token starting with <code className="text-cyan-300 bg-slate-900 px-1 py-0.5 rounded font-mono">ghp_...</code> into the box above!
+              </li>
+            </ol>
           </div>
         </div>
 
@@ -134,6 +165,35 @@ export default function SettingsPage() {
             <p className="text-[11px] text-slate-500 mt-1">
               Enables 1-Click live deployments to your Vercel cloud dashboard.
             </p>
+          </div>
+
+          {/* Short Step-by-Step Guide for Vercel Token */}
+          <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-2">
+                <HelpCircle className="w-4 h-4 text-emerald-400" /> How to get your Vercel Access Token (3 Quick Steps):
+              </span>
+              <a
+                href="https://vercel.com/account/tokens"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 hover:underline"
+              >
+                Open Vercel Token Page ↗
+              </a>
+            </div>
+
+            <ol className="list-decimal list-inside text-xs text-slate-300 space-y-1.5 font-light">
+              <li>
+                Click <strong className="text-white">Open Vercel Token Page</strong> above (or go to <code className="text-emerald-300 bg-slate-900 px-1 py-0.5 rounded">vercel.com/account/tokens</code>).
+              </li>
+              <li>
+                Click <strong className="text-white">Create Token</strong>, enter Name <strong className="text-white">&quot;Portify AI&quot;</strong>, and select Scope: <strong className="text-white">Full Account</strong>.
+              </li>
+              <li>
+                Click <strong className="text-white">Create</strong> and copy your generated Vercel token into the box above!
+              </li>
+            </ol>
           </div>
         </div>
 
