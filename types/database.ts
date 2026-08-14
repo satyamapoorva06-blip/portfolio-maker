@@ -3,6 +3,9 @@ export interface UserProfile {
   name: string;
   email: string;
   avatar_url?: string;
+  github_username?: string;
+  github_token?: string;
+  vercel_token?: string;
   role: 'user' | 'admin';
   status: 'active' | 'disabled';
   created_at: string;

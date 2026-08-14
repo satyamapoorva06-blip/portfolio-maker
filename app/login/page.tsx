@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { setUserLoggedIn } from '@/lib/storage/local-store';
 import { UserProfile } from '@/types/database';
-import { Sparkles, ShieldCheck, AlertCircle, ArrowRight } from 'lucide-react';
+import { Sparkles, ShieldCheck, AlertCircle, ArrowRight, Github, Rocket, ChevronDown } from 'lucide-react';
 
 function LoginContent() {
   const router = useRouter();
@@ -15,6 +15,12 @@ function LoginContent() {
 
   const [loading, setLoading] = useState(false);
   const [providerError, setProviderError] = useState('');
+  const [showIntegrations, setShowIntegrations] = useState(false);
+
+  // GitHub & Vercel optional fields at login
+  const [githubUsername, setGithubUsername] = useState('');
+  const [githubToken, setGithubToken] = useState('');
+  const [vercelToken, setVercelToken] = useState('');
 
   // Listen to Supabase auth state changes & OAuth redirects
   useEffect(() => {
@@ -27,6 +33,9 @@ function LoginContent() {
           name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
           email: user.email,
           avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+          github_username: githubUsername || user.user_metadata?.preferred_username || undefined,
+          github_token: githubToken || undefined,
+          vercel_token: vercelToken || undefined,
           role: 'user',
           status: 'active',
           created_at: new Date().toISOString(),
@@ -52,7 +61,7 @@ function LoginContent() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, nextTarget]);
+  }, [router, nextTarget, githubUsername, githubToken, vercelToken]);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -61,7 +70,7 @@ function LoginContent() {
     try {
       const supabase = createClient();
       const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-      
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -95,6 +104,9 @@ function LoginContent() {
       name: `User Account #${timeId}`,
       email: `user_${timeId}@example.com`,
       avatar_url: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
+      github_username: githubUsername || undefined,
+      github_token: githubToken || undefined,
+      vercel_token: vercelToken || undefined,
       role: 'user',
       status: 'active',
       created_at: new Date().toISOString(),
@@ -109,7 +121,7 @@ function LoginContent() {
   };
 
   return (
-    <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-8 shadow-2xl relative z-10 text-center">
+    <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-2xl relative z-10 text-center">
       <Link href="/" className="inline-flex items-center gap-2 group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
           <Sparkles className="w-5 h-5 text-white" />
@@ -151,6 +163,58 @@ function LoginContent() {
           </svg>
           {loading ? 'Authenticating...' : 'Continue with Google'}
         </button>
+
+        {/* Collapsible GitHub & Vercel Connect Option */}
+        <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60 text-left">
+          <button
+            type="button"
+            onClick={() => setShowIntegrations(!showIntegrations)}
+            className="w-full p-4 flex justify-between items-center text-xs font-semibold text-slate-300 hover:text-cyan-400 transition"
+          >
+            <span className="flex items-center gap-2">
+              <Github className="w-4 h-4 text-cyan-400" /> Connect GitHub & Vercel Accounts (Optional)
+            </span>
+            <ChevronDown className={`w-4 h-4 transition transform ${showIntegrations ? 'rotate-180' : ''}`} />
+          </button>
+
+          {showIntegrations && (
+            <div className="p-4 border-t border-slate-800/80 space-y-3 bg-slate-950">
+              <div>
+                <label className="text-[11px] text-slate-400">GitHub Username</label>
+                <input
+                  type="text"
+                  placeholder="e.g. satyamapoorva06-blip"
+                  value={githubUsername}
+                  onChange={(e) => setGithubUsername(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] text-slate-400">GitHub Access Token (Optional)</label>
+                <input
+                  type="password"
+                  placeholder="ghp_xxxxxxxxxxxxxxxxx"
+                  value={githubToken}
+                  onChange={(e) => setGithubToken(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] text-slate-400">Vercel Access Token (Optional)</label>
+                <input
+                  type="password"
+                  placeholder="vercel_token_xxxxxxxxxxxx"
+                  value={vercelToken}
+                  onChange={(e) => setVercelToken(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+                />
+              </div>
+              <p className="text-[10px] text-slate-500">
+                You can also edit or update these anytime inside Account Settings.
+              </p>
+            </div>
+          )}
+        </div>
 
         {providerError && (
           <div className="p-4 bg-amber-950/60 border border-amber-800 rounded-2xl space-y-3 text-left">
