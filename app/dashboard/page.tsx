@@ -27,6 +27,9 @@ export default function DashboardPage() {
 
   const totalViews = portfolios.reduce((acc) => acc + 142, 0);
 
+  const githubDisplay = user.github_username ? `@${user.github_username}` : 'Not Connected';
+  const vercelDisplay = user.vercel_token ? 'Live on Vercel' : 'Portify Host Active';
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
@@ -61,8 +64,8 @@ export default function DashboardPage() {
             { label: 'Total Portfolios', value: portfolios.length, icon: Layers, color: 'text-cyan-400' },
             { label: 'Published Portfolios', value: portfolios.filter((p) => p.isPublished).length, icon: CheckCircle2, color: 'text-emerald-400' },
             { label: 'Total Views', value: totalViews, icon: Eye, color: 'text-purple-400' },
-            { label: 'Connected GitHub', value: '@satyam-dev', icon: Github, color: 'text-blue-400' },
-            { label: 'Deployment Status', value: 'Live on Vercel', icon: Rocket, color: 'text-teal-400' },
+            { label: 'Connected GitHub', value: githubDisplay, icon: Github, color: user.github_username ? 'text-blue-400' : 'text-slate-500' },
+            { label: 'Deployment Status', value: vercelDisplay, icon: Rocket, color: 'text-teal-400' },
           ].map((m, idx) => {
             const Icon = m.icon;
             return (
@@ -71,7 +74,7 @@ export default function DashboardPage() {
                   <span>{m.label}</span>
                   <Icon className={`w-4 h-4 ${m.color}`} />
                 </div>
-                <div className="text-xl font-bold text-white font-mono">{m.value}</div>
+                <div className="text-xl font-bold text-white font-mono truncate">{m.value}</div>
               </div>
             );
           })}

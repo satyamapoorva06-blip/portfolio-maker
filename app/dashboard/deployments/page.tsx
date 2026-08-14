@@ -2,20 +2,27 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/landing/Navbar';
-import { getStoredPortfolios, saveStoredDeployment, getStoredDeployments } from '@/lib/storage/local-store';
+import { getStoredPortfolios, saveStoredDeployment, getStoredUser, setStoredUser } from '@/lib/storage/local-store';
 import { PortfolioData } from '@/types/portfolio';
-import { Github, Rocket, CheckCircle2, Copy, ExternalLink, RefreshCw, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
+import { UserProfile } from '@/types/database';
+import { Github, Rocket, CheckCircle2, Copy, ExternalLink, RefreshCw, AlertCircle, Loader2, ShieldCheck, Save } from 'lucide-react';
 
 export default function DeploymentsPage() {
+  const [user, setUser] = useState<UserProfile>(getStoredUser());
   const [portfolios, setPortfolios] = useState<PortfolioData[]>([]);
   const [selectedPortfolioId, setSelectedPortfolioId] = useState<string>('');
   const [provider, setProvider] = useState<'vercel' | 'netlify'>('vercel');
-  const [repoName, setRepoName] = useState('satyam-portfolio');
+  const [repoName, setRepoName] = useState('my-portfolio');
   const [isPrivate, setIsPrivate] = useState(false);
   const [loading, setLoading] = useState(false);
   const [syncLoading, setSyncLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [copied, setCopied] = useState(false);
+
+  // Editable integration inputs
+  const [githubUser, setGithubUser] = useState('');
+  const [githubToken, setGithubToken] = useState('');
+  const [vercelToken, setVercelToken] = useState('');
 
   const [activeDeployment, setActiveDeployment] = useState<{
     repoUrl: string;
@@ -24,51 +31,91 @@ export default function DeploymentsPage() {
   } | null>(null);
 
   useEffect(() => {
+    const currentUser = getStoredUser();
+    setUser(currentUser);
+    if (currentUser.github_username) setGithubUser(currentUser.github_username);
+    if (currentUser.github_token) setGithubToken(currentUser.github_token);
+    if (currentUser.vercel_token) setVercelToken(currentUser.vercel_token);
+
     const list = getStoredPortfolios();
     setPortfolios(list);
     if (list.length > 0) {
       setSelectedPortfolioId(list[0].id);
       setRepoName(`${list[0].slug}-portfolio`);
-      // Initial state mockup
-      setActiveDeployment({
-        repoUrl: `https://github.com/satyam-dev/${list[0].slug}-portfolio`,
-        deploymentUrl: `https://${list[0].slug}.vercel.app`,
-        status: 'live',
-      });
+      if (currentUser.github_username) {
+        setActiveDeployment({
+          repoUrl: `https://github.com/${currentUser.github_username}/${list[0].slug}-portfolio`,
+          deploymentUrl: `https://${list[0].slug}.vercel.app`,
+          status: 'live',
+        });
+      }
     }
   }, []);
 
   const activePortfolio = portfolios.find((p) => p.id === selectedPortfolioId) || portfolios[0];
 
+  const handleSaveIntegrations = () => {
+    const updatedUser: UserProfile = {
+      ...user,
+      github_username: githubUser || undefined,
+      github_token: githubToken || undefined,
+      vercel_token: vercelToken || undefined,
+    };
+    setStoredUser(updatedUser);
+    setUser(updatedUser);
+    setStatusMsg('✓ Integration settings saved!');
+    setTimeout(() => setStatusMsg(''), 2500);
+  };
+
   const handleDeploy = async () => {
     if (!activePortfolio) return;
+
+    if (!githubUser) {
+      setStatusMsg('Error: Please enter your GitHub Username first.');
+      return;
+    }
+
+    handleSaveIntegrations();
+
     setLoading(true);
-    setStatusMsg('Connecting GitHub...');
+    setStatusMsg('1. Connecting to GitHub @' + githubUser + '...');
 
     try {
       // 1. Create GitHub Repo
-      setStatusMsg('Creating GitHub repository...');
+      setStatusMsg('2. Creating GitHub repository & committing source code...');
       const repoRes = await fetch('/api/github/create-repo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ repoName, isPrivate, portfolio: activePortfolio }),
+        body: JSON.stringify({
+          repoName,
+          isPrivate,
+          portfolio: activePortfolio,
+          githubUsername: githubUser,
+          token: githubToken,
+        }),
       });
       const repoJson = await repoRes.json();
       if (!repoRes.ok) throw new Error(repoJson.error || 'Failed to create GitHub repo');
 
       // 2. Deploy to Cloud Provider (Vercel or Netlify)
-      setStatusMsg(`Deploying to ${provider === 'vercel' ? 'Vercel' : 'Netlify'}...`);
+      setStatusMsg(`3. Deploying to ${provider === 'vercel' ? 'Vercel' : 'Netlify'}...`);
       const endpoint = provider === 'vercel' ? '/api/vercel/deploy' : '/api/netlify/deploy';
       const deployRes = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ portfolio: activePortfolio, repoFullName: repoJson.fullName }),
+        body: JSON.stringify({
+          portfolio: activePortfolio,
+          repoFullName: repoJson.fullName,
+          token: vercelToken,
+        }),
       });
       const deployJson = await deployRes.json();
 
+      const liveUrl = deployJson.deploymentUrl || deployJson.instantPublicUrl;
+
       setActiveDeployment({
         repoUrl: repoJson.repoUrl,
-        deploymentUrl: deployJson.deploymentUrl,
+        deploymentUrl: liveUrl,
         status: 'live',
       });
 
@@ -76,16 +123,16 @@ export default function DeploymentsPage() {
       saveStoredDeployment({
         id: `dep_${Date.now()}`,
         portfolio_id: activePortfolio.id,
-        user_id: 'usr_satyam_demo_01',
+        user_id: user.id,
         provider,
         repository_url: repoJson.repoUrl,
-        deployment_url: deployJson.deploymentUrl,
+        deployment_url: liveUrl,
         status: 'live',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
 
-      setStatusMsg('✓ Live Deployment Ready!');
+      setStatusMsg('✓ Live Portfolio Deployment Ready!');
     } catch (err: any) {
       setStatusMsg(`Deployment Error: ${err.message}`);
     } finally {
@@ -95,7 +142,7 @@ export default function DeploymentsPage() {
 
   const handleSyncUpdate = async () => {
     setSyncLoading(true);
-    setStatusMsg('Saving changes...');
+    setStatusMsg('Syncing changes to GitHub...');
     setTimeout(() => {
       setStatusMsg('✓ Live Portfolio Updated Successfully!');
       setSyncLoading(false);
@@ -120,22 +167,66 @@ export default function DeploymentsPage() {
           </p>
         </div>
 
-        {/* GitHub Connection Card */}
-        <div className="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-white">
-              <Github className="w-6 h-6" />
+        {/* GitHub & Vercel Integration Setup Card */}
+        <div className="p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-6 shadow-xl">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-white">
+                <Github className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base">GitHub & Vercel Connection</h3>
+                <p className="text-xs text-slate-400">
+                  {user.github_username ? (
+                    <span className="text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Connected as @{user.github_username}
+                    </span>
+                  ) : (
+                    <span className="text-amber-400 font-medium">Not Connected — Please enter your GitHub handle below</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleSaveIntegrations}
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-cyan-400 rounded-xl border border-slate-700 transition flex items-center gap-1.5"
+            >
+              <Save className="w-3.5 h-3.5" /> Save Credentials
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="text-xs text-slate-400">GitHub Username (Required)</label>
+              <input
+                type="text"
+                placeholder="e.g. satyamapoorva06-blip"
+                value={githubUser}
+                onChange={(e) => setGithubUser(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+              />
             </div>
             <div>
-              <h3 className="font-bold text-white text-base">GitHub Integration</h3>
-              <p className="text-xs text-emerald-400 flex items-center gap-1.5 mt-0.5">
-                <CheckCircle2 className="w-4 h-4" /> Connected as @satyam-dev
-              </p>
+              <label className="text-xs text-slate-400">GitHub Access Token (Optional)</label>
+              <input
+                type="password"
+                placeholder="ghp_xxxxxxxxxxxx"
+                value={githubToken}
+                onChange={(e) => setGithubToken(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-slate-400">Vercel Access Token (Optional)</label>
+              <input
+                type="password"
+                placeholder="vercel_token_xxxxxxxxx"
+                value={vercelToken}
+                onChange={(e) => setVercelToken(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+              />
             </div>
           </div>
-          <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 rounded-xl border border-slate-700 transition">
-            Disconnect
-          </button>
         </div>
 
         {/* Portfolio Selection & Deploy Config */}
@@ -222,7 +313,7 @@ export default function DeploymentsPage() {
               disabled={loading}
               className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />} Deploy Portfolio Live
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />} Connect & Deploy Portfolio Live
             </button>
           </div>
 
