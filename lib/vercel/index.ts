@@ -7,7 +7,7 @@ export interface VercelDeployParams {
 }
 
 export async function deployToVercel({ portfolio, repoFullName, token }: VercelDeployParams) {
-  const vercelToken = token || process.env.VERCEL_BEARER_TOKEN;
+  const vercelToken = token || process.env.PORTIFY_VERCEL_BEARER_TOKEN;
 
   if (vercelToken && vercelToken !== 'your-vercel-bearer-token') {
     try {
