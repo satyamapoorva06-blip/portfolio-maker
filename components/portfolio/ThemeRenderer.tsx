@@ -24,12 +24,35 @@ import JavaEnterpriseTheme from '@/templates/java-enterprise/JavaEnterpriseTheme
 import CsStudentTheme from '@/templates/cs-student/CsStudentTheme';
 import SpatialArVrTheme from '@/templates/spatial-arvr/SpatialArVrTheme';
 import CyberSentinelTheme from '@/templates/cyber-sentinel/CyberSentinelTheme';
+import AnimatedTheme from '@/templates/animated/AnimatedTheme';
 
 export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
 
   switch (theme) {
-    // 50 Unique Developer Showcase Theme Mappings
+    // 10 ANIMATED PORTFOLIO THEMES
+    case 'animated-kinetic-type':
+      return <AnimatedTheme data={data} variant="marquee" />;
+    case 'animated-laser-neon':
+      return <AnimatedTheme data={data} variant="laser" />;
+    case 'animated-3d-orbs':
+      return <AnimatedTheme data={data} variant="tilt" />;
+    case 'animated-glitch-hacker':
+      return <AnimatedTheme data={data} variant="glitch" />;
+    case 'animated-aurora-mesh':
+      return <AnimatedTheme data={data} variant="aurora" />;
+    case 'animated-elastic-cards':
+      return <AnimatedTheme data={data} variant="elastic" />;
+    case 'animated-particle-constellation':
+      return <AnimatedTheme data={data} variant="constellation" />;
+    case 'animated-liquid-glass':
+      return <AnimatedTheme data={data} variant="liquid" />;
+    case 'animated-synthwave-retro':
+      return <AnimatedTheme data={data} variant="synthwave" />;
+    case 'animated-prism-refraction':
+      return <AnimatedTheme data={data} variant="prism" />;
+
+    // 50 UNIQUE SHOWCASE PORTFOLIO THEME MAPPINGS
     case 'kuber-ai-creative':
     case 'spatial-arvr':
     case 'srikhanth-arvr':
