@@ -16,31 +16,42 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [providerError, setProviderError] = useState('');
 
-  // Check Supabase session on return from OAuth
+  // Listen to Supabase auth state changes & OAuth redirects
   useEffect(() => {
-    async function checkAuthSession() {
-      try {
-        const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user && user.email) {
-          const userProfile: UserProfile = {
-            id: user.id,
-            name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
-            email: user.email,
-            avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-            role: 'user',
-            status: 'active',
-            created_at: new Date().toISOString(),
-            last_login: new Date().toISOString(),
-          };
-          setUserLoggedIn(true, userProfile);
-          router.push(nextTarget);
-        }
-      } catch (err) {
-        console.error('Error fetching Supabase auth session:', err);
+    const supabase = createClient();
+
+    const handleUserSession = (user: any) => {
+      if (user && user.email) {
+        const userProfile: UserProfile = {
+          id: user.id,
+          name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
+          email: user.email,
+          avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+          role: 'user',
+          status: 'active',
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+        };
+        setUserLoggedIn(true, userProfile);
+        router.push(nextTarget);
       }
-    }
-    checkAuthSession();
+    };
+
+    // 1. Initial check
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) handleUserSession(user);
+    });
+
+    // 2. Real-time auth listener for OAuth callback
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        handleUserSession(session.user);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [router, nextTarget]);
 
   const handleGoogleLogin = async () => {
@@ -49,10 +60,12 @@ function LoginContent() {
 
     try {
       const supabase = createClient();
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/login?next=${encodeURIComponent(nextTarget)}`,
+          redirectTo: `${origin}/login?next=${encodeURIComponent(nextTarget)}`,
         },
       });
 
@@ -63,7 +76,6 @@ function LoginContent() {
             'Google Auth is not enabled in your Supabase Dashboard yet (Authentication -> Providers -> Google).'
           );
         } else {
-          // Dynamic fallback session for testing
           createFallbackUser();
           router.push(nextTarget);
         }
