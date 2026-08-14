@@ -57,6 +57,11 @@ export default function UploadPage() {
       return;
     }
 
+    if (f.size === 0) {
+      setError('The selected file appears to be empty (0 bytes). Please select your actual resume file.');
+      return;
+    }
+
     if (f.size > 10 * 1024 * 1024) {
       setError('File size exceeds the 10MB maximum limit.');
       return;
