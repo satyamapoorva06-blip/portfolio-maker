@@ -9,6 +9,14 @@ export interface VercelDeployParams {
 export async function deployToVercel({ portfolio, repoFullName, token }: VercelDeployParams) {
   const vercelToken = token || process.env.PORTIFY_VERCEL_BEARER_TOKEN;
 
+  const cleanSlug = portfolio.slug
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+  const instantPublicUrl = `${appUrl}/u/${cleanSlug}`;
+
   if (vercelToken && vercelToken !== 'your-vercel-bearer-token') {
     try {
       // 1. Create project on Vercel
@@ -19,7 +27,7 @@ export async function deployToVercel({ portfolio, repoFullName, token }: VercelD
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: portfolio.slug,
+          name: cleanSlug,
           framework: 'nextjs',
           gitRepository: {
             type: 'github',
@@ -31,7 +39,8 @@ export async function deployToVercel({ portfolio, repoFullName, token }: VercelD
       if (res.ok) {
         return {
           success: true,
-          deploymentUrl: `https://${portfolio.slug}.vercel.app`,
+          deploymentUrl: `https://${cleanSlug}.vercel.app`,
+          instantPublicUrl,
           status: 'live',
         };
       }
@@ -40,10 +49,11 @@ export async function deployToVercel({ portfolio, repoFullName, token }: VercelD
     }
   }
 
-  // Built-in seamless fallback simulation
+  // Built-in seamless fallback URL
   return {
     success: true,
-    deploymentUrl: `https://${portfolio.slug}.vercel.app`,
+    deploymentUrl: instantPublicUrl,
+    instantPublicUrl,
     status: 'live',
   };
 }

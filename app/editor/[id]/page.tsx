@@ -78,7 +78,7 @@ export default function EditorPage() {
 
       setDeployedUrls({
         repoUrl: repoJson.repoUrl,
-        liveUrl: vercelJson.deploymentUrl,
+        liveUrl: vercelJson.deploymentUrl || vercelJson.instantPublicUrl,
       });
 
       // Save deployment record
