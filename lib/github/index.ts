@@ -30,7 +30,6 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
   if (!cleanSlug.endsWith('-portfolio')) {
     cleanSlug = `${cleanSlug}-portfolio`;
   }
-  // Ensure no duplicate -portfolio-portfolio
   cleanSlug = cleanSlug.replace(/(-portfolio)+$/g, '-portfolio');
 
   const fallbackRepoUrl = formatGithubRepoUrl(cleanOwner, cleanSlug);
@@ -79,56 +78,182 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
     const repoFullName = repoData.full_name || `${actualOwner}/${cleanSlug}`;
     const repoHtmlUrl = formatGithubRepoUrl(actualOwner, cleanSlug);
 
-    // 2. Commit README.md and portfolio.json into user's GitHub repo
-    const readmeContent = generateReadmeContent(portfolio, `https://${cleanSlug}.vercel.app`, repoHtmlUrl);
+    // 2. Commit complete Next.js 14 App Router standalone project files
+    const authToken = token.trim();
+
+    // README.md
     await commitFileToRepo({
-      token: token.trim(),
+      token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
       path: 'README.md',
-      content: readmeContent,
+      content: generateReadmeContent(portfolio, `https://${cleanSlug}.vercel.app`, repoHtmlUrl),
       message: 'docs: add professional README portfolio documentation',
     });
 
-    const portfolioJsonContent = JSON.stringify(portfolio, null, 2);
+    // portfolio.json
     await commitFileToRepo({
-      token: token.trim(),
+      token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
       path: 'portfolio.json',
-      content: portfolioJsonContent,
+      content: JSON.stringify(portfolio, null, 2),
       message: 'feat: add standalone portfolio dataset',
     });
 
-    const packageJsonContent = JSON.stringify(
-      {
-        name: cleanSlug,
-        version: '1.0.0',
-        private: true,
-        scripts: {
-          dev: 'next dev',
-          build: 'next build',
-          start: 'next start',
-        },
-        dependencies: {
-          next: '^14.2.0',
-          react: '^18.3.0',
-          'react-dom': '^18.3.0',
-          'lucide-react': '^0.378.0',
-          tailwindcss: '^3.4.0',
-        },
-      },
-      null,
-      2
-    );
-
+    // package.json
     await commitFileToRepo({
-      token: token.trim(),
+      token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
       path: 'package.json',
-      content: packageJsonContent,
+      content: JSON.stringify(
+        {
+          name: cleanSlug,
+          version: '1.0.0',
+          private: true,
+          scripts: {
+            dev: 'next dev',
+            build: 'next build',
+            start: 'next start',
+          },
+          dependencies: {
+            next: '^14.2.35',
+            react: '^18.3.1',
+            'react-dom': '^18.3.1',
+            'lucide-react': '^0.378.0',
+            clsx: '^2.1.1',
+          },
+          devDependencies: {
+            typescript: '^5.4.5',
+            '@types/node': '^20.12.12',
+            '@types/react': '^18.3.2',
+            '@types/react-dom': '^18.3.0',
+            tailwindcss: '^3.4.3',
+            postcss: '^8.4.38',
+            autoprefixer: '^10.4.19',
+          },
+        },
+        null,
+        2
+      ),
       message: 'chore: initialize Next.js package configuration',
+    });
+
+    // tsconfig.json
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'tsconfig.json',
+      content: JSON.stringify(
+        {
+          compilerOptions: {
+            target: 'es5',
+            lib: ['dom', 'dom.iterable', 'esnext'],
+            allowJs: true,
+            skipLibCheck: true,
+            strict: false,
+            noEmit: true,
+            esModuleInterop: true,
+            module: 'esnext',
+            moduleResolution: 'bundler',
+            resolveJsonModule: true,
+            isolatedModules: true,
+            jsx: 'preserve',
+            incremental: true,
+            plugins: [{ name: 'next' }],
+            paths: { '@/*': ['./*'] },
+          },
+          include: ['next-env.d.ts', '**/*.ts', '**/*.tsx'],
+          exclude: ['node_modules'],
+        },
+        null,
+        2
+      ),
+      message: 'chore: add tsconfig configuration',
+    });
+
+    // tailwind.config.js
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'tailwind.config.js',
+      content: `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  theme: { extend: {} },
+  plugins: [],
+};`,
+      message: 'chore: add tailwind configuration',
+    });
+
+    // postcss.config.js
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'postcss.config.js',
+      content: `module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};`,
+      message: 'chore: add postcss configuration',
+    });
+
+    // app/globals.css
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'app/globals.css',
+      content: `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #020617;
+  color: #f8fafc;
+  font-family: system-ui, -apple-system, sans-serif;
+}`,
+      message: 'style: add global CSS styles',
+    });
+
+    // app/layout.tsx
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'app/layout.tsx',
+      content: `import './globals.css';
+import React from 'react';
+
+export const metadata = {
+  title: '${portfolio.personal.name} — Portfolio Website',
+  description: '${portfolio.personal.title}',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}`,
+      message: 'feat: add Next.js RootLayout',
+    });
+
+    // app/page.tsx - Clean, high-impact standalone Next.js Portfolio Component!
+    await commitFileToRepo({
+      token: authToken,
+      owner: actualOwner,
+      repo: cleanSlug,
+      path: 'app/page.tsx',
+      content: generateStandalonePageCode(portfolio),
+      message: 'feat: add standalone portfolio Next.js application page',
     });
 
     return {
@@ -232,5 +357,108 @@ npm run dev
 
 ---
 *Created using [Portify AI](https://portfolio-maker-topaz.vercel.app)*
+`;
+}
+
+function generateStandalonePageCode(portfolio: PortfolioData): string {
+  const p = JSON.stringify(portfolio);
+  return `'use client';
+
+import React from 'react';
+import { Mail, Github, Linkedin, ExternalLink, Code, Sparkles, CheckCircle2, GraduationCap } from 'lucide-react';
+
+const data = ${p};
+
+export default function PortfolioHome() {
+  const { personal, about, projects, skills, education } = data;
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans p-6 sm:p-12 relative overflow-hidden">
+      <div className="fixed top-0 left-1/3 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+      <main className="max-w-4xl mx-auto space-y-16 relative z-10">
+        {/* Header Hero */}
+        <section className="p-8 bg-slate-900 border border-slate-800 rounded-3xl space-y-6 shadow-2xl">
+          <div className="space-y-3">
+            <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950 px-3 py-1 rounded-full border border-cyan-800">
+              {personal.title}
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">{personal.name}</h1>
+            <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 text-xs font-semibold">
+            {personal.email && (
+              <a href={\`mailto:\${personal.email}\`} className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl flex items-center gap-1.5 shadow-md">
+                <Mail className="w-4 h-4" /> Contact
+              </a>
+            )}
+            {personal.socials.github && (
+              <a href={personal.socials.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl border border-slate-700 flex items-center gap-1.5">
+                <Github className="w-4 h-4" /> GitHub
+              </a>
+            )}
+            {personal.socials.linkedin && (
+              <a href={personal.socials.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl border border-slate-700 flex items-center gap-1.5">
+                <Linkedin className="w-4 h-4" /> LinkedIn
+              </a>
+            )}
+          </div>
+        </section>
+
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <section className="space-y-6">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Code className="w-5 h-5 text-cyan-400" /> Featured Projects
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {projects.map((proj: any) => (
+                <div key={proj.id} className="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+                  <h3 className="font-bold text-white text-base">{proj.name}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{proj.description}</p>
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {proj.technologies.map((t: string, idx: number) => (
+                      <span key={idx} className="text-[10px] bg-cyan-950 text-cyan-300 font-mono px-2.5 py-0.5 rounded border border-cyan-800">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Skills */}
+        {skills && skills.length > 0 && (
+          <section className="space-y-6">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-400" /> Skills & Ecosystem
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {skills.map((cat: any) => (
+                <div key={cat.id} className="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+                  <h3 className="text-xs font-bold text-purple-400 uppercase font-mono">{cat.category}</h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {cat.skills.map((s: string, idx: number) => (
+                      <span key={idx} className="text-xs bg-slate-800 text-slate-200 px-2.5 py-1 rounded border border-slate-700 font-mono">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+
+      <footer className="max-w-4xl mx-auto py-8 text-center text-xs text-slate-500 border-t border-slate-900 mt-16 font-mono">
+        © {new Date().getFullYear()} {personal.name}. Powered by Portify AI.
+      </footer>
+    </div>
+  );
+}
 `;
 }
