@@ -58,7 +58,7 @@ const THEME_LIST = [
     name: 'Theme 7 — Obsidian Red',
     tagline: 'High-Contrast Red & LeetCode Stats',
     description: 'Scraped from top SDE portfolios: Obsidian dark mode, Netflix Red highlights, and LeetCode problem-solving badges.',
-    badge: 'New & Hot 🔥',
+    badge: 'New 🔥',
     gradient: 'from-zinc-950 via-red-950 to-[#050505]',
   },
   {
@@ -77,6 +77,30 @@ const THEME_LIST = [
     badge: 'Showcase Grid 🚀',
     gradient: 'from-zinc-900 to-cyan-950',
   },
+  {
+    id: 'cyber-matrix',
+    name: 'Theme 10 — Cyber Matrix',
+    tagline: 'Hacker Terminal Rain',
+    description: 'Neon matrix green accents (#00ff66), retro ASCII art headers, live command terminal prompt, and system status badges.',
+    badge: 'Hacker Terminal ⚡',
+    gradient: 'from-emerald-950 via-black to-zinc-950',
+  },
+  {
+    id: 'bento-grid',
+    name: 'Theme 11 — Bento Grid',
+    tagline: 'Apple / Figma Asymmetric Boxes',
+    description: 'Modern asymmetrical Bento Grid layout, real-time status pills, project highlight cards, and interactive hover depth.',
+    badge: 'Modern Bento 🍱',
+    gradient: 'from-[#090a0f] via-blue-950 to-slate-950',
+  },
+  {
+    id: 'kinetic-poster',
+    name: 'Theme 12 — Kinetic Poster',
+    tagline: 'Swiss Poster & Canary Yellow',
+    description: 'High-fashion editorial Swiss typography, massive oversized headlines, high contrast monochrome, and canary yellow accents.',
+    badge: 'Swiss Poster 🎨',
+    gradient: 'from-black via-zinc-950 to-amber-950',
+  },
 ];
 
 export default function ThemeShowcase() {
@@ -86,13 +110,13 @@ export default function ThemeShowcase() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
             <Palette className="w-4 h-4 text-purple-400" />
-            9 HANDCRAFTED PORTFOLIO THEMES
+            12 HANDCRAFTED PORTFOLIO THEMES
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Scraped & Designed From World-Class Developer Portfolios
+            12 World-Class Portfolio Designs
           </h2>
           <p className="text-slate-400 text-base">
-            Choose from 9 distinct high-impact themes—including minimal, developer, cyberpunk, Nordic luxury editorial, and obsidian red styles.
+            Choose from 12 distinct high-impact themes—including minimal, terminal IDE, Bento Grid, hacker matrix, Nordic luxury, and obsidian red styles.
           </p>
         </div>
 

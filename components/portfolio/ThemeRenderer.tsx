@@ -11,6 +11,9 @@ import GlassTheme from '@/templates/glass/GlassTheme';
 import ObsidianRedTheme from '@/templates/obsidian-red/ObsidianRedTheme';
 import NordicEditorialTheme from '@/templates/nordic-editorial/NordicEditorialTheme';
 import DevGalleryTheme from '@/templates/dev-gallery/DevGalleryTheme';
+import CyberMatrixTheme from '@/templates/cyber-matrix/CyberMatrixTheme';
+import BentoGridTheme from '@/templates/bento-grid/BentoGridTheme';
+import KineticPosterTheme from '@/templates/kinetic-poster/KineticPosterTheme';
 
 export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
@@ -32,6 +35,12 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
       return <NordicEditorialTheme data={data} />;
     case 'dev-gallery':
       return <DevGalleryTheme data={data} />;
+    case 'cyber-matrix':
+      return <CyberMatrixTheme data={data} />;
+    case 'bento-grid':
+      return <BentoGridTheme data={data} />;
+    case 'kinetic-poster':
+      return <KineticPosterTheme data={data} />;
     case 'minimal':
     default:
       return <MinimalTheme data={data} />;

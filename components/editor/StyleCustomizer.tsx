@@ -19,14 +19,17 @@ const THEMES: { id: ThemeType; name: string; desc: string }[] = [
   { id: 'obsidian-red', name: 'Obsidian Red', desc: 'Dark obsidian with Netflix red accents & LeetCode stats' },
   { id: 'nordic-editorial', name: 'Nordic Editorial', desc: 'Minimal Scandinavian luxury with Dahlia serif headers' },
   { id: 'dev-gallery', name: 'Dev Gallery Grid', desc: 'Curated developer showcase grid & tech category filters' },
+  { id: 'cyber-matrix', name: 'Cyber Matrix', desc: 'Hacker terminal rain with retro ASCII banner' },
+  { id: 'bento-grid', name: 'Bento Grid', desc: 'Modern Apple/Figma style asymmetrical grid boxes' },
+  { id: 'kinetic-poster', name: 'Kinetic Poster', desc: 'High-contrast Swiss poster style with electric yellow accents' },
 ];
 
 const COLOR_PRESETS = [
   { primary: '#0c8ee9', accent: '#8b5cf6', name: 'Ocean Cyan & Violet' },
   { primary: '#e50914', accent: '#dc2626', name: 'Obsidian Red & Crimson' },
-  { primary: '#10b981', accent: '#06b6d4', name: 'Emerald & Teal' },
+  { primary: '#00ff66', accent: '#10b981', name: 'Cyber Matrix Neon Green' },
+  { primary: '#facc15', accent: '#f59e0b', name: 'Canary Yellow Poster' },
   { primary: '#8b5cf6', accent: '#f43f5e', name: 'Purple & Rose' },
-  { primary: '#f59e0b', accent: '#ef4444', name: 'Amber & Flame' },
 ];
 
 export default function StyleCustomizer({ customization, onChange }: StyleCustomizerProps) {

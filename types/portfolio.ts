@@ -7,7 +7,10 @@ export type ThemeType =
   | 'glass'
   | 'obsidian-red'
   | 'nordic-editorial'
-  | 'dev-gallery';
+  | 'dev-gallery'
+  | 'cyber-matrix'
+  | 'bento-grid'
+  | 'kinetic-poster';
 
 export interface PersonalInfo {
   name: string;
