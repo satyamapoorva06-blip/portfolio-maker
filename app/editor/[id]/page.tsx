@@ -141,6 +141,8 @@ export default function EditorPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const vercelImportUrl = `https://vercel.com/new/clone?repository-url=https://github.com/${inputGithubUser || user.github_username || 'satyamapoorva06-blip'}/${portfolio.slug}-portfolio`;
+
   return (
     <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans relative">
       {/* Editor Top Navigation Bar */}
@@ -219,9 +221,9 @@ export default function EditorPage() {
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto">
                 <Rocket className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl font-extrabold text-white">1-Click GitHub & Vercel Deploy</h2>
+              <h2 className="text-2xl font-extrabold text-white">Deploy to Your Personal Vercel Account</h2>
               <p className="text-xs text-slate-400">
-                Pushes Next.js portfolio source code to your GitHub account and publishes live on Vercel.
+                Pushes source code to GitHub and imports directly into your personal Vercel dashboard.
               </p>
             </div>
 
@@ -243,21 +245,24 @@ export default function EditorPage() {
                   </a>
                 </div>
 
-                <div className="flex gap-2 pt-2">
+                <div className="flex flex-col gap-2 pt-2">
                   <a
                     href={deployedUrls.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition"
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition"
                   >
                     <Globe className="w-4 h-4" /> Visit Live Site
                   </a>
-                  <button
-                    onClick={() => copyToClipboard(deployedUrls.liveUrl || '')}
-                    className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 flex items-center gap-2 transition"
+
+                  <a
+                    href={vercelImportUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-md"
                   >
-                    <Copy className="w-4 h-4" /> {copied ? 'Copied!' : 'Copy Link'}
-                  </button>
+                    <Rocket className="w-4 h-4 text-black" /> Deploy Directly into My Personal Vercel Account
+                  </a>
                 </div>
               </div>
             ) : (
@@ -265,7 +270,7 @@ export default function EditorPage() {
                 {/* User Integration Input Card */}
                 <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
-                    <Github className="w-4 h-4 text-cyan-400" /> Enter Your GitHub & Vercel Details
+                    <Github className="w-4 h-4 text-cyan-400" /> Enter Your GitHub Handle & Vercel Token
                   </div>
 
                   <div>
@@ -308,8 +313,19 @@ export default function EditorPage() {
                   className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5"
                 >
                   {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
-                  {deployLoading ? 'Deploying to GitHub & Vercel...' : '🚀 Connect & Deploy Now'}
+                  {deployLoading ? 'Deploying...' : '🚀 1-Click Deploy Live'}
                 </button>
+
+                <div className="pt-2 text-center">
+                  <a
+                    href={vercelImportUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white underline font-semibold"
+                  >
+                    Or Deploy directly using Vercel Official Account Import →
+                  </a>
+                </div>
 
                 {deployStatus && (
                   <p className="text-xs text-cyan-300 bg-cyan-950/80 p-3 rounded-xl border border-cyan-800 text-center font-mono">
