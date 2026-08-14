@@ -81,11 +81,14 @@ export default function EditorPage() {
     setDeployStatus('Creating GitHub repository on @' + inputGithubUser + ' and pushing portfolio code...');
 
     try {
+      const cleanSlug = portfolio.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const repoSlug = cleanSlug.endsWith('-portfolio') ? cleanSlug : `${cleanSlug}-portfolio`;
+
       const repoRes = await fetch('/api/github/create-repo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          repoName: `${portfolio.slug}-portfolio`,
+          repoName: repoSlug,
           isPrivate: false,
           portfolio,
           githubUsername: inputGithubUser,
