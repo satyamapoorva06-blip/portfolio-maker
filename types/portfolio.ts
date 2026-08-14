@@ -1,4 +1,13 @@
-export type ThemeType = 'minimal' | 'developer' | 'creative' | 'three-d' | 'professional' | 'glass';
+export type ThemeType =
+  | 'minimal'
+  | 'developer'
+  | 'creative'
+  | 'three-d'
+  | 'professional'
+  | 'glass'
+  | 'obsidian-red'
+  | 'nordic-editorial'
+  | 'dev-gallery';
 
 export interface PersonalInfo {
   name: string;

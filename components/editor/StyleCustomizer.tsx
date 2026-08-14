@@ -16,14 +16,17 @@ const THEMES: { id: ThemeType; name: string; desc: string }[] = [
   { id: 'three-d', name: '3D Spatial', desc: 'Cinematic depth & glowing neon panels' },
   { id: 'professional', name: 'Professional', desc: 'Recruiter-friendly executive layout' },
   { id: 'glass', name: 'Glassmorphism', desc: 'Frosted glass & ambient gradient mesh' },
+  { id: 'obsidian-red', name: 'Obsidian Red', desc: 'Dark obsidian with Netflix red accents & LeetCode stats' },
+  { id: 'nordic-editorial', name: 'Nordic Editorial', desc: 'Minimal Scandinavian luxury with Dahlia serif headers' },
+  { id: 'dev-gallery', name: 'Dev Gallery Grid', desc: 'Curated developer showcase grid & tech category filters' },
 ];
 
 const COLOR_PRESETS = [
   { primary: '#0c8ee9', accent: '#8b5cf6', name: 'Ocean Cyan & Violet' },
+  { primary: '#e50914', accent: '#dc2626', name: 'Obsidian Red & Crimson' },
   { primary: '#10b981', accent: '#06b6d4', name: 'Emerald & Teal' },
   { primary: '#8b5cf6', accent: '#f43f5e', name: 'Purple & Rose' },
   { primary: '#f59e0b', accent: '#ef4444', name: 'Amber & Flame' },
-  { primary: '#3b82f6', accent: '#10b981', name: 'Royal Blue & Emerald' },
 ];
 
 export default function StyleCustomizer({ customization, onChange }: StyleCustomizerProps) {
@@ -32,7 +35,7 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
       {/* Theme Selector */}
       <div className="space-y-4">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme
+          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Available)
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {THEMES.map((t) => (

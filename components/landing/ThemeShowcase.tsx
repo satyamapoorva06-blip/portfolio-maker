@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Palette, ArrowUpRight, Check, Sparkles } from 'lucide-react';
+import { Palette, ArrowUpRight, Sparkles } from 'lucide-react';
 
 const THEME_LIST = [
   {
@@ -53,6 +53,30 @@ const THEME_LIST = [
     badge: 'SaaS Modern',
     gradient: 'from-slate-900 via-blue-950 to-slate-950',
   },
+  {
+    id: 'obsidian-red',
+    name: 'Theme 7 — Obsidian Red',
+    tagline: 'High-Contrast Red & LeetCode Stats',
+    description: 'Scraped from top SDE portfolios: Obsidian dark mode, Netflix Red highlights, and LeetCode problem-solving badges.',
+    badge: 'New & Hot 🔥',
+    gradient: 'from-zinc-950 via-red-950 to-[#050505]',
+  },
+  {
+    id: 'nordic-editorial',
+    name: 'Theme 8 — Nordic Editorial',
+    tagline: 'Scandinavian Luxury Serif',
+    description: 'Scraped from Andreas Antonsson: Full-viewport project sections, Dahlia serif typography, and minimal index tracking.',
+    badge: 'Luxury Editorial ✨',
+    gradient: 'from-zinc-900 via-black to-zinc-950',
+  },
+  {
+    id: 'dev-gallery',
+    name: 'Theme 9 — Dev Gallery Grid',
+    tagline: 'Curated Tech Showcase',
+    description: 'Scraped from DevPortfolios.dev: Interactive technology category filters (React, Next.js, AI) and thumbnail card grid.',
+    badge: 'Showcase Grid 🚀',
+    gradient: 'from-zinc-900 to-cyan-950',
+  },
 ];
 
 export default function ThemeShowcase() {
@@ -62,13 +86,13 @@ export default function ThemeShowcase() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
             <Palette className="w-4 h-4 text-purple-400" />
-            6 HANDCRAFTED THEMES
+            9 HANDCRAFTED PORTFOLIO THEMES
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Choose a Design That Fits Your Brand
+            Scraped & Designed From World-Class Developer Portfolios
           </h2>
           <p className="text-slate-400 text-base">
-            Every theme automatically formats your structured resume data into responsive, high-converting portfolios.
+            Choose from 9 distinct high-impact themes—including minimal, developer, cyberpunk, Nordic luxury editorial, and obsidian red styles.
           </p>
         </div>
 
