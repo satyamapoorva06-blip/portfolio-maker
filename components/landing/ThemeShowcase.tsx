@@ -101,6 +101,70 @@ const THEME_LIST = [
     badge: 'Swiss Poster 🎨',
     gradient: 'from-black via-zinc-950 to-amber-950',
   },
+  {
+    id: 'genai-neural',
+    name: 'Theme 13 — GenAI Neural',
+    tagline: 'LLM & Agentic AI Specialist',
+    description: 'Inspired by Kuber Mehta, Kirti AI & Suraj Agentic AI: Neural network mesh, model benchmark metrics, and LangChain cards.',
+    badge: 'GenAI & LLM 🤖',
+    gradient: 'from-[#06070c] via-purple-950 to-cyan-950',
+  },
+  {
+    id: 'cloud-architect',
+    name: 'Theme 14 — Cloud Architect',
+    tagline: 'DevOps & Systems Architecture',
+    description: 'Inspired by Nishil Pathak Cloud: AWS/GCP infrastructure node cards, Docker/K8s pod status, and automated CI/CD pipeline flow.',
+    badge: 'Cloud & DevOps ☁️',
+    gradient: 'from-[#080d1a] via-blue-950 to-slate-950',
+  },
+  {
+    id: 'mern-stack',
+    name: 'Theme 15 — MERN Stack Neon',
+    tagline: 'Full Stack React & Node',
+    description: 'Inspired by Harsh & Dheeraj MERN: Vibrant neon cyan & emerald accents, REST API query cards, and interactive stack grid.',
+    badge: 'MERN Full-Stack ⚛️',
+    gradient: 'from-[#0a0a0f] via-cyan-950 to-emerald-950',
+  },
+  {
+    id: 'iot-hardware',
+    name: 'Theme 16 — IoT & Systems',
+    tagline: 'Hardware & Microcontrollers',
+    description: 'Inspired by Ayush Srivastava IoT: Circuit board background, micro-controller pinouts (ESP32, RPi, STM32) and telemetry metrics.',
+    badge: 'IoT & Embedded 🔌',
+    gradient: 'from-[#0d0d09] via-amber-950 to-zinc-950',
+  },
+  {
+    id: 'java-enterprise',
+    name: 'Theme 17 — Java Enterprise',
+    tagline: 'Spring Boot & Microservices',
+    description: 'Inspired by Rishav Choudhary & Adil Iqbal: Corporate backend layout, JVM metrics, SQL database schema cards, and Java theme.',
+    badge: 'Java Backend ☕',
+    gradient: 'from-[#080d14] via-amber-950 to-red-950',
+  },
+  {
+    id: 'cs-student',
+    name: 'Theme 18 — CS Academic Student',
+    tagline: 'University Coursework & GPA',
+    description: 'Inspired by Sahil Bhayre & Shreya Saxena CS Students: University coursework highlights, GPA badges, and DSA problem stats.',
+    badge: 'CS Academic 🎓',
+    gradient: 'from-[#070b12] via-blue-950 to-indigo-950',
+  },
+  {
+    id: 'spatial-arvr',
+    name: 'Theme 19 — AR/VR Spatial 3D',
+    tagline: 'Vision OS Spatial Glass',
+    description: 'Inspired by Srikhanth AR/VR: Spatial OS glassmorphism panels, WebGL & Three.js showcase, and iridescent violet/cyan glows.',
+    badge: 'AR/VR 3D 🔮',
+    gradient: 'from-[#07050d] via-purple-950 to-pink-950',
+  },
+  {
+    id: 'cyber-sentinel',
+    name: 'Theme 20 — Cyber Security',
+    tagline: 'Penetration Testing & Sentinel',
+    description: 'Inspired by Ritik Tiwari Security: Vulnerability log cards, CTF achievement badges, red/green terminal status, and security payload cards.',
+    badge: 'Cyber Security 🛡️',
+    gradient: 'from-[#060a08] via-emerald-950 to-black',
+  },
 ];
 
 export default function ThemeShowcase() {
@@ -110,13 +174,13 @@ export default function ThemeShowcase() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
             <Palette className="w-4 h-4 text-purple-400" />
-            12 HANDCRAFTED PORTFOLIO THEMES
+            20 HANDCRAFTED PORTFOLIO THEMES
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-            12 World-Class Portfolio Designs
+            20 Specialized Developer Portfolio Themes
           </h2>
           <p className="text-slate-400 text-base">
-            Choose from 12 distinct high-impact themes—including minimal, terminal IDE, Bento Grid, hacker matrix, Nordic luxury, and obsidian red styles.
+            From GenAI & Agentic AI to Cloud DevOps, MERN Full Stack, IoT, Java Enterprise, CS Students, and Cyber Security—Portify AI includes 20 world-class themes tailored to your specific field.
           </p>
         </div>
 

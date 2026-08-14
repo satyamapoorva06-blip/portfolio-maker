@@ -22,6 +22,14 @@ const THEMES: { id: ThemeType; name: string; desc: string }[] = [
   { id: 'cyber-matrix', name: 'Cyber Matrix', desc: 'Hacker terminal rain with retro ASCII banner' },
   { id: 'bento-grid', name: 'Bento Grid', desc: 'Modern Apple/Figma style asymmetrical grid boxes' },
   { id: 'kinetic-poster', name: 'Kinetic Poster', desc: 'High-contrast Swiss poster style with electric yellow accents' },
+  { id: 'genai-neural', name: 'GenAI Neural', desc: 'LLM, LangChain & Agentic AI model benchmark theme' },
+  { id: 'cloud-architect', name: 'Cloud Architect', desc: 'AWS/GCP infrastructure nodes, K8s & Terraform layout' },
+  { id: 'mern-stack', name: 'MERN Stack Neon', desc: 'Vibrant Mongo/Express/React/Node full-stack theme' },
+  { id: 'iot-hardware', name: 'IoT & Systems', desc: 'Micro-controller pinouts (ESP32, RPi) & telemetry metrics' },
+  { id: 'java-enterprise', name: 'Java Enterprise', desc: 'Spring Boot, Microservices & SQL database architecture' },
+  { id: 'cs-student', name: 'CS Academic Student', desc: 'University coursework, GPA/Honors & DSA metrics' },
+  { id: 'spatial-arvr', name: 'AR/VR Spatial 3D', desc: 'Spatial OS vision panels, WebGL & Three.js showcase' },
+  { id: 'cyber-sentinel', name: 'Cyber Security', desc: 'Penetration testing vulnerability logs & CTF badges' },
 ];
 
 const COLOR_PRESETS = [
@@ -40,7 +48,7 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
           <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Available)
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
           {THEMES.map((t) => (
             <button
               key={t.id}

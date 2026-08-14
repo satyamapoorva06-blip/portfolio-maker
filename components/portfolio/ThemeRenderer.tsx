@@ -14,6 +14,14 @@ import DevGalleryTheme from '@/templates/dev-gallery/DevGalleryTheme';
 import CyberMatrixTheme from '@/templates/cyber-matrix/CyberMatrixTheme';
 import BentoGridTheme from '@/templates/bento-grid/BentoGridTheme';
 import KineticPosterTheme from '@/templates/kinetic-poster/KineticPosterTheme';
+import GenAiNeuralTheme from '@/templates/genai-neural/GenAiNeuralTheme';
+import CloudArchitectTheme from '@/templates/cloud-architect/CloudArchitectTheme';
+import MernStackTheme from '@/templates/mern-stack/MernStackTheme';
+import IotHardwareTheme from '@/templates/iot-hardware/IotHardwareTheme';
+import JavaEnterpriseTheme from '@/templates/java-enterprise/JavaEnterpriseTheme';
+import CsStudentTheme from '@/templates/cs-student/CsStudentTheme';
+import SpatialArVrTheme from '@/templates/spatial-arvr/SpatialArVrTheme';
+import CyberSentinelTheme from '@/templates/cyber-sentinel/CyberSentinelTheme';
 
 export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
@@ -41,6 +49,22 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
       return <BentoGridTheme data={data} />;
     case 'kinetic-poster':
       return <KineticPosterTheme data={data} />;
+    case 'genai-neural':
+      return <GenAiNeuralTheme data={data} />;
+    case 'cloud-architect':
+      return <CloudArchitectTheme data={data} />;
+    case 'mern-stack':
+      return <MernStackTheme data={data} />;
+    case 'iot-hardware':
+      return <IotHardwareTheme data={data} />;
+    case 'java-enterprise':
+      return <JavaEnterpriseTheme data={data} />;
+    case 'cs-student':
+      return <CsStudentTheme data={data} />;
+    case 'spatial-arvr':
+      return <SpatialArVrTheme data={data} />;
+    case 'cyber-sentinel':
+      return <CyberSentinelTheme data={data} />;
     case 'minimal':
     default:
       return <MinimalTheme data={data} />;

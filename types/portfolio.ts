@@ -10,7 +10,15 @@ export type ThemeType =
   | 'dev-gallery'
   | 'cyber-matrix'
   | 'bento-grid'
-  | 'kinetic-poster';
+  | 'kinetic-poster'
+  | 'genai-neural'
+  | 'cloud-architect'
+  | 'mern-stack'
+  | 'iot-hardware'
+  | 'java-enterprise'
+  | 'cs-student'
+  | 'spatial-arvr'
+  | 'cyber-sentinel';
 
 export interface PersonalInfo {
   name: string;
