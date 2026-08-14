@@ -7,7 +7,7 @@ import { getStoredPortfolios, saveStoredPortfolio, saveStoredDeployment, getStor
 import EditorTabs from '@/components/editor/EditorTabs';
 import LivePreviewFrame from '@/components/editor/LivePreviewFrame';
 import { UserProfile } from '@/types/database';
-import { ArrowLeft, Save, Rocket, Github, CheckCircle2, Eye, Sparkles, X, ExternalLink, Copy, Loader2, Globe, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Save, Rocket, Github, CheckCircle2, Eye, Sparkles, X, ExternalLink, Copy, Loader2, Globe, AlertCircle, ArrowRight } from 'lucide-react';
 
 export default function EditorPage() {
   const router = useRouter();
@@ -19,14 +19,16 @@ export default function EditorPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState<UserProfile>(getStoredUser());
 
-  // One-Click Deploy Modal State
+  // Deployment Pipeline State
   const [showDeployModal, setShowDeployModal] = useState(false);
+  const [deployStep, setDeployStep] = useState<1 | 2 | 3>(1);
   const [deployLoading, setDeployLoading] = useState(false);
   const [deployStatus, setDeployStatus] = useState('');
-  const [deployedUrls, setDeployedUrls] = useState<{ repoUrl?: string; liveUrl?: string } | null>(null);
+  const [createdGithubRepo, setCreatedGithubRepo] = useState<{ url: string; fullName: string } | null>(null);
+  const [vercelLiveUrl, setVercelLiveUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Credentials input for inline connection
+  // User input credentials
   const [inputGithubUser, setInputGithubUser] = useState('');
   const [inputGithubToken, setInputGithubToken] = useState('');
   const [inputVercelToken, setInputVercelToken] = useState('');
@@ -67,19 +69,18 @@ export default function EditorPage() {
     setUser(updatedUser);
   };
 
-  const handleOneClickDeploy = async () => {
+  // STEP 1: Create GitHub Repo First
+  const handleCreateGithubRepo = async () => {
     if (!inputGithubUser) {
       setDeployStatus('Please enter your GitHub Username to create your repository.');
       return;
     }
 
     handleSaveCredentials();
-
     setDeployLoading(true);
-    setDeployStatus('1. Creating GitHub repository on @' + inputGithubUser + '...');
+    setDeployStatus('Creating GitHub repository on @' + inputGithubUser + ' and pushing portfolio code...');
 
     try {
-      // Step 1: Create GitHub Repo
       const repoRes = await fetch('/api/github/create-repo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,43 +94,61 @@ export default function EditorPage() {
       });
 
       const repoJson = await repoRes.json();
-      if (!repoRes.ok) throw new Error(repoJson.error || 'Failed to create GitHub repo');
+      if (!repoRes.ok) throw new Error(repoJson.error || 'Failed to create GitHub repository');
 
-      // Step 2: Deploy to Vercel
-      setDeployStatus('2. Deploying live website to Vercel Cloud Edge...');
+      setCreatedGithubRepo({
+        url: repoJson.repoUrl,
+        fullName: repoJson.fullName,
+      });
+
+      setDeployStep(2);
+      setDeployStatus('✓ Step 1 Complete: Portfolio source code successfully pushed to GitHub!');
+    } catch (err: any) {
+      setDeployStatus(`Error creating GitHub repo: ${err.message}`);
+    } finally {
+      setDeployLoading(false);
+    }
+  };
+
+  // STEP 2: Deploy to Vercel via GitHub Repo
+  const handleDeployToVercel = async () => {
+    if (!createdGithubRepo) return;
+
+    setDeployLoading(true);
+    setDeployStatus('Deploying GitHub repository (' + createdGithubRepo.fullName + ') to Vercel...');
+
+    try {
       const vercelRes = await fetch('/api/vercel/deploy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           portfolio,
-          repoFullName: repoJson.fullName,
+          repoFullName: createdGithubRepo.fullName,
           token: inputVercelToken,
         }),
       });
 
       const vercelJson = await vercelRes.json();
 
-      setDeployedUrls({
-        repoUrl: repoJson.repoUrl,
-        liveUrl: vercelJson.deploymentUrl || vercelJson.instantPublicUrl,
-      });
+      const finalUrl = vercelJson.deploymentUrl || vercelJson.instantPublicUrl;
+      setVercelLiveUrl(finalUrl);
+      setDeployStep(3);
 
-      // Save deployment record
       saveStoredDeployment({
         id: `dep_${Date.now()}`,
         portfolio_id: portfolio.id,
         user_id: portfolio.userId || user.id,
         provider: 'vercel',
-        repository_url: repoJson.repoUrl,
-        deployment_url: vercelJson.deploymentUrl,
+        repository_url: createdGithubRepo.url,
+        deployment_url: finalUrl,
         status: 'live',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
 
-      setDeployStatus('✓ Live Portfolio Successfully Published!');
+      setDeployStatus('✓ Step 2 Complete: Live Portfolio Published on Vercel!');
     } catch (err: any) {
-      setDeployStatus(`Error: ${err.message}`);
+      setDeployStatus(`Error deploying to Vercel: ${err.message}`);
     } finally {
       setDeployLoading(false);
     }
@@ -141,7 +160,9 @@ export default function EditorPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const vercelImportUrl = `https://vercel.com/new/clone?repository-url=https://github.com/${inputGithubUser || user.github_username || 'satyamapoorva06-blip'}/${portfolio.slug}-portfolio`;
+  const vercelImportUrl = createdGithubRepo
+    ? `https://vercel.com/new/clone?repository-url=${encodeURIComponent(createdGithubRepo.url)}`
+    : `https://vercel.com/new/clone?repository-url=https://github.com/${inputGithubUser || 'satyamapoorva06-blip'}/${portfolio.slug}-portfolio`;
 
   return (
     <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans relative">
@@ -185,10 +206,15 @@ export default function EditorPage() {
           </button>
 
           <button
-            onClick={() => setShowDeployModal(true)}
+            onClick={() => {
+              setShowDeployModal(true);
+              setDeployStep(1);
+              setCreatedGithubRepo(null);
+              setVercelLiveUrl(null);
+            }}
             className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition transform hover:-translate-y-0.5"
           >
-            <Rocket className="w-4 h-4" /> 1-Click Deploy Live
+            <Rocket className="w-4 h-4" /> Deploy via GitHub & Vercel
           </button>
         </div>
       </header>
@@ -206,7 +232,7 @@ export default function EditorPage() {
         </div>
       </div>
 
-      {/* 1-Click Deploy Modal */}
+      {/* Strict 2-Step Deployment Modal */}
       {showDeployModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-6">
           <div className="max-w-lg w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
@@ -221,56 +247,28 @@ export default function EditorPage() {
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto">
                 <Rocket className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl font-extrabold text-white">Deploy to Your Personal Vercel Account</h2>
+              <h2 className="text-2xl font-extrabold text-white">GitHub → Vercel Deployment Pipeline</h2>
               <p className="text-xs text-slate-400">
-                Pushes source code to GitHub and imports directly into your personal Vercel dashboard.
+                Pushes your code to GitHub first, then deploys to Vercel through your GitHub repository.
               </p>
             </div>
 
-            {deployedUrls ? (
-              <div className="space-y-4 p-5 bg-slate-950 border border-emerald-500/40 rounded-2xl">
-                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                  <CheckCircle2 className="w-4 h-4" /> Live Deployment Success!
-                </div>
-
-                <div className="space-y-1">
-                  <span className="text-[11px] text-slate-400 font-mono">Live Website URL</span>
-                  <a
-                    href={deployedUrls.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-sm font-bold text-cyan-400 hover:underline truncate"
-                  >
-                    {deployedUrls.liveUrl}
-                  </a>
-                </div>
-
-                <div className="flex flex-col gap-2 pt-2">
-                  <a
-                    href={deployedUrls.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition"
-                  >
-                    <Globe className="w-4 h-4" /> Visit Live Site
-                  </a>
-
-                  <a
-                    href={vercelImportUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-md"
-                  >
-                    <Rocket className="w-4 h-4 text-black" /> Deploy Directly into My Personal Vercel Account
-                  </a>
-                </div>
+            {/* Step Progress Tracker */}
+            <div className="grid grid-cols-2 gap-3 text-xs text-center font-bold">
+              <div className={`p-3 rounded-xl border transition ${deployStep >= 1 ? 'bg-cyan-950/40 border-cyan-500 text-cyan-300' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
+                1. Push to GitHub Repo
               </div>
-            ) : (
+              <div className={`p-3 rounded-xl border transition ${deployStep >= 2 ? 'bg-cyan-950/40 border-cyan-500 text-cyan-300' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
+                2. Deploy to Vercel
+              </div>
+            </div>
+
+            {/* STEP 1: GitHub Creation */}
+            {deployStep === 1 && (
               <div className="space-y-4">
-                {/* User Integration Input Card */}
                 <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
-                    <Github className="w-4 h-4 text-cyan-400" /> Enter Your GitHub Handle & Vercel Token
+                    <Github className="w-4 h-4 text-cyan-400" /> Enter Your GitHub Details
                   </div>
 
                   <div>
@@ -285,7 +283,7 @@ export default function EditorPage() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] text-slate-400">GitHub Access Token (Optional)</label>
+                    <label className="text-[11px] text-slate-400">GitHub Personal Access Token (Optional)</label>
                     <input
                       type="password"
                       placeholder="ghp_xxxxxxxxxxxxxxxxx"
@@ -293,6 +291,43 @@ export default function EditorPage() {
                       onChange={(e) => setInputGithubToken(e.target.value)}
                       className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
                     />
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleCreateGithubRepo}
+                  disabled={deployLoading}
+                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
+                >
+                  {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Github className="w-4 h-4" />}
+                  {deployLoading ? 'Creating GitHub Repo & Pushing Code...' : 'Step 1: Create GitHub Repository & Push Code'}
+                </button>
+              </div>
+            )}
+
+            {/* STEP 2: Vercel Deployment */}
+            {deployStep === 2 && createdGithubRepo && (
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-950 border border-emerald-500/40 rounded-2xl space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" /> GitHub Repository Live!
+                    </span>
+                    <a
+                      href={createdGithubRepo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:underline flex items-center gap-1 font-mono"
+                    >
+                      Open Repo <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                  <p className="text-xs text-slate-300 font-mono truncate">{createdGithubRepo.url}</p>
+                </div>
+
+                <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
+                    <Rocket className="w-4 h-4 text-emerald-400" /> Deploy to Vercel from GitHub Repo
                   </div>
 
                   <div>
@@ -307,32 +342,86 @@ export default function EditorPage() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleOneClickDeploy}
-                  disabled={deployLoading}
-                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5"
-                >
-                  {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
-                  {deployLoading ? 'Deploying...' : '🚀 1-Click Deploy Live'}
-                </button>
+                <div className="space-y-3">
+                  <button
+                    onClick={handleDeployToVercel}
+                    disabled={deployLoading}
+                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
+                  >
+                    {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+                    {deployLoading ? 'Deploying to Vercel...' : 'Step 2: Deploy to Vercel Cloud'}
+                  </button>
 
-                <div className="pt-2 text-center">
                   <a
                     href={vercelImportUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white underline font-semibold"
+                    className="w-full py-3 bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 transition shadow-md"
                   >
-                    Or Deploy directly using Vercel Official Account Import →
+                    <Rocket className="w-4 h-4 text-black" /> Deploy via Official Vercel Account Import →
                   </a>
                 </div>
-
-                {deployStatus && (
-                  <p className="text-xs text-cyan-300 bg-cyan-950/80 p-3 rounded-xl border border-cyan-800 text-center font-mono">
-                    {deployStatus}
-                  </p>
-                )}
               </div>
+            )}
+
+            {/* STEP 3: Complete Success Summary */}
+            {deployStep === 3 && (
+              <div className="space-y-4 p-6 bg-slate-950 border border-emerald-500/40 rounded-2xl">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
+                  <CheckCircle2 className="w-4 h-4" /> Both GitHub & Vercel Deployments Complete!
+                </div>
+
+                {createdGithubRepo && (
+                  <div className="space-y-1">
+                    <span className="text-[11px] text-slate-400 font-mono">1. GitHub Repository</span>
+                    <a
+                      href={createdGithubRepo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-xs font-mono text-cyan-400 hover:underline truncate"
+                    >
+                      {createdGithubRepo.url}
+                    </a>
+                  </div>
+                )}
+
+                {vercelLiveUrl && (
+                  <div className="space-y-1 pt-2 border-t border-slate-900">
+                    <span className="text-[11px] text-slate-400 font-mono">2. Vercel Live Website</span>
+                    <a
+                      href={vercelLiveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-sm font-bold text-emerald-400 hover:underline truncate"
+                    >
+                      {vercelLiveUrl}
+                    </a>
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-2">
+                  <a
+                    href={vercelLiveUrl || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition"
+                  >
+                    <Globe className="w-4 h-4" /> Visit Live Site
+                  </a>
+                  <button
+                    onClick={() => copyToClipboard(vercelLiveUrl || '')}
+                    className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 flex items-center gap-2 transition"
+                  >
+                    <Copy className="w-4 h-4" /> {copied ? 'Copied!' : 'Copy Link'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {deployStatus && (
+              <p className="text-xs text-cyan-300 bg-cyan-950/80 p-3 rounded-xl border border-cyan-800 text-center font-mono">
+                {deployStatus}
+              </p>
             )}
           </div>
         </div>

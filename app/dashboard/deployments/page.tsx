@@ -5,7 +5,7 @@ import Navbar from '@/components/landing/Navbar';
 import { getStoredPortfolios, saveStoredDeployment, getStoredUser, setStoredUser } from '@/lib/storage/local-store';
 import { PortfolioData } from '@/types/portfolio';
 import { UserProfile } from '@/types/database';
-import { Github, Rocket, CheckCircle2, Copy, ExternalLink, RefreshCw, AlertCircle, Loader2, ShieldCheck, Save } from 'lucide-react';
+import { Github, Rocket, CheckCircle2, Copy, ExternalLink, RefreshCw, AlertCircle, Loader2, ShieldCheck, Save, Globe } from 'lucide-react';
 
 export default function DeploymentsPage() {
   const [user, setUser] = useState<UserProfile>(getStoredUser());
@@ -24,6 +24,7 @@ export default function DeploymentsPage() {
   const [githubToken, setGithubToken] = useState('');
   const [vercelToken, setVercelToken] = useState('');
 
+  const [createdGithubRepo, setCreatedGithubRepo] = useState<{ url: string; fullName: string } | null>(null);
   const [activeDeployment, setActiveDeployment] = useState<{
     repoUrl: string;
     deploymentUrl: string;
@@ -67,7 +68,8 @@ export default function DeploymentsPage() {
     setTimeout(() => setStatusMsg(''), 2500);
   };
 
-  const handleDeploy = async () => {
+  // STEP 1: Create GitHub Repo First
+  const handleDeployStep1 = async () => {
     if (!activePortfolio) return;
 
     if (!githubUser) {
@@ -76,13 +78,10 @@ export default function DeploymentsPage() {
     }
 
     handleSaveIntegrations();
-
     setLoading(true);
-    setStatusMsg('1. Connecting to GitHub @' + githubUser + '...');
+    setStatusMsg('1. Creating GitHub repository @' + githubUser + '/' + repoName + ' & pushing code...');
 
     try {
-      // 1. Create GitHub Repo
-      setStatusMsg('2. Creating GitHub repository & committing source code...');
       const repoRes = await fetch('/api/github/create-repo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -97,15 +96,33 @@ export default function DeploymentsPage() {
       const repoJson = await repoRes.json();
       if (!repoRes.ok) throw new Error(repoJson.error || 'Failed to create GitHub repo');
 
-      // 2. Deploy to Cloud Provider (Vercel or Netlify)
-      setStatusMsg(`3. Deploying to ${provider === 'vercel' ? 'Vercel' : 'Netlify'}...`);
-      const endpoint = provider === 'vercel' ? '/api/vercel/deploy' : '/api/netlify/deploy';
-      const deployRes = await fetch(endpoint, {
+      setCreatedGithubRepo({
+        url: repoJson.repoUrl,
+        fullName: repoJson.fullName,
+      });
+
+      setStatusMsg('✓ Step 1 Complete: Portfolio code pushed to GitHub (' + repoJson.repoUrl + ')! Now click Step 2.');
+    } catch (err: any) {
+      setStatusMsg(`GitHub Error: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // STEP 2: Deploy to Vercel via GitHub Repo
+  const handleDeployStep2 = async () => {
+    if (!activePortfolio || !createdGithubRepo) return;
+
+    setLoading(true);
+    setStatusMsg('2. Deploying GitHub repository (' + createdGithubRepo.fullName + ') to Vercel...');
+
+    try {
+      const deployRes = await fetch('/api/vercel/deploy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           portfolio: activePortfolio,
-          repoFullName: repoJson.fullName,
+          repoFullName: createdGithubRepo.fullName,
           token: vercelToken,
         }),
       });
@@ -114,27 +131,26 @@ export default function DeploymentsPage() {
       const liveUrl = deployJson.deploymentUrl || deployJson.instantPublicUrl;
 
       setActiveDeployment({
-        repoUrl: repoJson.repoUrl,
+        repoUrl: createdGithubRepo.url,
         deploymentUrl: liveUrl,
         status: 'live',
       });
 
-      // Save to deployments store
       saveStoredDeployment({
         id: `dep_${Date.now()}`,
         portfolio_id: activePortfolio.id,
         user_id: user.id,
         provider,
-        repository_url: repoJson.repoUrl,
+        repository_url: createdGithubRepo.url,
         deployment_url: liveUrl,
         status: 'live',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
 
-      setStatusMsg('✓ Live Portfolio Deployment Ready!');
+      setStatusMsg('✓ Step 2 Complete: Live Portfolio Published on Vercel!');
     } catch (err: any) {
-      setStatusMsg(`Deployment Error: ${err.message}`);
+      setStatusMsg(`Vercel Error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -155,6 +171,10 @@ export default function DeploymentsPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const vercelImportUrl = createdGithubRepo
+    ? `https://vercel.com/new/clone?repository-url=${encodeURIComponent(createdGithubRepo.url)}`
+    : `https://vercel.com/new/clone?repository-url=https://github.com/${githubUser || 'satyamapoorva06-blip'}/${repoName}`;
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
@@ -163,7 +183,7 @@ export default function DeploymentsPage() {
         <div className="space-y-2">
           <h1 className="text-3xl font-extrabold text-white">Deployment Hub</h1>
           <p className="text-sm text-slate-400">
-            Connect GitHub, push standalone Next.js portfolio source code, and publish live on Vercel or Netlify.
+            Strict 2-Step Pipeline: Push Next.js portfolio source code to GitHub first, then deploy through your GitHub repository onto Vercel.
           </p>
         </div>
 
@@ -239,6 +259,7 @@ export default function DeploymentsPage() {
                 onClick={() => {
                   setSelectedPortfolioId(p.id);
                   setRepoName(`${p.slug}-portfolio`);
+                  setCreatedGithubRepo(null);
                 }}
                 className={`w-full p-4 rounded-xl border text-left flex justify-between items-center transition ${
                   selectedPortfolioId === p.id ? 'bg-cyan-950/40 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
@@ -252,69 +273,47 @@ export default function DeploymentsPage() {
               </button>
             ))}
 
-            <h3 className="font-bold text-white text-base pt-4 border-t border-slate-800">2. Repository Options</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-slate-400">Repository Name</label>
-                <input
-                  type="text"
-                  value={repoName}
-                  onChange={(e) => setRepoName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
-                />
-              </div>
+            <h3 className="font-bold text-white text-base pt-4 border-t border-slate-800">2. Deployment Pipeline</h3>
 
-              <div className="flex gap-4 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300">
-                  <input
-                    type="radio"
-                    name="privacy"
-                    checked={!isPrivate}
-                    onChange={() => setIsPrivate(false)}
-                    className="accent-cyan-500"
-                  />
-                  Public Repository
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300">
-                  <input
-                    type="radio"
-                    name="privacy"
-                    checked={isPrivate}
-                    onChange={() => setIsPrivate(true)}
-                    className="accent-cyan-500"
-                  />
-                  Private Repository
-                </label>
-              </div>
-            </div>
-
-            <h3 className="font-bold text-white text-base pt-4 border-t border-slate-800">3. Select Hosting Provider</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-3">
+              {/* Step 1 Button */}
               <button
-                onClick={() => setProvider('vercel')}
-                className={`p-4 rounded-xl border text-center font-bold text-sm transition ${
-                  provider === 'vercel' ? 'bg-blue-600/20 border-blue-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
-                }`}
+                onClick={handleDeployStep1}
+                disabled={loading}
+                className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl text-xs shadow-xl flex items-center justify-center gap-2 transition"
               >
-                Vercel
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Github className="w-4 h-4" />}
+                Step 1: Push Portfolio Code to GitHub Repository
               </button>
-              <button
-                onClick={() => setProvider('netlify')}
-                className={`p-4 rounded-xl border text-center font-bold text-sm transition ${
-                  provider === 'netlify' ? 'bg-teal-600/20 border-teal-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
-                }`}
-              >
-                Netlify
-              </button>
-            </div>
 
-            <button
-              onClick={handleDeploy}
-              disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
-            >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />} Connect & Deploy Portfolio Live
-            </button>
+              {/* Step 2 Buttons (Unlocked after Step 1) */}
+              {createdGithubRepo && (
+                <div className="space-y-3 pt-3 border-t border-slate-800">
+                  <div className="p-3 bg-slate-950 border border-emerald-500/40 rounded-xl text-xs text-emerald-400 font-mono flex items-center justify-between">
+                    <span>✓ Repo Created: {createdGithubRepo.fullName}</span>
+                    <a href={createdGithubRepo.url} target="_blank" rel="noopener noreferrer" className="underline">View</a>
+                  </div>
+
+                  <button
+                    onClick={handleDeployStep2}
+                    disabled={loading}
+                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-xl flex items-center justify-center gap-2 transition"
+                  >
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+                    Step 2: Deploy GitHub Repo to Vercel
+                  </button>
+
+                  <a
+                    href={vercelImportUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-md"
+                  >
+                    <Rocket className="w-4 h-4 text-black" /> Deploy via Official Vercel Account Import →
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Active Deployment Details */}
@@ -391,7 +390,7 @@ export default function DeploymentsPage() {
             ) : (
               <div className="p-8 text-center text-slate-500 text-xs space-y-2 border border-dashed border-slate-800 rounded-xl">
                 <Rocket className="w-8 h-8 mx-auto text-slate-600" />
-                <p>No active deployment created yet. Deploy your first portfolio above!</p>
+                <p>No active deployment created yet. Run Step 1 and Step 2 above!</p>
               </div>
             )}
 
