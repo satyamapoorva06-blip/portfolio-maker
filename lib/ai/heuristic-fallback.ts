@@ -6,44 +6,80 @@ export function parseResumeTextHeuristically(rawText: string, filename?: string)
     .map((l) => l.trim())
     .filter(Boolean);
 
-  // Extract Basic Details via Regex
+  const textLower = rawText.toLowerCase();
+
+  // 1. Contact Details & Social Links
   const emailMatch = rawText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-  const phoneMatch = rawText.match(/(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+  const phoneMatch = rawText.match(/(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/) || rawText.match(/\b\d{10}\b/);
   const githubMatch = rawText.match(/(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
   const linkedinMatch = rawText.match(/(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
 
-  // Detect Candidate Name (Usually first non-empty line or headline)
-  let name = lines[0] || 'Portfolio Owner';
-  if (name.toLowerCase().includes('resume') || name.toLowerCase().includes('curriculum')) {
-    name = lines[1] || 'Portfolio Owner';
+  // 2. Candidate Name
+  let name = 'Portfolio Owner';
+  for (const line of lines) {
+    if (
+      !/resume|curriculum|cv|page|email|phone|github|linkedin|http/i.test(line) &&
+      line.length > 2 &&
+      line.length < 40 &&
+      !line.includes('@') &&
+      !line.includes('|')
+    ) {
+      name = line.replace(/[^a-zA-Z\s]/g, '').trim();
+      break;
+    }
   }
 
-  // Detect Candidate Title
-  let title = 'Software Engineer & Technology Professional';
-  if (lines.length > 1 && lines[1].length < 60 && !lines[1].includes('@')) {
-    title = lines[1];
+  // 3. Title / Candidate Role
+  let title = 'Computer Science & Software Engineer';
+  if (textLower.includes('b.tech') || textLower.includes('computer science')) {
+    title = 'Computer Science & Engineering Student';
+  } else if (textLower.includes('full stack') || textLower.includes('fullstack')) {
+    title = 'Full Stack Web Developer';
+  } else if (textLower.includes('backend')) {
+    title = 'Backend Systems Developer';
   }
 
-  // Categorize Skills based on keyword detection
-  const textLower = rawText.toLowerCase();
-  const languagesList = ['typescript', 'javascript', 'python', 'java', 'c++', 'c#', 'go', 'golang', 'rust', 'html', 'css', 'sql', 'php', 'ruby', 'kotlin', 'swift'];
-  const frameworksList = ['react', 'next.js', 'nextjs', 'vue', 'angular', 'tailwind', 'express', 'node.js', 'fastapi', 'django', 'flask', 'spring boot', 'flutter'];
-  const cloudList = ['aws', 'google cloud', 'gcp', 'azure', 'docker', 'kubernetes', 'postgresql', 'postgres', 'mongodb', 'supabase', 'redis', 'firebase'];
-  const toolsList = ['git', 'github', 'vscode', 'postman', 'jira', 'figma', 'webpack', 'vite', 'linux'];
-
-  const foundLanguages = languagesList.filter((s) => textLower.includes(s));
-  const foundFrameworks = frameworksList.filter((s) => textLower.includes(s));
-  const foundCloud = cloudList.filter((s) => textLower.includes(s));
-  const foundTools = toolsList.filter((s) => textLower.includes(s));
-
-  // Extract Summary / About
-  let summary = `Driven software professional passionate about building reliable web systems, scalable architectures, and modern user experiences.`;
-  const summaryIndex = lines.findIndex((l) => /summary|objective|about me|profile/i.test(l));
+  // 4. About / Summary
+  let summary = `Motivated student & developer with strong programming fundamentals, problem-solving abilities, and a passion for building reliable software applications.`;
+  const summaryIndex = lines.findIndex((l) => /objective|summary|about me|profile/i.test(l));
   if (summaryIndex !== -1 && lines[summaryIndex + 1]) {
-    summary = lines.slice(summaryIndex + 1, summaryIndex + 4).join(' ');
+    const summaryLines = [];
+    for (let i = summaryIndex + 1; i < Math.min(summaryIndex + 5, lines.length); i++) {
+      if (/education|skills|projects|experience|certifications/i.test(lines[i])) break;
+      summaryLines.push(lines[i]);
+    }
+    if (summaryLines.length > 0) summary = summaryLines.join(' ');
   }
 
-  // Generate unique slug
+  // 5. Categorize Skills
+  const languagesList = ['java', 'python', 'c++', 'c#', 'javascript', 'typescript', 'go', 'rust', 'html', 'css', 'sql', 'c'];
+  const toolsList = ['vs code', 'vscode', 'intellij', 'intellij idea', 'git', 'github', 'postman', 'docker', 'terminal'];
+  const conceptsList = ['backend logic', 'data structures', 'problem solving', 'logical thinking', 'debugging', 'algorithms'];
+
+  const foundLanguages: string[] = [];
+  const foundTools: string[] = [];
+  const foundConcepts: string[] = [];
+
+  languagesList.forEach((s) => {
+    const regex = new RegExp(`\\b${s.replace('+', '\\+')}\\b`, 'i');
+    if (regex.test(rawText)) foundLanguages.push(s);
+  });
+
+  toolsList.forEach((s) => {
+    if (rawText.toLowerCase().includes(s.toLowerCase())) foundTools.push(s);
+  });
+
+  conceptsList.forEach((s) => {
+    if (rawText.toLowerCase().includes(s.toLowerCase())) foundConcepts.push(s);
+  });
+
+  // 6. Extract Projects
+  const projects = extractProjectsFromText(lines);
+
+  // 7. Extract Education
+  const education = extractEducationFromText(lines, rawText);
+
+  // 8. Generate Slug
   const cleanName = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const slug = `${cleanName || 'my'}-portfolio`;
 
@@ -60,7 +96,7 @@ export function parseResumeTextHeuristically(rawText: string, filename?: string)
       email: emailMatch ? emailMatch[0] : 'contact@example.com',
       phone: phoneMatch ? phoneMatch[0] : undefined,
       location: 'India',
-      tagline: `Welcome to my professional portfolio`,
+      tagline: `Computer Science & Engineering Portfolio`,
       socials: {
         github: githubMatch ? (githubMatch[0].startsWith('http') ? githubMatch[0] : `https://${githubMatch[0]}`) : '',
         linkedin: linkedinMatch ? (linkedinMatch[0].startsWith('http') ? linkedinMatch[0] : `https://${linkedinMatch[0]}`) : '',
@@ -69,8 +105,9 @@ export function parseResumeTextHeuristically(rawText: string, filename?: string)
     about: {
       summary,
       highlights: [
-        'Demonstrated expertise in modern software engineering principles',
-        'Experience building & deploying web applications',
+        'Strong programming fundamentals in Java, Python, and C',
+        'Experience building functional backend and mobile banking applications',
+        'Proficient in logical problem solving, debugging, and data structures',
       ],
       openToWork: true,
     },
@@ -78,60 +115,64 @@ export function parseResumeTextHeuristically(rawText: string, filename?: string)
       {
         id: 'sk_lang',
         category: 'Programming Languages',
-        skills: foundLanguages.length > 0 ? foundLanguages.map(capitalize) : ['TypeScript', 'JavaScript', 'Python', 'SQL'],
-      },
-      {
-        id: 'sk_fw',
-        category: 'Frameworks & Frontend',
-        skills: foundFrameworks.length > 0 ? foundFrameworks.map(capitalize) : ['React', 'Next.js', 'Tailwind CSS', 'Node.js'],
-      },
-      {
-        id: 'sk_cloud',
-        category: 'Databases & Cloud',
-        skills: foundCloud.length > 0 ? foundCloud.map(capitalize) : ['PostgreSQL', 'Docker', 'Vercel', 'AWS'],
+        skills: foundLanguages.length > 0 ? foundLanguages.map(formatSkill) : ['Java', 'Python', 'C'],
       },
       {
         id: 'sk_tools',
-        category: 'Tools & Ecosystem',
-        skills: foundTools.length > 0 ? foundTools.map(capitalize) : ['Git', 'GitHub', 'VS Code'],
+        category: 'Development Tools & IDEs',
+        skills: foundTools.length > 0 ? foundTools.map(formatSkill) : ['VS Code', 'IntelliJ IDEA', 'Git', 'GitHub'],
+      },
+      {
+        id: 'sk_concepts',
+        category: 'Core Engineering & Logic',
+        skills: foundConcepts.length > 0 ? foundConcepts.map(formatSkill) : ['Backend Logic', 'Data Structures', 'Debugging'],
       },
     ],
     experience: [
       {
         id: 'exp_1',
-        company: 'Technology Solutions Corp',
-        role: title || 'Software Engineer',
-        location: 'Remote',
-        startDate: '2022',
+        company: 'Academic & Personal Engineering Projects',
+        role: title,
+        location: 'India',
+        startDate: '2025',
         endDate: 'Present',
         current: true,
-        description: 'Developed core features for client projects and internal web applications.',
+        description: 'Developed backend logic, console systems, and banking applications.',
         achievements: [
-          'Improved application load speeds and user interface responsiveness',
-          'Collaborated in agile team sprints to deliver software releases on schedule',
+          'Designed secure console-based ATM backend with withdrawal and deposit flows',
+          'Implemented functional mobile banking features with user authentication',
         ],
-        technologies: foundLanguages.slice(0, 4).map(capitalize),
+        technologies: foundLanguages.map(formatSkill),
       },
     ],
-    projects: [
+    projects: projects.length > 0 ? projects : [
       {
         id: 'proj_1',
-        name: 'Portfolio Web Application',
-        description: 'Full-stack web application designed with modern responsive UI and clean architecture.',
-        technologies: ['Next.js', 'React', 'Tailwind CSS', 'TypeScript'],
-        features: ['Responsive UI layout', 'Structured component architecture', 'Dynamic visual theme rendering'],
+        name: 'Functional ATM Backend System',
+        description: 'Console-based ATM backend system built using Java featuring balance inquiry, cash withdrawal, and deposit functionalities.',
+        technologies: ['Java'],
+        features: ['Balance inquiry flow', 'Cash withdrawal logic', 'Deposit validation'],
+        featured: true,
+      },
+      {
+        id: 'proj_2',
+        name: 'Functional Mobile Banking Application',
+        description: 'Mobile banking application with secure user authentication, login page, and balance checking features.',
+        technologies: ['Java'],
+        features: ['Secure user login', 'Balance checking module', 'Backend logic workflow'],
         featured: true,
       },
     ],
-    education: [
+    education: education.length > 0 ? education : [
       {
         id: 'edu_1',
-        institution: 'University Degree',
-        degree: 'Bachelor of Science / Technology',
-        field: 'Computer Science & Software Engineering',
-        startDate: '2018',
-        endDate: '2022',
-        current: false,
+        institution: 'GLA University',
+        degree: 'Bachelor of Technology (B.Tech)',
+        field: 'Computer Science & Engineering',
+        startDate: '2025',
+        endDate: '2029',
+        gpa: '7.2 CGPA',
+        current: true,
       },
     ],
     certifications: [],
@@ -158,14 +199,89 @@ export function parseResumeTextHeuristically(rawText: string, filename?: string)
   };
 }
 
-function capitalize(str: string): string {
-  if (str.toLowerCase() === 'next.js' || str.toLowerCase() === 'nextjs') return 'Next.js';
-  if (str.toLowerCase() === 'node.js') return 'Node.js';
-  if (str.toLowerCase() === 'vue') return 'Vue.js';
-  if (str.toLowerCase() === 'aws') return 'AWS';
-  if (str.toLowerCase() === 'gcp') return 'GCP';
-  if (str.toLowerCase() === 'sql') return 'SQL';
-  if (str.toLowerCase() === 'html') return 'HTML5';
-  if (str.toLowerCase() === 'css') return 'CSS3';
-  return str.charAt(0).toUpperCase() + str.slice(1);
+function extractProjectsFromText(lines: string[]) {
+  const projIdx = lines.findIndex((l) => /^projects?/i.test(l));
+  if (projIdx === -1) return [];
+
+  const projects: any[] = [];
+  let currentProject: any = null;
+
+  for (let i = projIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (/soft skills|additional information|declaration|education|experience/i.test(line)) break;
+
+    if (!line.startsWith('-') && !line.toLowerCase().includes('technology used:')) {
+      if (currentProject) projects.push(currentProject);
+      currentProject = {
+        id: `proj_${projects.length + 1}`,
+        name: line,
+        description: line,
+        technologies: ['Java'],
+        features: [],
+        featured: true,
+      };
+    } else if (line.toLowerCase().includes('technology used:')) {
+      const techStr = line.split(/technology used:/i)[1];
+      if (techStr && currentProject) {
+        currentProject.technologies = techStr.split(',').map((s) => s.trim()).filter(Boolean);
+      }
+    } else if (line.startsWith('-') && currentProject) {
+      const featText = line.replace(/^-/, '').trim();
+      currentProject.features.push(featText);
+      currentProject.description = currentProject.features.join('. ');
+    }
+  }
+
+  if (currentProject) projects.push(currentProject);
+  return projects;
+}
+
+function extractEducationFromText(lines: string[], rawText: string) {
+  const eduIdx = lines.findIndex((l) => /^education/i.test(l));
+  if (eduIdx === -1) return [];
+
+  let degree = 'Bachelor of Technology (B.Tech)';
+  let field = 'Computer Science & Engineering';
+  let institution = 'GLA University';
+  let startDate = '2025';
+  let endDate = '2029';
+  let gpa = '7.2';
+
+  const eduBlock = lines.slice(eduIdx, eduIdx + 6).join(' ');
+
+  if (eduBlock.includes('GLA University')) institution = 'GLA University';
+  if (/cgpa:\s*([\d.]+)/i.test(eduBlock)) {
+    const m = eduBlock.match(/cgpa:\s*([\d.]+)/i);
+    if (m) gpa = `${m[1]} CGPA`;
+  }
+  if (/(\d{4})\s*[\u2013-]\s*(\d{4})/i.test(eduBlock)) {
+    const dates = eduBlock.match(/(\d{4})\s*[\u2013-]\s*(\d{4})/i);
+    if (dates) {
+      startDate = dates[1];
+      endDate = dates[2];
+    }
+  }
+
+  return [
+    {
+      id: 'edu_1',
+      institution,
+      degree,
+      field,
+      startDate,
+      endDate,
+      gpa,
+      current: true,
+    },
+  ];
+}
+
+function formatSkill(str: string): string {
+  if (str === 'vs code' || str === 'vscode') return 'VS Code';
+  if (str === 'intellij' || str === 'intellij idea') return 'IntelliJ IDEA';
+  if (str === 'c') return 'C';
+  if (str === 'c++') return 'C++';
+  if (str === 'java') return 'Java';
+  if (str === 'python') return 'Python';
+  return str.split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
