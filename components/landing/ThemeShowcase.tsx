@@ -5,166 +5,56 @@ import Link from 'next/link';
 import { Palette, ArrowUpRight, Sparkles } from 'lucide-react';
 
 const THEME_LIST = [
-  {
-    id: 'minimal',
-    name: 'Theme 1 — Minimal',
-    tagline: 'Apple-Inspired & Clean',
-    description: 'Generous whitespace, elegant typography, and subtle slide transitions.',
-    badge: 'Popular',
-    gradient: 'from-slate-800 to-slate-900',
-  },
-  {
-    id: 'developer',
-    name: 'Theme 2 — Developer',
-    tagline: 'Dark & Monospaced Code',
-    description: 'IDE terminal headers, command prompts, and monospaced tech matrix.',
-    badge: 'Developer Favorite',
-    gradient: 'from-slate-950 via-cyan-950 to-slate-900',
-  },
-  {
-    id: 'creative',
-    name: 'Theme 3 — Creative',
-    tagline: 'Bold & Vibrant Layouts',
-    description: 'High-impact headline typography, vibrant cards, and playful badges.',
-    badge: 'Bold Design',
-    gradient: 'from-purple-900 to-rose-950',
-  },
-  {
-    id: 'three-d',
-    name: 'Theme 4 — 3D Spatial',
-    tagline: 'Cinematic Depth & Neon Glows',
-    description: '3D perspective tilt cards, spatial depth effects, and neon glows.',
-    badge: 'Cinematic',
-    gradient: 'from-cyan-950 to-violet-950',
-  },
-  {
-    id: 'professional',
-    name: 'Theme 5 — Professional',
-    tagline: 'Recruiter-Friendly Corporate',
-    description: 'Executive corporate layout, structured work timeline, and PDF print ready.',
-    badge: 'Corporate',
-    gradient: 'from-blue-950 to-slate-900',
-  },
-  {
-    id: 'glass',
-    name: 'Theme 6 — Glassmorphism',
-    tagline: 'Frosted Glass & Mesh Glow',
-    description: 'Backdrop blur panels, ambient mesh gradient blur, and sleek micro-interactions.',
-    badge: 'SaaS Modern',
-    gradient: 'from-slate-900 via-blue-950 to-slate-950',
-  },
-  {
-    id: 'obsidian-red',
-    name: 'Theme 7 — Obsidian Red',
-    tagline: 'High-Contrast Red & LeetCode Stats',
-    description: 'Scraped from top SDE portfolios: Obsidian dark mode, Netflix Red highlights, and LeetCode problem-solving badges.',
-    badge: 'New 🔥',
-    gradient: 'from-zinc-950 via-red-950 to-[#050505]',
-  },
-  {
-    id: 'nordic-editorial',
-    name: 'Theme 8 — Nordic Editorial',
-    tagline: 'Scandinavian Luxury Serif',
-    description: 'Scraped from Andreas Antonsson: Full-viewport project sections, Dahlia serif typography, and minimal index tracking.',
-    badge: 'Luxury Editorial ✨',
-    gradient: 'from-zinc-900 via-black to-zinc-950',
-  },
-  {
-    id: 'dev-gallery',
-    name: 'Theme 9 — Dev Gallery Grid',
-    tagline: 'Curated Tech Showcase',
-    description: 'Scraped from DevPortfolios.dev: Interactive technology category filters (React, Next.js, AI) and thumbnail card grid.',
-    badge: 'Showcase Grid 🚀',
-    gradient: 'from-zinc-900 to-cyan-950',
-  },
-  {
-    id: 'cyber-matrix',
-    name: 'Theme 10 — Cyber Matrix',
-    tagline: 'Hacker Terminal Rain',
-    description: 'Neon matrix green accents (#00ff66), retro ASCII art headers, live command terminal prompt, and system status badges.',
-    badge: 'Hacker Terminal ⚡',
-    gradient: 'from-emerald-950 via-black to-zinc-950',
-  },
-  {
-    id: 'bento-grid',
-    name: 'Theme 11 — Bento Grid',
-    tagline: 'Apple / Figma Asymmetric Boxes',
-    description: 'Modern asymmetrical Bento Grid layout, real-time status pills, project highlight cards, and interactive hover depth.',
-    badge: 'Modern Bento 🍱',
-    gradient: 'from-[#090a0f] via-blue-950 to-slate-950',
-  },
-  {
-    id: 'kinetic-poster',
-    name: 'Theme 12 — Kinetic Poster',
-    tagline: 'Swiss Poster & Canary Yellow',
-    description: 'High-fashion editorial Swiss typography, massive oversized headlines, high contrast monochrome, and canary yellow accents.',
-    badge: 'Swiss Poster 🎨',
-    gradient: 'from-black via-zinc-950 to-amber-950',
-  },
-  {
-    id: 'genai-neural',
-    name: 'Theme 13 — GenAI Neural',
-    tagline: 'LLM & Agentic AI Specialist',
-    description: 'Inspired by Kuber Mehta, Kirti AI & Suraj Agentic AI: Neural network mesh, model benchmark metrics, and LangChain cards.',
-    badge: 'GenAI & LLM 🤖',
-    gradient: 'from-[#06070c] via-purple-950 to-cyan-950',
-  },
-  {
-    id: 'cloud-architect',
-    name: 'Theme 14 — Cloud Architect',
-    tagline: 'DevOps & Systems Architecture',
-    description: 'Inspired by Nishil Pathak Cloud: AWS/GCP infrastructure node cards, Docker/K8s pod status, and automated CI/CD pipeline flow.',
-    badge: 'Cloud & DevOps ☁️',
-    gradient: 'from-[#080d1a] via-blue-950 to-slate-950',
-  },
-  {
-    id: 'mern-stack',
-    name: 'Theme 15 — MERN Stack Neon',
-    tagline: 'Full Stack React & Node',
-    description: 'Inspired by Harsh & Dheeraj MERN: Vibrant neon cyan & emerald accents, REST API query cards, and interactive stack grid.',
-    badge: 'MERN Full-Stack ⚛️',
-    gradient: 'from-[#0a0a0f] via-cyan-950 to-emerald-950',
-  },
-  {
-    id: 'iot-hardware',
-    name: 'Theme 16 — IoT & Systems',
-    tagline: 'Hardware & Microcontrollers',
-    description: 'Inspired by Ayush Srivastava IoT: Circuit board background, micro-controller pinouts (ESP32, RPi, STM32) and telemetry metrics.',
-    badge: 'IoT & Embedded 🔌',
-    gradient: 'from-[#0d0d09] via-amber-950 to-zinc-950',
-  },
-  {
-    id: 'java-enterprise',
-    name: 'Theme 17 — Java Enterprise',
-    tagline: 'Spring Boot & Microservices',
-    description: 'Inspired by Rishav Choudhary & Adil Iqbal: Corporate backend layout, JVM metrics, SQL database schema cards, and Java theme.',
-    badge: 'Java Backend ☕',
-    gradient: 'from-[#080d14] via-amber-950 to-red-950',
-  },
-  {
-    id: 'cs-student',
-    name: 'Theme 18 — CS Academic Student',
-    tagline: 'University Coursework & GPA',
-    description: 'Inspired by Sahil Bhayre & Shreya Saxena CS Students: University coursework highlights, GPA badges, and DSA problem stats.',
-    badge: 'CS Academic 🎓',
-    gradient: 'from-[#070b12] via-blue-950 to-indigo-950',
-  },
-  {
-    id: 'spatial-arvr',
-    name: 'Theme 19 — AR/VR Spatial 3D',
-    tagline: 'Vision OS Spatial Glass',
-    description: 'Inspired by Srikhanth AR/VR: Spatial OS glassmorphism panels, WebGL & Three.js showcase, and iridescent violet/cyan glows.',
-    badge: 'AR/VR 3D 🔮',
-    gradient: 'from-[#07050d] via-purple-950 to-pink-950',
-  },
-  {
-    id: 'cyber-sentinel',
-    name: 'Theme 20 — Cyber Security',
-    tagline: 'Penetration Testing & Sentinel',
-    description: 'Inspired by Ritik Tiwari Security: Vulnerability log cards, CTF achievement badges, red/green terminal status, and security payload cards.',
-    badge: 'Cyber Security 🛡️',
-    gradient: 'from-[#060a08] via-emerald-950 to-black',
-  },
+  { id: 'kuber-ai-creative', name: '1. Kuber Mehta', tagline: 'AI / Creative Studio', badge: 'AI Creative', gradient: 'from-purple-900 via-pink-950 to-slate-950' },
+  { id: 'tvnskm-aiml-fullstack', name: '2. Mohan VNSK', tagline: 'AI/ML + Full Stack', badge: 'AI Matrix', gradient: 'from-cyan-950 via-purple-950 to-black' },
+  { id: 'priyanshu-creative', name: '3. Priyanshu Patel', tagline: 'AI/ML + Creative', badge: 'Generative AI', gradient: 'from-[#06070c] to-purple-950' },
+  { id: 'kirti-aiml', name: '4. Kirti AI/ML', tagline: 'AI/ML Engineer', badge: 'Lovable Glass', gradient: 'from-blue-950 to-purple-950' },
+  { id: 'harsh-aiml-mern', name: '5. Harsh Chaudhary', tagline: 'AIML + MERN', badge: 'Cyberpunk', gradient: 'from-zinc-950 to-red-950' },
+  { id: 'hari-aiml', name: '6. Hari Varshney', tagline: 'AI/ML Neural', badge: 'Neural Net', gradient: 'from-[#06070c] to-[#11111a]' },
+  { id: 'nishil-cloud', name: '7. Nishil Pathak', tagline: 'AI/ML + Cloud', badge: 'Cloud Architect', gradient: 'from-[#080d1a] to-blue-950' },
+  { id: 'prince-ai', name: '8. Prince Khunt', tagline: 'AI Developer', badge: 'Dark Minimal', gradient: 'from-[#050505] to-zinc-900' },
+  { id: 'sahil-aiml-student', name: '9. Sahil Bhayre', tagline: 'AI/ML Student', badge: 'Academic', gradient: 'from-[#070b12] to-indigo-950' },
+  { id: 'suraj-agentic-ai', name: '10. Suraj Kumar', tagline: 'Agentic AI', badge: 'LLM Agents', gradient: 'from-purple-950 to-cyan-950' },
+  { id: 'srikhanth-arvr', name: '11. Srikhanth', tagline: 'AI/ML + AR/VR', badge: 'Spatial 3D', gradient: 'from-[#07050d] to-pink-950' },
+  { id: 'abhinav-cv-ml', name: '12. Abhinav Atul', tagline: 'ML + Computer Vision', badge: 'Vision ML', gradient: 'from-[#06070c] to-[#0d0f18]' },
+  { id: 'sahil-sahu-ai', name: '13. Sahil Sahu', tagline: 'AI/ML Student', badge: 'Clean Dark', gradient: 'from-slate-950 to-slate-900' },
+  { id: 'shreya-datascience', name: '14. Shreya Saxena', tagline: 'AI/ML + Data Science', badge: 'Analytics', gradient: 'from-purple-950 to-slate-950' },
+  { id: 'aman-genai', name: '15. Aman Thakur', tagline: 'AI/ML + GenAI', badge: 'RAG Prompt', gradient: 'from-[#06070c] to-[#141724]' },
+  { id: 'nikhil-fullstack', name: '16. Nikhil Jangid', tagline: 'AI/ML + Full Stack', badge: 'Full Stack', gradient: 'from-[#0a0a0f] to-cyan-950' },
+  { id: 'abhay-cs-ai', name: '17. Abhay Gupta', tagline: 'CS + AI', badge: 'CS Algorithms', gradient: 'from-[#070b12] to-blue-950' },
+  { id: 'saad-fullstack', name: '18. Saad Inamdar', tagline: 'Full Stack Web', badge: 'Vibrant Web', gradient: 'from-[#0a0a0f] to-emerald-950' },
+  { id: 'prashant-cse-aiml', name: '19. Prashant Srivastava', tagline: 'CSE + AI/ML', badge: 'CSE Research', gradient: 'from-[#070b12] to-indigo-950' },
+  { id: 'anmol-creative-sys', name: '20. Anmol Tech', tagline: 'Creative / Systems', badge: 'DevOps Sys', gradient: 'from-[#080d1a] to-[#0f172a]' },
+  { id: 'abhishek-beginner', name: '21. Abhishek Rana', tagline: 'CS Learner Student', badge: 'Beginner CS', gradient: 'from-[#070b12] to-slate-900' },
+  { id: 'harsh-cs-student', name: '22. Harsh CS', tagline: 'CS Student', badge: 'Minimal CS', gradient: 'from-[#070b12] to-slate-950' },
+  { id: 'dheeraj-mern', name: '23. Dheeraj Rawandhe', tagline: 'MERN / Full Stack', badge: 'React Node', gradient: 'from-[#0a0a0f] to-[#11111a]' },
+  { id: 'rishav-java-backend', name: '24. Rishav Choudhary', tagline: 'Java Backend', badge: 'Spring Boot', gradient: 'from-[#080d14] to-amber-950' },
+  { id: 'adil-java-microservices', name: '25. Adil Iqbal', tagline: 'Java Microservices', badge: 'Enterprise Java', gradient: 'from-[#080d14] to-red-950' },
+  { id: 'megha-mern', name: '26. Megha Patel', tagline: 'CS + MERN', badge: 'CS MERN', gradient: 'from-[#0a0a0f] to-[#141724]' },
+  { id: 'harsh-backend-ai', name: '27. Harsh Pandey', tagline: 'Backend + AI', badge: 'Python FastAPI', gradient: 'from-[#06070c] to-[#0d0f18]' },
+  { id: 'karan-webdev', name: '28. Karan Kumar', tagline: 'Web Developer', badge: 'Web Stack', gradient: 'from-[#0a0a0f] to-slate-900' },
+  { id: 'shashank-fullstack', name: '29. Shashank Dwivedi', tagline: 'Full Stack SDE', badge: 'Full Stack', gradient: 'from-[#0a0a0f] to-cyan-950' },
+  { id: 'suraj-mern', name: '30. Suraj Sharma', tagline: 'MERN Studio', badge: 'MERN Full', gradient: 'from-[#0a0a0f] to-emerald-950' },
+  { id: 'abdulhussain-uiux', name: '31. Abdulhussain Jarif', tagline: 'UI/UX + Web', badge: 'Figma Design', gradient: 'from-black to-zinc-950' },
+  { id: 'sakesh-fullstack', name: '32. Sakesh Fullstack', tagline: 'Full Stack Architect', badge: 'Full Stack', gradient: 'from-[#0a0a0f] to-blue-950' },
+  { id: 'arun-fullstack', name: '33. Arun Kumar', tagline: 'Personal Portfolio', badge: 'Developer', gradient: 'from-[#0a0a0f] to-slate-900' },
+  { id: 'ritik-cybersec', name: '34. Ritik Tiwari', tagline: 'Web + Cybersecurity', badge: 'Cyber Sec', gradient: 'from-[#060a08] to-emerald-950' },
+  { id: 'shivam-frontend', name: '35. Shivam Tiwari', tagline: 'Frontend Engineer', badge: 'React CSS', gradient: 'from-[#0a0a0f] to-cyan-950' },
+  { id: 'vinay-java-fullstack', name: '36. Vinay Kumar', tagline: 'Java Full Stack', badge: 'Java React', gradient: 'from-[#080d14] to-amber-950' },
+  { id: 'subhadeep-fullstack', name: '37. Subhadeep', tagline: 'Full Stack Engineer', badge: 'Full Stack', gradient: 'from-[#0a0a0f] to-slate-950' },
+  { id: 'wasif-cs-student', name: '38. Wasif Izar', tagline: 'CS Student Simple', badge: 'Student', gradient: 'from-[#070b12] to-slate-900' },
+  { id: 'prince-shah-learning', name: '39. Prince U. Shah', tagline: 'Student Learner', badge: 'Learner', gradient: 'from-[#070b12] to-zinc-900' },
+  { id: 'dhanaraj-frontend-ai', name: '40. Dhanaraj S', tagline: 'Frontend + AI', badge: 'Next AI', gradient: 'from-[#06070c] to-cyan-950' },
+  { id: 'ayush-iot-creative', name: '41. Ayush Srivastava', tagline: 'IoT + Creative', badge: 'Hardware IoT', gradient: 'from-[#0d0d09] to-amber-950' },
+  { id: 'priyank-fullstack', name: '42. Priyank Kaushik', tagline: 'Full Stack', badge: 'Web Engineer', gradient: 'from-[#0a0a0f] to-slate-950' },
+  { id: 'aadi-neobrutalist', name: '43. Aditya Sharma (Aadi)', tagline: 'Neo-Brutalist', badge: 'Swiss Poster', gradient: 'from-black to-zinc-900' },
+  { id: 'cs-student-collection', name: '44. CS Student Showcase', tagline: 'Multiple Styles', badge: 'CS Collection', gradient: 'from-[#070b12] to-indigo-950' },
+  { id: 'emma-bostian-curated', name: '45. Emma Bostian 1,800+', tagline: '⭐ 1,800+ Portfolios', badge: 'Starred Collection', gradient: 'from-[#101010] to-[#1a1a1a]' },
+  { id: 'github-topic-student', name: '46. GitHub Student Topic', tagline: 'Student Showcase', badge: 'Open Source', gradient: 'from-[#070b12] to-[#0e1626]' },
+  { id: 'sitesplaced-examples', name: '47. SitesPlaced Developer', tagline: 'Software Engineer', badge: 'Curated Examples', gradient: 'from-[#0a0a0f] to-[#11111a]' },
+  { id: 'nikola-janjic-2025', name: '48. Nikola Janjic 2025', tagline: '1,000+ Collection 2025', badge: '2025 Edition', gradient: 'from-[#0a0a0f] to-cyan-950' },
+  { id: 'gist-inspiration', name: '49. GitHub Gist 1,300+', tagline: '1,300+ Inspiration', badge: 'Gist Collection', gradient: 'from-[#101010] to-[#202020]' },
+  { id: 'onehour-digital', name: '50. OneHour Digital', tagline: 'Frontend Creative', badge: 'OneHour Showcase', gradient: 'from-[#050505] to-zinc-950' },
 ];
 
 export default function ThemeShowcase() {
@@ -174,48 +64,46 @@ export default function ThemeShowcase() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
             <Palette className="w-4 h-4 text-purple-400" />
-            20 HANDCRAFTED PORTFOLIO THEMES
+            50 UNIQUE HANDCRAFTED PORTFOLIO THEMES
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-            20 Specialized Developer Portfolio Themes
+            50 Specialized Developer Portfolio Themes
           </h2>
           <p className="text-slate-400 text-base">
-            From GenAI & Agentic AI to Cloud DevOps, MERN Full Stack, IoT, Java Enterprise, CS Students, and Cyber Security—Portify AI includes 20 world-class themes tailored to your specific field.
+            Every single theme is unique! Crafted specifically for AI/ML, GenAI, MERN, Java Enterprise, Cloud DevOps, IoT, CS Students, and Creative Developers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {THEME_LIST.map((t) => (
             <div
               key={t.id}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6 flex flex-col justify-between hover:border-cyan-500/40 transition group shadow-xl"
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 flex flex-col justify-between hover:border-cyan-500/40 transition group shadow-xl"
             >
-              <div className="space-y-4">
-                <div className={`h-40 rounded-2xl bg-gradient-to-tr ${t.gradient} p-4 border border-white/10 flex flex-col justify-between relative overflow-hidden`}>
+              <div className="space-y-3">
+                <div className={`h-28 rounded-2xl bg-gradient-to-tr ${t.gradient} p-3 border border-white/10 flex flex-col justify-between relative overflow-hidden`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-black/40 px-2.5 py-1 rounded-full text-white backdrop-blur">
+                    <span className="text-[9px] font-bold uppercase tracking-wider bg-black/50 px-2 py-0.5 rounded-full text-white backdrop-blur">
                       {t.badge}
                     </span>
-                    <Sparkles className="w-4 h-4 text-cyan-400 opacity-60" />
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400 opacity-60" />
                   </div>
-                  <div className="text-white font-bold text-lg tracking-tight group-hover:text-cyan-400 transition">
+                  <div className="text-white font-bold text-sm tracking-tight truncate group-hover:text-cyan-400 transition">
                     {t.name}
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-white">{t.name}</h3>
-                  <p className="text-xs font-medium text-cyan-400">{t.tagline}</p>
+                  <h3 className="text-sm font-bold text-white truncate">{t.name}</h3>
+                  <p className="text-[11px] font-medium text-cyan-400 font-mono truncate">{t.tagline}</p>
                 </div>
-
-                <p className="text-xs text-slate-400 leading-relaxed">{t.description}</p>
               </div>
 
               <Link
                 href="/upload"
-                className="w-full py-3 bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition"
+                className="w-full py-2.5 bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition"
               >
-                Use This Theme <ArrowUpRight className="w-4 h-4" />
+                Use Theme <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           ))}

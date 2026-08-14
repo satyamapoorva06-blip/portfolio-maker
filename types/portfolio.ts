@@ -18,7 +18,58 @@ export type ThemeType =
   | 'java-enterprise'
   | 'cs-student'
   | 'spatial-arvr'
-  | 'cyber-sentinel';
+  | 'cyber-sentinel'
+  | 'kuber-ai-creative'
+  | 'tvnskm-aiml-fullstack'
+  | 'priyanshu-creative'
+  | 'kirti-aiml'
+  | 'harsh-aiml-mern'
+  | 'hari-aiml'
+  | 'nishil-cloud'
+  | 'prince-ai'
+  | 'sahil-aiml-student'
+  | 'suraj-agentic-ai'
+  | 'srikhanth-arvr'
+  | 'abhinav-cv-ml'
+  | 'sahil-sahu-ai'
+  | 'shreya-datascience'
+  | 'aman-genai'
+  | 'nikhil-fullstack'
+  | 'abhay-cs-ai'
+  | 'saad-fullstack'
+  | 'prashant-cse-aiml'
+  | 'anmol-creative-sys'
+  | 'abhishek-beginner'
+  | 'harsh-cs-student'
+  | 'dheeraj-mern'
+  | 'rishav-java-backend'
+  | 'adil-java-microservices'
+  | 'megha-mern'
+  | 'harsh-backend-ai'
+  | 'karan-webdev'
+  | 'shashank-fullstack'
+  | 'suraj-mern'
+  | 'abdulhussain-uiux'
+  | 'sakesh-fullstack'
+  | 'arun-fullstack'
+  | 'ritik-cybersec'
+  | 'shivam-frontend'
+  | 'vinay-java-fullstack'
+  | 'subhadeep-fullstack'
+  | 'wasif-cs-student'
+  | 'prince-shah-learning'
+  | 'dhanaraj-frontend-ai'
+  | 'ayush-iot-creative'
+  | 'priyank-fullstack'
+  | 'aadi-neobrutalist'
+  | 'cs-student-collection'
+  | 'emma-bostian-curated'
+  | 'github-topic-student'
+  | 'sitesplaced-examples'
+  | 'nikola-janjic-2025'
+  | 'gist-inspiration'
+  | 'onehour-digital'
+  | string;
 
 export interface PersonalInfo {
   name: string;
@@ -49,7 +100,7 @@ export interface AboutInfo {
 
 export interface SkillCategory {
   id: string;
-  category: string; // e.g. "Languages", "Frameworks & Libraries", "Databases & Cloud", "Tools & DevOps"
+  category: string;
   skills: string[];
 }
 
@@ -112,8 +163,8 @@ export interface AchievementItem {
 
 export interface VisualCustomization {
   theme: ThemeType;
-  primaryColor: string; // e.g., "#0c8ee9" or HSL string
-  accentColor: string;  // e.g., "#8b5cf6"
+  primaryColor: string;
+  accentColor: string;
   backgroundColor?: string;
   textColor?: string;
   fontFamily: 'inter' | 'jetbrains' | 'playfair' | 'system';

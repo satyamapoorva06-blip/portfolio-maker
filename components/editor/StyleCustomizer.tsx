@@ -10,26 +10,56 @@ interface StyleCustomizerProps {
 }
 
 const THEMES: { id: ThemeType; name: string; desc: string }[] = [
-  { id: 'minimal', name: 'Minimal', desc: 'Apple-inspired clean & whitespace focused' },
-  { id: 'developer', name: 'Developer', desc: 'Dark terminal & monospaced code theme' },
-  { id: 'creative', name: 'Creative', desc: 'Bold typography & vibrant card grids' },
-  { id: 'three-d', name: '3D Spatial', desc: 'Cinematic depth & glowing neon panels' },
-  { id: 'professional', name: 'Professional', desc: 'Recruiter-friendly executive layout' },
-  { id: 'glass', name: 'Glassmorphism', desc: 'Frosted glass & ambient gradient mesh' },
-  { id: 'obsidian-red', name: 'Obsidian Red', desc: 'Dark obsidian with Netflix red accents & LeetCode stats' },
-  { id: 'nordic-editorial', name: 'Nordic Editorial', desc: 'Minimal Scandinavian luxury with Dahlia serif headers' },
-  { id: 'dev-gallery', name: 'Dev Gallery Grid', desc: 'Curated developer showcase grid & tech category filters' },
-  { id: 'cyber-matrix', name: 'Cyber Matrix', desc: 'Hacker terminal rain with retro ASCII banner' },
-  { id: 'bento-grid', name: 'Bento Grid', desc: 'Modern Apple/Figma style asymmetrical grid boxes' },
-  { id: 'kinetic-poster', name: 'Kinetic Poster', desc: 'High-contrast Swiss poster style with electric yellow accents' },
-  { id: 'genai-neural', name: 'GenAI Neural', desc: 'LLM, LangChain & Agentic AI model benchmark theme' },
-  { id: 'cloud-architect', name: 'Cloud Architect', desc: 'AWS/GCP infrastructure nodes, K8s & Terraform layout' },
-  { id: 'mern-stack', name: 'MERN Stack Neon', desc: 'Vibrant Mongo/Express/React/Node full-stack theme' },
-  { id: 'iot-hardware', name: 'IoT & Systems', desc: 'Micro-controller pinouts (ESP32, RPi) & telemetry metrics' },
-  { id: 'java-enterprise', name: 'Java Enterprise', desc: 'Spring Boot, Microservices & SQL database architecture' },
-  { id: 'cs-student', name: 'CS Academic Student', desc: 'University coursework, GPA/Honors & DSA metrics' },
-  { id: 'spatial-arvr', name: 'AR/VR Spatial 3D', desc: 'Spatial OS vision panels, WebGL & Three.js showcase' },
-  { id: 'cyber-sentinel', name: 'Cyber Security', desc: 'Penetration testing vulnerability logs & CTF badges' },
+  { id: 'kuber-ai-creative', name: '1. Kuber Mehta — AI Creative', desc: 'AI Spatial & Generative Creative Studio' },
+  { id: 'tvnskm-aiml-fullstack', name: '2. Mohan VNSK — AI/ML + Full Stack', desc: 'Neural Network Matrix & Full Stack' },
+  { id: 'priyanshu-creative', name: '3. Priyanshu Patel — AI/ML Creative', desc: 'Generative AI & Interactive Visuals' },
+  { id: 'kirti-aiml', name: '4. Kirti — AI/ML Engineer', desc: 'Lovable Glass & Deep Learning Models' },
+  { id: 'harsh-aiml-mern', name: '5. Harsh Chaudhary — AIML + MERN', desc: 'MERN Stack & AI Cyberpunk' },
+  { id: 'hari-aiml', name: '6. Hari Varshney — AI/ML', desc: 'AI Intelligence & Data Models' },
+  { id: 'nishil-cloud', name: '7. Nishil Pathak — AI/ML + Cloud', desc: 'AWS/GCP Cloud Architecture & Terraform' },
+  { id: 'prince-ai', name: '8. Prince Khunt — AI Developer', desc: 'Dark Minimalist AI Developer' },
+  { id: 'sahil-aiml-student', name: '9. Sahil Bhayre — AI/ML Student', desc: 'University AI Student & Research' },
+  { id: 'suraj-agentic-ai', name: '10. Suraj Kumar — Agentic AI', desc: 'Autonomous LLM Agents & System Workflows' },
+  { id: 'srikhanth-arvr', name: '11. Srikhanth — AI/ML + AR/VR', desc: 'Vision OS Spatial Glass & WebGL 3D' },
+  { id: 'abhinav-cv-ml', name: '12. Abhinav Atul — Computer Vision', desc: 'PyTorch, OpenCV & Neural Vision' },
+  { id: 'sahil-sahu-ai', name: '13. Sahil Sahu — AI/ML Student', desc: 'Clean Dark AI Student Showcase' },
+  { id: 'shreya-datascience', name: '14. Shreya Saxena — Data Science', desc: 'Pandas, Scikit & AI Data Analytics' },
+  { id: 'aman-genai', name: '15. Aman Thakur — GenAI', desc: 'LLM Prompt Engineering & RAG Systems' },
+  { id: 'nikhil-fullstack', name: '16. Nikhil Jangid — AI + Full Stack', desc: 'React, Node.js & AI Integrations' },
+  { id: 'abhay-cs-ai', name: '17. Abhay Gupta — CS + AI', desc: 'Computer Science & AI Algorithms' },
+  { id: 'saad-fullstack', name: '18. Saad Inamdar — Full Stack', desc: 'Vibrant Full Stack Web Developer' },
+  { id: 'prashant-cse-aiml', name: '19. Prashant Srivastava — CSE + AI', desc: 'CSE Academic & Machine Learning' },
+  { id: 'anmol-creative-sys', name: '20. Anmol — Systems Engineer', desc: 'Creative Systems & DevOps' },
+  { id: 'abhishek-beginner', name: '21. Abhishek Rana — CS Learner', desc: 'Clean Beginner CS Student' },
+  { id: 'harsh-cs-student', name: '22. Harsh — CS Student', desc: 'Minimal CS Student Showcase' },
+  { id: 'dheeraj-mern', name: '23. Dheeraj Rawandhe — MERN', desc: 'MongoDB, Express, React, Node' },
+  { id: 'rishav-java-backend', name: '24. Rishav Choudhary — Java', desc: 'Spring Boot & Microservices' },
+  { id: 'adil-java-microservices', name: '25. Adil Iqbal — Java Microservices', desc: 'Enterprise Java & Database Systems' },
+  { id: 'megha-mern', name: '26. Megha Patel — CS + MERN', desc: 'MERN Stack & Computer Science' },
+  { id: 'harsh-backend-ai', name: '27. Harsh Pandey — Backend + AI', desc: 'Python, FastAPI & AI Pipelines' },
+  { id: 'karan-webdev', name: '28. Karan Kumar — Web Developer', desc: 'Responsive Web Developer' },
+  { id: 'shashank-fullstack', name: '29. Shashank Dwivedi — Full Stack', desc: 'Full Stack Software Engineer' },
+  { id: 'suraj-mern', name: '30. Suraj Sharma — MERN Studio', desc: 'High-Impact MERN Developer' },
+  { id: 'abdulhussain-uiux', name: '31. Abdulhussain Jarif — UI/UX', desc: 'Figma UI/UX & Web Design' },
+  { id: 'sakesh-fullstack', name: '32. Sakesh — Full Stack', desc: 'Modern Full Stack Architect' },
+  { id: 'arun-fullstack', name: '33. Arun Kumar — Full Stack', desc: 'Personal Developer Portfolio' },
+  { id: 'ritik-cybersec', name: '34. Ritik Tiwari — Cybersecurity', desc: 'Penetration Testing & CTF Badges' },
+  { id: 'shivam-frontend', name: '35. Shivam Tiwari — Frontend', desc: 'React & Tailwind CSS Specialist' },
+  { id: 'vinay-java-fullstack', name: '36. Vinay Kumar — Java Full Stack', desc: 'Java, Spring Boot & React' },
+  { id: 'subhadeep-fullstack', name: '37. Subhadeep — Full Stack', desc: 'Clean Full Stack Showcase' },
+  { id: 'wasif-cs-student', name: '38. Wasif Izar — Simple CS', desc: 'Minimalist Student Portfolio' },
+  { id: 'prince-shah-learning', name: '39. Prince U. Shah — Student', desc: 'Student Learner Portfolio' },
+  { id: 'dhanaraj-frontend-ai', name: '40. Dhanaraj S — Frontend + AI', desc: 'Next.js, Tailwind & AI Tools' },
+  { id: 'ayush-iot-creative', name: '41. Ayush Srivastava — IoT', desc: 'Circuit Board & Hardware Telemetry' },
+  { id: 'priyank-fullstack', name: '42. Priyank Kaushik — Full Stack', desc: 'Full Stack Web Software' },
+  { id: 'aadi-neobrutalist', name: '43. Aditya Sharma (Aadi) — Neo-Brutalist', desc: 'Bold Swiss Neo-Brutalist Poster' },
+  { id: 'cs-student-collection', name: '44. CS Student Collection', desc: 'Academic University Coursework & GPA' },
+  { id: 'emma-bostian-curated', name: '45. Emma Bostian Curated 1,800+', desc: 'Top Starred Developer Collection' },
+  { id: 'github-topic-student', name: '46. GitHub Student Topic Showcase', desc: 'Open Source Student Showcase' },
+  { id: 'sitesplaced-examples', name: '47. SitesPlaced Developer Examples', desc: 'Curated Software Engineer Showcase' },
+  { id: 'nikola-janjic-2025', name: '48. Nikola Janjic 2025 Collection', desc: '1,000+ Developer Portfolio 2025' },
+  { id: 'gist-inspiration', name: '49. GitHub Gist 1,300+ Inspiration', desc: 'Curated Gist Developer Showcase' },
+  { id: 'onehour-digital', name: '50. OneHour Digital Frontend Showcase', desc: 'High-Converting Frontend Showcase' },
 ];
 
 const COLOR_PRESETS = [
@@ -46,9 +76,9 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
       {/* Theme Selector */}
       <div className="space-y-4">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Available)
+          <Palette className="w-4 h-4 text-cyan-400" /> Select Portfolio Theme ({THEMES.length} Unique Themes)
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1">
           {THEMES.map((t) => (
             <button
               key={t.id}
@@ -60,10 +90,10 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
               }`}
             >
               <div className="flex justify-between items-center w-full">
-                <span className="font-bold text-sm text-slate-100">{t.name}</span>
-                {customization.theme === t.id && <Check className="w-4 h-4 text-blue-400" />}
+                <span className="font-bold text-xs text-slate-100">{t.name}</span>
+                {customization.theme === t.id && <Check className="w-4 h-4 text-blue-400 shrink-0" />}
               </div>
-              <span className="text-xs text-slate-400 leading-normal">{t.desc}</span>
+              <span className="text-[11px] text-slate-400 leading-normal">{t.desc}</span>
             </button>
           ))}
         </div>
@@ -112,28 +142,6 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
               }`}
             >
               {f.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Border Radius */}
-      <div className="space-y-4 pt-4 border-t border-slate-800">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-          <Layout className="w-4 h-4 text-amber-400" /> Corner Radius
-        </h3>
-        <div className="flex gap-2">
-          {['none', 'sm', 'md', 'lg', 'full'].map((r) => (
-            <button
-              key={r}
-              onClick={() => onChange({ ...customization, borderRadius: r as any })}
-              className={`flex-1 py-2 rounded-lg border text-xs capitalize transition ${
-                customization.borderRadius === r
-                  ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-semibold'
-                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
-              }`}
-            >
-              {r}
             </button>
           ))}
         </div>
