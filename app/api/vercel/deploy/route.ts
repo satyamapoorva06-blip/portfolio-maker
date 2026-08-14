@@ -4,15 +4,19 @@ import { deployToVercel } from '@/lib/vercel';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { portfolio, repoFullName } = body;
+    const { portfolio, repoFullName, token } = body;
 
     if (!portfolio) {
       return NextResponse.json({ error: 'Missing portfolio data' }, { status: 400 });
     }
 
+    const origin = req.headers.get('origin') || (req.headers.get('referer') ? new URL(req.headers.get('referer')!).origin : undefined);
+
     const result = await deployToVercel({
       portfolio,
-      repoFullName: repoFullName || `satyam-dev/${portfolio.slug}`,
+      repoFullName: repoFullName || `github/${portfolio.slug}`,
+      token,
+      appOrigin: origin,
     });
 
     return NextResponse.json(result);

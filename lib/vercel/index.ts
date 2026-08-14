@@ -4,9 +4,10 @@ export interface VercelDeployParams {
   portfolio: PortfolioData;
   repoFullName: string;
   token?: string;
+  appOrigin?: string;
 }
 
-export async function deployToVercel({ portfolio, repoFullName, token }: VercelDeployParams) {
+export async function deployToVercel({ portfolio, repoFullName, token, appOrigin }: VercelDeployParams) {
   const vercelToken = token || process.env.PORTIFY_VERCEL_BEARER_TOKEN;
 
   const cleanSlug = portfolio.slug
@@ -14,8 +15,8 @@ export async function deployToVercel({ portfolio, repoFullName, token }: VercelD
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
-  const instantPublicUrl = `${appUrl}/u/${cleanSlug}`;
+  const baseOrigin = appOrigin || process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+  const instantPublicUrl = baseOrigin ? `${baseOrigin}/u/${cleanSlug}` : `/u/${cleanSlug}`;
 
   if (vercelToken && vercelToken !== 'your-vercel-bearer-token') {
     try {
