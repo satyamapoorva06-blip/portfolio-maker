@@ -25,6 +25,10 @@ import CsStudentTheme from '@/templates/cs-student/CsStudentTheme';
 import SpatialArVrTheme from '@/templates/spatial-arvr/SpatialArVrTheme';
 import CyberSentinelTheme from '@/templates/cyber-sentinel/CyberSentinelTheme';
 import AnimatedTheme from '@/templates/animated/AnimatedTheme';
+import AcademicResearchTheme from '@/templates/academic-research/AcademicResearchTheme';
+import OpenSourceContributorTheme from '@/templates/open-source-contributor/OpenSourceContributorTheme';
+import EngineeringShowcaseTheme from '@/templates/engineering-showcase/EngineeringShowcaseTheme';
+import Futuristic2025Theme from '@/templates/futuristic-2025/Futuristic2025Theme';
 
 export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
@@ -52,7 +56,17 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'animated-prism-refraction':
       return <AnimatedTheme data={data} variant="prism" />;
 
-    // 50 UNIQUE SHOWCASE PORTFOLIO THEME MAPPINGS
+    // DEDICATED INDIVIDUAL PORTFOLIO THEMES (44, 46, 47, 48)
+    case 'cs-student-collection': // 44
+      return <AcademicResearchTheme data={data} />;
+    case 'github-topic-student': // 46
+      return <OpenSourceContributorTheme data={data} />;
+    case 'sitesplaced-examples': // 47
+      return <EngineeringShowcaseTheme data={data} />;
+    case 'nikola-janjic-2025': // 48
+      return <Futuristic2025Theme data={data} />;
+
+    // 50 SHOWCASE PORTFOLIO MAPPINGS
     case 'kuber-ai-creative':
     case 'spatial-arvr':
     case 'srikhanth-arvr':
@@ -93,8 +107,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'shivam-frontend':
     case 'subhadeep-fullstack':
     case 'priyank-fullstack':
-    case 'sitesplaced-examples':
-    case 'nikola-janjic-2025':
       return <MernStackTheme data={data} />;
 
     case 'iot-hardware':
@@ -113,8 +125,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'harsh-cs-student':
     case 'wasif-cs-student':
     case 'prince-shah-learning':
-    case 'cs-student-collection':
-    case 'github-topic-student':
       return <CsStudentTheme data={data} />;
 
     case 'cyber-sentinel':
