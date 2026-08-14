@@ -4,7 +4,7 @@ import { createGithubRepository, generateReadmeContent } from '@/lib/github';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { repoName, isPrivate, portfolio } = body;
+    const { repoName, isPrivate, portfolio, token, githubUsername } = body;
 
     if (!repoName || !portfolio) {
       return NextResponse.json({ error: 'Missing repository name or portfolio data' }, { status: 400 });
@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
       name: repoName,
       isPrivate: !!isPrivate,
       portfolio,
+      token,
+      githubUsername,
     });
 
     const readme = generateReadmeContent(portfolio, `https://${portfolio.slug}.vercel.app`, result.repoUrl);
