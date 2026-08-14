@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { setUserLoggedIn } from '@/lib/storage/local-store';
+import { UserProfile } from '@/types/database';
 import { Sparkles, ShieldCheck, AlertCircle, ArrowRight } from 'lucide-react';
 
 function LoginContent() {
@@ -15,17 +16,43 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [providerError, setProviderError] = useState('');
 
+  // Check Supabase session on return from OAuth
+  useEffect(() => {
+    async function checkAuthSession() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && user.email) {
+          const userProfile: UserProfile = {
+            id: user.id,
+            name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
+            email: user.email,
+            avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+            role: 'user',
+            status: 'active',
+            created_at: new Date().toISOString(),
+            last_login: new Date().toISOString(),
+          };
+          setUserLoggedIn(true, userProfile);
+          router.push(nextTarget);
+        }
+      } catch (err) {
+        console.error('Error fetching Supabase auth session:', err);
+      }
+    }
+    checkAuthSession();
+  }, [router, nextTarget]);
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     setProviderError('');
-    setUserLoggedIn(true);
 
     try {
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}${nextTarget}`,
+          redirectTo: `${window.location.origin}/login?next=${encodeURIComponent(nextTarget)}`,
         },
       });
 
@@ -36,18 +63,36 @@ function LoginContent() {
             'Google Auth is not enabled in your Supabase Dashboard yet (Authentication -> Providers -> Google).'
           );
         } else {
+          // Dynamic fallback session for testing
+          createFallbackUser();
           router.push(nextTarget);
         }
       }
     } catch {
+      createFallbackUser();
       router.push(nextTarget);
     } finally {
       setLoading(false);
     }
   };
 
+  const createFallbackUser = () => {
+    const timeId = Date.now().toString().slice(-4);
+    const userProfile: UserProfile = {
+      id: `usr_${timeId}`,
+      name: `User Account #${timeId}`,
+      email: `user_${timeId}@example.com`,
+      avatar_url: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
+      role: 'user',
+      status: 'active',
+      created_at: new Date().toISOString(),
+      last_login: new Date().toISOString(),
+    };
+    setUserLoggedIn(true, userProfile);
+  };
+
   const handleDirectDemoLogin = () => {
-    setUserLoggedIn(true);
+    createFallbackUser();
     router.push(nextTarget);
   };
 
@@ -64,7 +109,7 @@ function LoginContent() {
 
       <div className="space-y-2">
         <h1 className="text-2xl font-extrabold text-white">Login to Create Your Portfolio</h1>
-        <p className="text-xs text-slate-400">Authenticate with Google to build, edit, and publish your portfolio website.</p>
+        <p className="text-xs text-slate-400">Authenticate with Google to build, edit, and publish your personal portfolio website.</p>
       </div>
 
       <div className="space-y-4">
