@@ -68,7 +68,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Hero Right Floating Preview Mockup */}
+        {/* Hero Right Floating Generic Demo Portfolio Card */}
         <div className="lg:col-span-5 flex justify-center">
           <div className="relative w-full max-w-md">
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-3xl blur-2xl opacity-30 transform rotate-3"></div>
@@ -81,24 +81,24 @@ export default function HeroSection() {
                   <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
                 </div>
                 <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-0.5 rounded-full border border-cyan-800">
-                  satyam.portify.app
+                  alex.portify.app
                 </span>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 text-white font-extrabold text-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 border-2 border-cyan-400/40">
-                    SK
+                    AR
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-white text-lg tracking-tight">Satyam Kumar</h3>
-                    <p className="text-xs font-mono text-cyan-400 font-semibold">Senior AI & Systems Engineer</p>
-                    <p className="text-[11px] text-slate-400">India</p>
+                    <h3 className="font-extrabold text-white text-lg tracking-tight">Alex Rivers</h3>
+                    <p className="text-xs font-mono text-cyan-400 font-semibold">Staff AI & Systems Architect</p>
+                    <p className="text-[11px] text-slate-400">San Francisco, CA</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed font-light">
-                  &quot;Architected autonomous AI workflows, microservices, and full-stack cloud applications.&quot;
+                  &quot;Architected distributed generative AI systems serving 500k+ active users.&quot;
                 </div>
 
                 <div className="flex flex-wrap gap-1.5">

@@ -6,7 +6,7 @@ import Navbar from '@/components/landing/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
 import ThemeShowcase from '@/components/landing/ThemeShowcase';
 import { isUserLoggedIn } from '@/lib/storage/local-store';
-import { Sparkles, FileText, Palette, Edit3, Wand2, Github, Rocket, ArrowRight, ChevronDown, CheckCircle2, Phone, Mail, Linkedin, Code2, Award, UserCheck } from 'lucide-react';
+import { Sparkles, FileText, Palette, Edit3, Wand2, Github, Rocket, ArrowRight, ChevronDown, CheckCircle2, Phone, Mail, Linkedin, UserCheck } from 'lucide-react';
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -219,10 +219,6 @@ export default function LandingPage() {
                   <a href="https://www.linkedin.com/in/satyam-kumar-512b03350/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
                     <Linkedin className="w-4 h-4 text-blue-400 shrink-0" />
                     <span>linkedin.com/in/satyam-kumar-512b03350</span>
-                  </a>
-                  <a href="https://github.com/satyamapoorva06-blip" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
-                    <Github className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>github.com/satyamapoorva06-blip</span>
                   </a>
                 </div>
               </div>
