@@ -29,7 +29,7 @@ import OpenSourceContributorTheme from '@/templates/open-source-contributor/Open
 import EngineeringShowcaseTheme from '@/templates/engineering-showcase/EngineeringShowcaseTheme';
 import Futuristic2025Theme from '@/templates/futuristic-2025/Futuristic2025Theme';
 
-// Newly Added Distinct Templates for 14, 15, 16, 18, 21, 22, 43, 50
+// Dedicated Custom Theme Components
 import DataScienceTheme from '@/templates/data-science/DataScienceTheme';
 import RagPromptTheme from '@/templates/rag-prompt/RagPromptTheme';
 import ReactiveFullstackTheme from '@/templates/reactive-fullstack/ReactiveFullstackTheme';
@@ -38,6 +38,13 @@ import BeginnerCsTheme from '@/templates/beginner-cs/BeginnerCsTheme';
 import MinimalCsTheme from '@/templates/minimal-cs/MinimalCsTheme';
 import SwissBrutalistTheme from '@/templates/swiss-brutalist/SwissBrutalistTheme';
 import OneHourDigitalTheme from '@/templates/onehour-digital/OneHourDigitalTheme';
+
+// Newly Added Dedicated Components for 29, 30, 32, 33, 35
+import FullstackSdeTheme from '@/templates/fullstack-sde/FullstackSdeTheme';
+import HighimpactMernTheme from '@/templates/highimpact-mern/HighimpactMernTheme';
+import ModernFullstackTheme from '@/templates/modern-fullstack/ModernFullstackTheme';
+import PersonalShowcaseTheme from '@/templates/personal-showcase/PersonalShowcaseTheme';
+import ReactTailwindTheme from '@/templates/react-tailwind/ReactTailwindTheme';
 
 // 10 Standalone Animated Theme Components
 import KineticTypeTheme from '@/templates/animated/KineticTypeTheme';
@@ -82,7 +89,7 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'animated-prism-refraction':
       return <PrismRefractionTheme data={data} />;
 
-    // DEDICATED UNIQUE PORTFOLIO THEME ROUTING (14, 15, 16, 18, 21, 22, 43, 44, 46, 47, 48, 50)
+    // DEDICATED UNIQUE PORTFOLIO THEME ROUTING
     case 'shreya-datascience': // 14
       return <DataScienceTheme data={data} />;
     case 'aman-genai': // 15
@@ -95,6 +102,16 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
       return <BeginnerCsTheme data={data} />;
     case 'harsh-cs-student': // 22
       return <MinimalCsTheme data={data} />;
+    case 'shashank-fullstack': // 29
+      return <FullstackSdeTheme data={data} />;
+    case 'suraj-mern': // 30
+      return <HighimpactMernTheme data={data} />;
+    case 'sakesh-fullstack': // 32
+      return <ModernFullstackTheme data={data} />;
+    case 'arun-fullstack': // 33
+      return <PersonalShowcaseTheme data={data} />;
+    case 'shivam-frontend': // 35
+      return <ReactTailwindTheme data={data} />;
     case 'aadi-neobrutalist': // 43
       return <SwissBrutalistTheme data={data} />;
     case 'cs-student-collection': // 44
@@ -138,11 +155,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'dheeraj-mern':
     case 'megha-mern':
     case 'karan-webdev':
-    case 'shashank-fullstack':
-    case 'suraj-mern':
-    case 'sakesh-fullstack':
-    case 'arun-fullstack':
-    case 'shivam-frontend':
     case 'subhadeep-fullstack':
     case 'priyank-fullstack':
       return <MernStackTheme data={data} />;
