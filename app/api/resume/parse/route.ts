@@ -3,9 +3,22 @@ import { parsePdfBuffer } from '@/lib/resume-parser/pdf';
 import { parseDocxBuffer } from '@/lib/resume-parser/docx';
 import { parseImageBuffer } from '@/lib/resume-parser/image';
 import { parseResumeToPortfolio } from '@/lib/ai';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
   try {
+    // 1. IP-Based Rate Limiting (Max 10 resume parsing requests per minute per IP)
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
+    const rateLimit = checkRateLimit(ip, 10, 60 * 1000);
+
+    if (!rateLimit.success) {
+      const waitSec = Math.ceil(rateLimit.resetMs / 1000);
+      return NextResponse.json(
+        { error: `Too many upload requests. Please wait ${waitSec} seconds before analyzing another resume.` },
+        { status: 429 }
+      );
+    }
+
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
 
