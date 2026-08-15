@@ -6,7 +6,7 @@ import Navbar from '@/components/landing/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
 import ThemeShowcase from '@/components/landing/ThemeShowcase';
 import { isUserLoggedIn } from '@/lib/storage/local-store';
-import { Sparkles, FileText, Palette, Edit3, Wand2, Github, Rocket, ArrowRight, ChevronDown, CheckCircle2, Lock } from 'lucide-react';
+import { Sparkles, FileText, Palette, Edit3, Wand2, Github, Rocket, ArrowRight, ChevronDown, CheckCircle2, Phone, Mail, Linkedin, Code2, Award, UserCheck } from 'lucide-react';
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -61,7 +61,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { icon: FileText, title: 'AI Resume Analysis', desc: 'Parses PDF & DOCX resumes into clean structured data models accurately.' },
-              { icon: Palette, title: '6 Handcrafted Themes', desc: 'Minimal, Developer, Creative, 3D, Professional, and Glassmorphism themes.' },
+              { icon: Palette, title: '60 Handcrafted Themes', desc: 'Minimal, Developer, Creative, 3D, Bento Grid, Kinetic Poster, and 10 Animated themes.' },
               { icon: Edit3, title: 'Visual Split Editor', desc: 'Real-time responsive preview with desktop, tablet, and mobile canvas switchers.' },
               { icon: Wand2, title: 'AI Writing Assistant', desc: 'Polishes text, shortens descriptions, and optimizes for recruiter keywords.' },
               { icon: Github, title: 'GitHub Code Generation', desc: 'Generates standalone Next.js source code repositories automatically.' },
@@ -96,7 +96,7 @@ export default function LandingPage() {
             {[
               { num: '01', title: 'Upload Resume', desc: 'Drag & drop your PDF or DOCX file.' },
               { num: '02', title: 'AI Extraction', desc: 'AI extracts skills, experience & projects.' },
-              { num: '03', title: 'Choose Theme', desc: 'Select from 6 responsive designs.' },
+              { num: '03', title: 'Choose Theme', desc: 'Select from 60 responsive designs.' },
               { num: '04', title: 'Customize', desc: 'Fine-tune text & styling in visual editor.' },
               { num: '05', title: 'Publish', desc: 'One-click deployment to Vercel/Netlify.' },
             ].map((step, idx) => (
@@ -170,6 +170,67 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Senior Developer & Creator Profile Showcase (Satyam Kumar) */}
+      <section className="py-20 bg-slate-900/90 border-t border-slate-800">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="p-8 sm:p-10 bg-slate-950 border border-cyan-500/30 rounded-3xl space-y-8 shadow-2xl relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border-b border-slate-800 pb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 text-white font-extrabold text-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 border-2 border-cyan-400/40">
+                  SK
+                </div>
+                <div>
+                  <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-widest font-bold flex items-center gap-1.5">
+                    <UserCheck className="w-3.5 h-3.5 text-cyan-400" /> LEAD ARCHITECT & CREATOR
+                  </span>
+                  <h3 className="text-3xl font-extrabold text-white tracking-tight">Satyam Kumar</h3>
+                  <p className="text-sm font-mono text-slate-400">Senior AI Systems Architect & Full-Stack Engineer</p>
+                </div>
+              </div>
+
+              <span className="px-4 py-1.5 bg-cyan-950/80 border border-cyan-800 text-cyan-300 text-xs font-mono rounded-full font-semibold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" /> Lead Software Developer
+              </span>
+            </div>
+
+            {/* Senior Dev Bio & Direct Contact Details */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-slate-400 uppercase font-mono tracking-wider">About The Developer</h4>
+                <p className="text-sm text-slate-300 leading-relaxed font-light">
+                  Architect of Portify AI—engineering automated AI resume analysis, dynamic 60-theme rendering engines, and 1-click cloud deployment workflows on Next.js 14 and Google Cloud infrastructure.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-slate-400 uppercase font-mono tracking-wider">Direct Developer Contact & Profiles</h4>
+                <div className="space-y-2.5 text-xs font-mono">
+                  <a href="tel:+919608672661" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
+                    <Phone className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>+91 9608672661</span>
+                  </a>
+                  <a href="mailto:amansatyam408@gmail.com" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
+                    <Mail className="w-4 h-4 text-purple-400 shrink-0" />
+                    <span>amansatyam408@gmail.com</span>
+                  </a>
+                  <a href="https://www.linkedin.com/in/satyam-kumar-512b03350/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
+                    <Linkedin className="w-4 h-4 text-blue-400 shrink-0" />
+                    <span>linkedin.com/in/satyam-kumar-512b03350</span>
+                  </a>
+                  <a href="https://github.com/satyamapoorva06-blip" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-slate-300 hover:text-cyan-400 transition">
+                    <Github className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>github.com/satyamapoorva06-blip</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-24 bg-gradient-to-b from-slate-950 to-cyan-950 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
@@ -185,8 +246,9 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-slate-950 border-t border-slate-900 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Portify AI. All rights reserved.
+      <footer className="py-12 bg-slate-950 border-t border-slate-900 text-center text-xs text-slate-500 space-y-2">
+        <p>© {new Date().getFullYear()} Portify AI. Designed & Developed by <strong className="text-slate-300">Satyam Kumar</strong> (Senior AI Systems Architect).</p>
+        <p className="text-[11px] text-slate-600 font-mono">Contact: amansatyam408@gmail.com | +91 9608672661</p>
       </footer>
     </div>
   );

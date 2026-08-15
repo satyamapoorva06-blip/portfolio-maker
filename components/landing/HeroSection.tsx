@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { isUserLoggedIn } from '@/lib/storage/local-store';
-import { Sparkles, ArrowRight, UploadCloud, Rocket, CheckCircle2 } from 'lucide-react';
+import { Sparkles, UploadCloud, Rocket, CheckCircle2 } from 'lucide-react';
 
 export default function HeroSection() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -73,7 +73,7 @@ export default function HeroSection() {
           <div className="relative w-full max-w-md">
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-3xl blur-2xl opacity-30 transform rotate-3"></div>
 
-            <div className="relative bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 overflow-hidden">
+            <div className="relative bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 backdrop-blur-xl">
               <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                 <div className="flex gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500"></span>
@@ -87,35 +87,33 @@ export default function HeroSection() {
 
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <img
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-                    alt="Satyam Sharma"
-                    className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-400/40"
-                  />
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 text-white font-extrabold text-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 border-2 border-cyan-400/40">
+                    SK
+                  </div>
                   <div>
-                    <h3 className="font-bold text-white text-base">Satyam Sharma</h3>
-                    <p className="text-xs text-cyan-400">Senior AI Systems Architect</p>
-                    <p className="text-[11px] text-slate-400">Bangalore, India</p>
+                    <h3 className="font-extrabold text-white text-lg tracking-tight">Satyam Kumar</h3>
+                    <p className="text-xs font-mono text-cyan-400 font-semibold">Senior AI & Systems Engineer</p>
+                    <p className="text-[11px] text-slate-400">India</p>
                   </div>
                 </div>
 
-                <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
-                  "Architected distributed generative AI systems serving 500k+ active users."
+                <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed font-light">
+                  &quot;Architected autonomous AI workflows, microservices, and full-stack cloud applications.&quot;
                 </div>
 
                 <div className="flex flex-wrap gap-1.5">
                   {['TypeScript', 'Next.js', 'Python', 'Supabase', 'Vercel'].map((t, idx) => (
-                    <span key={idx} className="text-[10px] bg-slate-800 text-cyan-300 px-2.5 py-1 rounded-md border border-slate-700">
+                    <span key={idx} className="text-[10px] bg-slate-800 text-cyan-300 px-2.5 py-1 rounded-lg border border-slate-700 font-mono">
                       {t}
                     </span>
                   ))}
                 </div>
 
-                <div className="p-3 bg-emerald-950/50 border border-emerald-500/30 rounded-xl flex items-center justify-between text-xs text-emerald-300">
-                  <span className="flex items-center gap-2">
+                <div className="p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-xl flex items-center justify-between text-xs text-emerald-300">
+                  <span className="flex items-center gap-2 font-medium">
                     <Rocket className="w-4 h-4 text-emerald-400" /> Published to Vercel
                   </span>
-                  <span className="font-mono text-[10px] bg-emerald-900 px-2 py-0.5 rounded text-emerald-200">
+                  <span className="font-mono text-[10px] bg-emerald-900 px-2.5 py-0.5 rounded text-emerald-200 font-bold">
                     LIVE 200 OK
                   </span>
                 </div>
