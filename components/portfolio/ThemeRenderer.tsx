@@ -29,6 +29,16 @@ import OpenSourceContributorTheme from '@/templates/open-source-contributor/Open
 import EngineeringShowcaseTheme from '@/templates/engineering-showcase/EngineeringShowcaseTheme';
 import Futuristic2025Theme from '@/templates/futuristic-2025/Futuristic2025Theme';
 
+// Newly Added Distinct Templates for 14, 15, 16, 18, 21, 22, 43, 50
+import DataScienceTheme from '@/templates/data-science/DataScienceTheme';
+import RagPromptTheme from '@/templates/rag-prompt/RagPromptTheme';
+import ReactiveFullstackTheme from '@/templates/reactive-fullstack/ReactiveFullstackTheme';
+import VibrantWebTheme from '@/templates/vibrant-web/VibrantWebTheme';
+import BeginnerCsTheme from '@/templates/beginner-cs/BeginnerCsTheme';
+import MinimalCsTheme from '@/templates/minimal-cs/MinimalCsTheme';
+import SwissBrutalistTheme from '@/templates/swiss-brutalist/SwissBrutalistTheme';
+import OneHourDigitalTheme from '@/templates/onehour-digital/OneHourDigitalTheme';
+
 // 10 Standalone Animated Theme Components
 import KineticTypeTheme from '@/templates/animated/KineticTypeTheme';
 import LaserNeonTheme from '@/templates/animated/LaserNeonTheme';
@@ -72,7 +82,21 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'animated-prism-refraction':
       return <PrismRefractionTheme data={data} />;
 
-    // DEDICATED INDIVIDUAL PORTFOLIO THEMES (44, 46, 47, 48)
+    // DEDICATED UNIQUE PORTFOLIO THEME ROUTING (14, 15, 16, 18, 21, 22, 43, 44, 46, 47, 48, 50)
+    case 'shreya-datascience': // 14
+      return <DataScienceTheme data={data} />;
+    case 'aman-genai': // 15
+      return <RagPromptTheme data={data} />;
+    case 'nikhil-fullstack': // 16
+      return <ReactiveFullstackTheme data={data} />;
+    case 'saad-fullstack': // 18
+      return <VibrantWebTheme data={data} />;
+    case 'abhishek-beginner': // 21
+      return <BeginnerCsTheme data={data} />;
+    case 'harsh-cs-student': // 22
+      return <MinimalCsTheme data={data} />;
+    case 'aadi-neobrutalist': // 43
+      return <SwissBrutalistTheme data={data} />;
     case 'cs-student-collection': // 44
       return <AcademicResearchTheme data={data} />;
     case 'github-topic-student': // 46
@@ -81,6 +105,8 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
       return <EngineeringShowcaseTheme data={data} />;
     case 'nikola-janjic-2025': // 48
       return <Futuristic2025Theme data={data} />;
+    case 'onehour-digital': // 50
+      return <OneHourDigitalTheme data={data} />;
 
     // 50 SHOWCASE PORTFOLIO MAPPINGS
     case 'kuber-ai-creative':
@@ -96,8 +122,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
     case 'suraj-agentic-ai':
     case 'abhinav-cv-ml':
     case 'sahil-sahu-ai':
-    case 'shreya-datascience':
-    case 'aman-genai':
     case 'abhay-cs-ai':
     case 'prashant-cse-aiml':
     case 'harsh-backend-ai':
@@ -111,8 +135,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
 
     case 'mern-stack':
     case 'harsh-aiml-mern':
-    case 'nikhil-fullstack':
-    case 'saad-fullstack':
     case 'dheeraj-mern':
     case 'megha-mern':
     case 'karan-webdev':
@@ -137,8 +159,6 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
 
     case 'cs-student':
     case 'sahil-aiml-student':
-    case 'abhishek-beginner':
-    case 'harsh-cs-student':
     case 'wasif-cs-student':
     case 'prince-shah-learning':
       return <CsStudentTheme data={data} />;
@@ -152,9 +172,7 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
       return <ObsidianRedTheme data={data} />;
 
     case 'nordic-editorial':
-    case 'aadi-neobrutalist':
     case 'abdulhussain-uiux':
-    case 'onehour-digital':
       return <NordicEditorialTheme data={data} />;
 
     case 'dev-gallery':
