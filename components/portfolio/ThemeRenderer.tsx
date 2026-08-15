@@ -14,6 +14,9 @@ import CyberMatrixTheme from '@/templates/cyber-matrix/CyberMatrixTheme';
 import BentoGridTheme from '@/templates/bento-grid/BentoGridTheme';
 import KineticPosterTheme from '@/templates/kinetic-poster/KineticPosterTheme';
 
+// 👑 TOP 1 PREMIER PORTFOLIO THEME (FLAGSHIP)
+import Top1PremierTheme from '@/templates/top1-premier/Top1PremierTheme';
+
 // 10 Standalone Animated Theme Components
 import KineticTypeTheme from '@/templates/animated/KineticTypeTheme';
 import LaserNeonTheme from '@/templates/animated/LaserNeonTheme';
@@ -81,6 +84,11 @@ export default function ThemeRenderer({ data }: { data: PortfolioData }) {
   const theme = data.customization?.theme || 'minimal';
 
   switch (theme) {
+    // 👑 TOP 1 PREMIER PORTFOLIO THEME
+    case 'top1-premier':
+    case 'top-1-premier':
+      return <Top1PremierTheme data={data} />;
+
     // 10 DISTINCT ANIMATED PORTFOLIO THEMES
     case 'animated-kinetic-type':
       return <KineticTypeTheme data={data} />;

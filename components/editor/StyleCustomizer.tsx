@@ -2,12 +2,18 @@
 
 import React from 'react';
 import { VisualCustomization, ThemeType } from '@/types/portfolio';
-import { Palette, Type, Layout, Sparkles, Check, Zap } from 'lucide-react';
+import { Palette, Type, Layout, Sparkles, Check, Zap, Crown } from 'lucide-react';
 
 interface StyleCustomizerProps {
   customization: VisualCustomization;
   onChange: (customization: VisualCustomization) => void;
 }
+
+const TOP_1_THEME: { id: ThemeType; name: string; desc: string } = {
+  id: 'top1-premier',
+  name: '👑 TOP 1 PREMIER FLAGSHIP THEME',
+  desc: 'Ultra-luxurious SDE & AI/ML Developer Flagship Portfolio (Satyam Kumar Edition)',
+};
 
 const ANIMATED_THEMES: { id: ThemeType; name: string; desc: string }[] = [
   { id: 'animated-kinetic-type', name: '⚡ Kinetic Marquee Motion', desc: 'Infinite spinning text banner & dynamic slide transitions' },
@@ -76,20 +82,49 @@ const SHOWCASE_THEMES: { id: ThemeType; name: string; desc: string }[] = [
 ];
 
 const COLOR_PRESETS = [
+  { primary: '#e50914', accent: '#dc2626', name: 'Crimson Red Flagship' },
   { primary: '#0c8ee9', accent: '#8b5cf6', name: 'Ocean Cyan & Violet' },
-  { primary: '#e50914', accent: '#dc2626', name: 'Obsidian Red & Crimson' },
   { primary: '#00ff66', accent: '#10b981', name: 'Cyber Matrix Neon Green' },
   { primary: '#facc15', accent: '#f59e0b', name: 'Canary Yellow Poster' },
   { primary: '#8b5cf6', accent: '#f43f5e', name: 'Purple & Rose' },
 ];
 
 export default function StyleCustomizer({ customization, onChange }: StyleCustomizerProps) {
-  const totalCount = ANIMATED_THEMES.length + SHOWCASE_THEMES.length;
-
   return (
     <div className="space-y-8 text-slate-200 text-sm p-4">
-      {/* Animated Themes Section */}
+      {/* 👑 TOP 1 PREMIER PORTFOLIO THEME SECTION */}
       <div className="space-y-4">
+        <h3 className="text-xs font-black text-[#e50914] uppercase tracking-wider flex items-center gap-2">
+          <Crown className="w-4 h-4 text-[#e50914] animate-bounce" /> TOP 1 PREMIER PORTFOLIO THEME
+        </h3>
+        <button
+          onClick={() => onChange({ ...customization, theme: TOP_1_THEME.id })}
+          className={`w-full p-5 rounded-2xl border text-left transition flex flex-col justify-between space-y-3 relative overflow-hidden ${
+            customization.theme === TOP_1_THEME.id
+              ? 'bg-[#e50914]/20 border-[#e50914] text-white shadow-2xl shadow-[#e50914]/30 ring-2 ring-[#e50914]'
+              : 'bg-[#0d0d12] border-[#e50914]/40 text-slate-200 hover:border-[#e50914] hover:bg-[#14141d]'
+          }`}
+        >
+          <div className="flex justify-between items-center w-full">
+            <span className="font-black text-sm text-[#e50914] flex items-center gap-2">
+              <Crown className="w-4 h-4 text-amber-400" /> {TOP_1_THEME.name}
+            </span>
+            {customization.theme === TOP_1_THEME.id && <Check className="w-5 h-5 text-[#e50914] shrink-0" />}
+          </div>
+          <span className="text-xs text-slate-300 leading-relaxed font-light">{TOP_1_THEME.desc}</span>
+          <div className="flex items-center gap-2 pt-1">
+            <span className="px-2.5 py-0.5 bg-[#e50914]/20 border border-[#e50914]/50 text-[#e50914] text-[10px] font-mono font-bold rounded-full">
+              SDE & AI/ML FLAGSHIP
+            </span>
+            <span className="px-2.5 py-0.5 bg-slate-900 border border-slate-800 text-slate-300 text-[10px] font-mono rounded-full">
+              SATYAM KUMAR EDITION
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* ⚡ 10 ANIMATED PORTFOLIO THEMES SECTION */}
+      <div className="space-y-4 pt-6 border-t border-slate-800">
         <h3 className="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
           <Zap className="w-4 h-4 text-yellow-400 animate-pulse" /> 10 Animated Portfolio Themes
         </h3>
@@ -114,7 +149,7 @@ export default function StyleCustomizer({ customization, onChange }: StyleCustom
         </div>
       </div>
 
-      {/* 50 Showcase Themes Section */}
+      {/* 🎨 50 SHOWCASE PORTFOLIO THEMES SECTION */}
       <div className="space-y-4 pt-6 border-t border-slate-800">
         <h3 className="text-xs font-extrabold text-purple-300 uppercase tracking-wider flex items-center gap-2">
           <Palette className="w-4 h-4 text-purple-400" /> 50 Showcase Portfolio Themes

@@ -2,7 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Palette, ArrowUpRight, Sparkles, Zap } from 'lucide-react';
+import { Palette, ArrowUpRight, Sparkles, Zap, Crown, Flame } from 'lucide-react';
+
+const TOP_1_THEME_ITEM = {
+  id: 'top1-premier',
+  name: '👑 TOP 1 PREMIER FLAGSHIP THEME',
+  tagline: 'Senior SDE & AI/ML Developer Flagship Portfolio (Satyam Kumar Edition)',
+  badge: '👑 TOP 1 FLAGSHIP',
+  gradient: 'from-black via-[#0d0d0d] to-[#e50914]',
+};
 
 const ANIMATED_THEME_LIST = [
   { id: 'animated-kinetic-type', name: 'Kinetic Marquee Motion', tagline: 'Spinning Ticker & Slide Motion', badge: 'Animated ⚡', gradient: 'from-[#facc15] via-amber-600 to-black' },
@@ -77,18 +85,43 @@ export default function ThemeShowcase() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
             <Palette className="w-4 h-4 text-purple-400" />
-            60 HANDCRAFTED PORTFOLIO THEMES
+            61 HANDCRAFTED PORTFOLIO THEMES
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-            60 Professional Developer Themes
+            61 Professional Developer Themes
           </h2>
           <p className="text-slate-400 text-base">
-            Choose from 10 Brand-New Animated Kinetic Themes and 50 Professional Specialized Showcase Designs.
+            Featuring the 👑 TOP 1 Premier Flagship Portfolio Theme, 10 Brand-New Animated Kinetic Themes, and 50 Professional Specialized Showcase Designs.
           </p>
         </div>
 
-        {/* Animated Themes Section */}
+        {/* TOP 1 PREMIER PORTFOLIO THEME SECTION */}
         <div className="space-y-6">
+          <h3 className="text-xl font-black text-[#e50914] flex items-center gap-2 border-b border-[#e50914]/30 pb-3">
+            <Crown className="w-6 h-6 text-[#e50914] animate-bounce" /> TOP 1 PREMIER PORTFOLIO THEME
+          </h3>
+          <div className="p-8 bg-[#0a0a0e] border-2 border-[#e50914]/50 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden group hover:border-[#e50914] transition duration-500">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+              <div className="space-y-3 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#17171c] border border-[#e50914]/40 text-[#e50914] text-xs font-mono font-bold rounded-full">
+                  <Flame className="w-3.5 h-3.5 fill-[#e50914]" /> FLAGSHIP EDITION • SATYAM KUMAR
+                </div>
+                <h4 className="text-2xl sm:text-3xl font-black text-white">{TOP_1_THEME_ITEM.name}</h4>
+                <p className="text-sm text-slate-300 leading-relaxed font-light">{TOP_1_THEME_ITEM.tagline}</p>
+              </div>
+
+              <Link
+                href="/upload"
+                className="px-6 py-3.5 bg-[#e50914] hover:bg-[#ff1e27] text-white font-extrabold text-xs rounded-2xl shadow-xl shadow-[#e50914]/30 flex items-center gap-2 transition transform hover:-translate-y-0.5 shrink-0"
+              >
+                Use Top 1 Premier Theme <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Animated Themes Section */}
+        <div className="space-y-6 pt-6 border-t border-slate-800">
           <h3 className="text-xl font-extrabold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
             <Zap className="w-5 h-5 text-yellow-400 animate-pulse" /> 10 Animated Portfolio Themes
           </h3>
