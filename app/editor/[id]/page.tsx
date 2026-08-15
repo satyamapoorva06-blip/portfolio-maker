@@ -6,6 +6,7 @@ import { PortfolioData } from '@/types/portfolio';
 import { getStoredPortfolios, saveStoredPortfolio, saveStoredDeployment, getStoredUser, setStoredUser, INITIAL_PORTFOLIO } from '@/lib/storage/local-store';
 import EditorTabs from '@/components/editor/EditorTabs';
 import LivePreviewFrame from '@/components/editor/LivePreviewFrame';
+import ProgressStepper from '@/components/navigation/ProgressStepper';
 import { UserProfile } from '@/types/database';
 import { ArrowLeft, Save, Rocket, Github, CheckCircle2, Eye, Sparkles, X, ExternalLink, Copy, Loader2, Globe, AlertCircle, ArrowRight } from 'lucide-react';
 
@@ -172,14 +173,16 @@ export default function EditorPage() {
 
   return (
     <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans relative">
+      <ProgressStepper currentStep={3} />
+
       {/* Editor Top Navigation Bar */}
       <header className="h-16 bg-slate-900 border-b border-slate-800 px-6 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/parse?id=' + portfolio.id)}
             className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition flex items-center gap-1.5 text-xs font-medium"
           >
-            <ArrowLeft className="w-4 h-4" /> Dashboard
+            <ArrowLeft className="w-4 h-4" /> ← Back to AI Review
           </button>
 
           <div className="h-4 w-px bg-slate-800"></div>
@@ -191,7 +194,7 @@ export default function EditorPage() {
               onChange={(e) => handleDataChange({ ...portfolio, title: e.target.value })}
               className="bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white focus:outline-none transition"
             />
-            <span className="text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-0.5 rounded-full border border-cyan-500/20 capitalize font-mono">
+            <span className="text-[11px] bg-[#e50914]/20 text-[#e50914] px-2.5 py-0.5 rounded-full border border-[#e50914]/40 capitalize font-mono font-bold">
               {portfolio.customization.theme} theme
             </span>
           </div>
@@ -212,15 +215,10 @@ export default function EditorPage() {
           </button>
 
           <button
-            onClick={() => {
-              setShowDeployModal(true);
-              setDeployStep(1);
-              setCreatedGithubRepo(null);
-              setVercelLiveUrl(null);
-            }}
-            className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition transform hover:-translate-y-0.5"
+            onClick={() => router.push(`/publish?id=${portfolio.id}`)}
+            className="px-5 py-2 bg-[#e50914] hover:bg-[#ff1f2d] text-white font-extrabold text-xs rounded-xl flex items-center gap-2 shadow-lg shadow-[#e50914]/30 transition transform hover:-translate-y-0.5"
           >
-            <Rocket className="w-4 h-4" /> Deploy via GitHub & Vercel
+            Next: Publish & Share ➔ <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </header>

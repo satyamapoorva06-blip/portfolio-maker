@@ -207,6 +207,15 @@ export function getStoredPortfolios(): PortfolioData[] {
   return userPortfolios;
 }
 
+export function getStoredPortfolio(id?: string): PortfolioData | null {
+  if (!IS_BROWSER) return INITIAL_PORTFOLIO;
+  const all = getAllPortfolios();
+  if (id) {
+    return all.find((p) => p.id === id || p.slug === id) || null;
+  }
+  return all.length > 0 ? all[0] : null;
+}
+
 export function saveStoredPortfolio(portfolio: PortfolioData): void {
   if (!IS_BROWSER) return;
   const currentUser = getStoredUser();
