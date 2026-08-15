@@ -4,7 +4,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/landing/Navbar';
 import { saveStoredPortfolio, isUserLoggedIn } from '@/lib/storage/local-store';
-import { UploadCloud, FileText, CheckCircle2, Loader2, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} Bytes`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
 
 export default function UploadPage() {
   const router = useRouter();
@@ -15,7 +21,6 @@ export default function UploadPage() {
       router.push('/login?next=/upload');
     }
   }, [router]);
-
 
   const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -77,7 +82,6 @@ export default function UploadPage() {
     setError('');
     setProgressStep(0);
 
-    // Simulate animated progress steps
     const interval = setInterval(() => {
       setProgressStep((prev) => {
         if (prev < progressSteps.length - 1) return prev + 1;
@@ -100,7 +104,6 @@ export default function UploadPage() {
 
       if (!res.ok) throw new Error(json.error || 'Failed to parse resume');
 
-      // Store in local storage & redirect to theme selection page
       const portfolioData = json.data;
       saveStoredPortfolio(portfolioData);
       router.push(`/themes?id=${portfolioData.id}`);
@@ -155,12 +158,12 @@ export default function UploadPage() {
               <span className="inline-flex items-center gap-2 text-emerald-400 font-bold text-base">
                 <CheckCircle2 className="w-5 h-5" /> {file.name}
               </span>
-              <p className="text-xs text-slate-400">{(file.size / (1024 * 1024)).toFixed(2)} MB • Ready to analyze</p>
+              <p className="text-xs text-slate-400 font-mono">{formatFileSize(file.size)} • Ready to analyze</p>
             </div>
           ) : (
             <div className="space-y-2">
               <p className="text-lg font-semibold text-white">Drag & drop your resume here, or <span className="text-cyan-400 underline">browse</span></p>
-              <p className="text-xs text-slate-500">Supports PDF or DOCX up to 10MB</p>
+              <p className="text-xs text-slate-500">Supports PDF or DOCX (1 KB to 10 MB)</p>
             </div>
           )}
         </div>
