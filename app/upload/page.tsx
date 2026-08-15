@@ -29,7 +29,7 @@ export default function UploadPage() {
   const [progressStep, setProgressStep] = useState(0);
 
   const progressSteps = [
-    'Reading resume file...',
+    'Reading resume file / photo...',
     'Extracting personal details & contact info...',
     'Categorizing technical skills & domain expertise...',
     'Parsing work experience & key achievements...',
@@ -53,12 +53,12 @@ export default function UploadPage() {
 
   const validateAndSetFile = (f: File) => {
     setError('');
-    const validExtensions = ['.pdf', '.docx', '.doc'];
+    const validExtensions = ['.pdf', '.docx', '.doc', '.txt', '.jpg', '.jpeg', '.png', '.webp'];
     const name = f.name.toLowerCase();
     const isValidExt = validExtensions.some((ext) => name.endsWith(ext));
 
     if (!isValidExt) {
-      setError('Please upload a valid PDF (.pdf) or Word document (.docx).');
+      setError('Please upload a valid PDF (.pdf), Word document (.docx), or JPG/PNG image photo.');
       return;
     }
 
@@ -109,7 +109,7 @@ export default function UploadPage() {
       router.push(`/themes?id=${portfolioData.id}`);
     } catch (err: any) {
       clearInterval(interval);
-      setError(err.message || "We couldn't analyze your resume. Please check that your file is a valid PDF or DOCX and try again.");
+      setError(err.message || "We couldn't analyze your resume. Please check that your file is a valid PDF, DOCX, or JPG/PNG photo and try again.");
       setLoading(false);
     }
   };
@@ -126,7 +126,7 @@ export default function UploadPage() {
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white">Upload Your Resume</h1>
           <p className="text-slate-400 text-base max-w-xl mx-auto">
-            Our AI will parse your skills, experience, and projects into a structured portfolio data model.
+            Our AI will parse your skills, experience, and projects from PDF, Word, or JPG/PNG image photos.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export default function UploadPage() {
               : 'border-slate-800 bg-slate-900/60 hover:border-slate-700'
           }`}
         >
-          <input ref={fileInputRef} type="file" accept=".pdf,.docx,.doc" onChange={handleFileChange} className="hidden" />
+          <input ref={fileInputRef} type="file" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png,.webp" onChange={handleFileChange} className="hidden" />
 
           <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 mx-auto">
             <UploadCloud className="w-8 h-8" />
@@ -162,8 +162,8 @@ export default function UploadPage() {
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-lg font-semibold text-white">Drag & drop your resume here, or <span className="text-cyan-400 underline">browse</span></p>
-              <p className="text-xs text-slate-500">Supports PDF or DOCX (1 KB to 10 MB)</p>
+              <p className="text-lg font-semibold text-white">Drag & drop your resume or photo here, or <span className="text-cyan-400 underline">browse</span></p>
+              <p className="text-xs text-slate-500">Supports PDF, DOCX, TXT, or JPG/PNG image photos (1 KB to 10 MB)</p>
             </div>
           )}
         </div>

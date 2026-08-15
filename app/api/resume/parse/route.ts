@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parsePdfBuffer } from '@/lib/resume-parser/pdf';
 import { parseDocxBuffer } from '@/lib/resume-parser/docx';
+import { parseImageBuffer } from '@/lib/resume-parser/image';
 import { parseResumeToPortfolio } from '@/lib/ai';
 
 export async function POST(req: NextRequest) {
@@ -15,6 +16,7 @@ export async function POST(req: NextRequest) {
     const fileName = file.name || 'resume';
     const fileSize = file.size;
     const fileType = file.type || '';
+    const nameLower = fileName.toLowerCase();
 
     // Max 10MB validation
     if (fileSize > 10 * 1024 * 1024) {
@@ -26,17 +28,26 @@ export async function POST(req: NextRequest) {
 
     let extractedText = '';
 
-    if (fileName.endsWith('.pdf') || fileType.includes('pdf')) {
+    if (nameLower.endsWith('.pdf') || fileType.includes('pdf')) {
       extractedText = await parsePdfBuffer(buffer, fileName);
-    } else if (fileName.endsWith('.docx') || fileType.includes('officedocument') || fileName.endsWith('.doc')) {
+    } else if (nameLower.endsWith('.docx') || fileType.includes('officedocument') || nameLower.endsWith('.doc')) {
       extractedText = await parseDocxBuffer(buffer);
+    } else if (
+      fileType.startsWith('image/') ||
+      nameLower.endsWith('.jpg') ||
+      nameLower.endsWith('.jpeg') ||
+      nameLower.endsWith('.png') ||
+      nameLower.endsWith('.webp')
+    ) {
+      const mimeType = fileType || (nameLower.endsWith('.png') ? 'image/png' : 'image/jpeg');
+      extractedText = await parseImageBuffer(buffer, mimeType, fileName);
     } else {
       // Plain text fallback
       extractedText = buffer.toString('utf-8');
     }
 
     if (!extractedText || extractedText.trim().length < 1) {
-      extractedText = `${fileName.replace(/\.(pdf|docx?|txt)$/i, '')} Resume Portfolio`;
+      extractedText = `${fileName.replace(/\.(pdf|docx?|txt|jpg|jpeg|png|webp)$/i, '')} Resume Portfolio`;
     }
 
     // Pass to AI / Heuristic Extractor
