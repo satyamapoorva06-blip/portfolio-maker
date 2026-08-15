@@ -33,13 +33,19 @@ import {
   X,
   Send,
   User,
-  Bot
+  Bot,
+  Search,
+  Rocket,
+  Quote,
+  Trophy,
+  CheckCircle,
+  Download
 } from 'lucide-react';
 
 export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills, experience, education, certifications, achievements } = data;
 
-  // Terminal state
+  // Terminal CLI state
   const [termInput, setTermInput] = useState('');
   const [termHistory, setTermHistory] = useState<Array<{ type: 'input' | 'output'; text: string }>>([
     { type: 'output', text: `Welcome to ${personal.name?.toLowerCase().replace(/\s+/g, '') || 'user'}@portfolio ~ % Type "help" to list available commands.` }
@@ -65,7 +71,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
     aiBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [aiMessages]);
 
-  // Handle Terminal CLI command execution
+  // Terminal submit handler
   const handleTerminalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const cmd = termInput.trim().toLowerCase();
@@ -143,7 +149,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
       case 'whoami':
         newHistory.push({
           type: 'output',
-          text: `guest@${personal.name?.toLowerCase().replace(/\s+/g, '') || 'user'} — SDE Recruiter / Engineer`
+          text: `guest@${personal.name?.toLowerCase().replace(/\s+/g, '') || 'user'} — SDE Recruiter / Fellow Engineer`
         });
         break;
 
@@ -164,7 +170,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
     setTermInput('');
   };
 
-  // Handle AI Chat Assistant response
+  // AI Chat handler
   const handleAiSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const q = aiInput.trim();
@@ -192,25 +198,82 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
     }, 400);
   };
 
+  const marqueeItems = [
+    'Software Engineering', 'Data Structures & Algorithms', 'Full Stack Development',
+    'React.js', 'Node.js', 'Python', 'AI & ML', 'LeetCode Active Solver',
+    'MongoDB', 'REST APIs', 'Cloud Computing'
+  ];
+
+  const processSteps = [
+    { num: '01', title: 'Problem Analysis', desc: 'Deconstruct requirements, identify edge cases, and define clear input/output specifications.', icon: Search },
+    { num: '02', title: 'Algorithm & Architecture', desc: 'Select optimal data structures, design clean modular architecture, and plan system flow.', icon: Cpu },
+    { num: '03', title: 'Clean Implementation', desc: 'Develop maintainable, production-ready code using React, Node.js, Python, and SQL.', icon: Code2 },
+    { num: '04', title: 'Testing & Optimization', desc: 'Perform thorough debugging, test API contracts, and optimize memory and execution runtime.', icon: ShieldCheck },
+    { num: '05', title: 'Deployment & Launch', desc: 'Build CI/CD pipelines, deploy to cloud hosts (Vercel/Netlify), and verify live stability.', icon: Rocket },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#050505] text-[#f3f4f6] font-sans selection:bg-[#e50914] selection:text-white relative overflow-x-hidden">
-      {/* Background Watermark & Red Ambient Glows */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none opacity-[0.03] z-0">
-        <span className="font-extrabold text-[24vw] tracking-tighter text-white uppercase">
-          {personal.name?.split(' ')[0] || 'TOP 1'}
+    <div className="min-h-screen bg-[#050505] text-[#ffffff] font-sans selection:bg-[#e50914] selection:text-white relative overflow-x-hidden">
+      {/* Dynamic Keyframe Style Injector */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        .font-script { font-family: 'Caveat', cursive; }
+        .font-display { font-family: 'Outfit', 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover { animation-play-state: paused; }
+
+        @keyframes pulseGlow {
+          0%, 100% { opacity: 0.4; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+
+        .glass-card {
+          background: rgba(255, 255, 255, 0.025);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border-radius: 1.25rem;
+        }
+        .glass-card:hover {
+          border-color: rgba(229, 9, 20, 0.45);
+        }
+
+        .mask-fade-x {
+          mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+      `}</style>
+
+      {/* Watermark Background Text */}
+      <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none opacity-[0.03] z-0">
+        <span className="font-display text-[26vw] font-bold tracking-tighter text-white uppercase">
+          {personal.name?.split(' ')[0] || 'FLAGSHIP'}
         </span>
       </div>
 
-      <div className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 h-[600px] w-[700px] rounded-full bg-[#e50914]/15 blur-[220px] z-0" />
-      <div className="pointer-events-none fixed bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-purple-600/10 blur-[200px] z-0" />
+      {/* Background Red Ambient Glow Halos */}
+      <div className="pointer-events-none fixed top-1/4 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-[#e50914]/20 blur-[160px] animate-pulse-glow z-0" />
+      <div className="pointer-events-none fixed bottom-10 right-10 h-[450px] w-[450px] rounded-full bg-purple-600/10 blur-[180px] z-0" />
 
-      {/* Top Fixed Header Navigation */}
+      {/* Sticky Header Navigation */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-md px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="h-2.5 w-2.5 rounded-full bg-[#e50914] animate-ping" />
-            <span className="font-extrabold text-white text-base tracking-tight">{personal.name}</span>
-            <span className="hidden sm:inline-block px-2.5 py-0.5 bg-[#e50914]/20 border border-[#e50914]/50 text-[#e50914] text-[10px] font-mono font-bold rounded-full">
+            <span className="font-display font-extrabold text-white text-base tracking-tight">{personal.name}</span>
+            <span className="hidden sm:inline-block px-3 py-1 bg-[#e50914]/20 border border-[#e50914]/50 text-[#e50914] text-[10px] font-mono font-bold rounded-full">
               👑 TOP 1 PREMIER
             </span>
           </div>
@@ -218,7 +281,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsAiModalOpen(true)}
-              className="px-4 py-2 bg-[#e50914] hover:bg-[#ff1e27] text-white text-xs font-bold rounded-full shadow-lg shadow-[#e50914]/20 flex items-center gap-1.5 transition transform hover:scale-105"
+              className="px-4 py-2 bg-[#e50914] hover:bg-[#ff1f2d] text-white text-xs font-bold rounded-full shadow-lg shadow-[#e50914]/30 flex items-center gap-1.5 transition transform hover:scale-105"
             >
               <Bot className="w-4 h-4" /> Ask AI Assistant
             </button>
@@ -226,60 +289,60 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
         </div>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10">
-        
+      <main className="max-w-6xl mx-auto px-6 py-12 space-y-24 relative z-10">
+
         {/* HERO SECTION */}
         <section id="top" className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center pt-6">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e50914]/15 border border-[#e50914]/40 text-[#e50914] text-xs font-mono font-bold">
+          <div className="flex flex-col items-start space-y-6">
+            
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#e50914]/10 border border-[#e50914]/30 text-[#e50914] text-xs font-mono font-bold">
               <span className="h-2 w-2 rounded-full bg-[#e50914] animate-ping" />
               <span>Available for SDE Roles & Internships 2026</span>
             </div>
 
-            <p className="text-xl sm:text-2xl font-semibold text-[#e50914]">
+            <p className="font-script text-3xl sm:text-4xl text-[#e50914] font-medium">
               Hello, I'm {personal.name} 👋
             </p>
 
-            <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight">
-              Building software with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e50914] via-rose-500 to-white">precision</span> & AI intelligence
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-white">
+              Building software with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff3b47] via-[#e50914] to-[#990000]">precision</span> & AI intelligence
             </h1>
 
-            <p className="text-base text-slate-300 leading-relaxed font-light max-w-xl">
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed max-w-xl font-light">
               {about.summary}
             </p>
 
-            {/* Action Buttons */}
+            {/* CTAs */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#projects"
-                className="px-7 py-3.5 bg-[#e50914] hover:bg-[#ff1e27] text-white font-extrabold text-xs rounded-full shadow-xl shadow-[#e50914]/30 flex items-center gap-2 transition transform hover:scale-105"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#e50914] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#e50914]/30 transition-all duration-300 hover:bg-[#ff1f2d] hover:scale-105"
               >
-                Explore Projects <ArrowUpRight className="w-4 h-4" />
+                Explore Projects <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
               {personal.email && (
                 <a
                   href={`mailto:${personal.email}`}
-                  className="px-7 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/20 font-bold text-xs rounded-full flex items-center gap-2 transition"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10"
                 >
-                  <Mail className="w-4 h-4 text-[#e50914]" /> Contact Me
+                  <Mail className="h-4 w-4 text-[#e50914]" /> Contact Me
                 </a>
               )}
             </div>
 
-            {/* Social Connect Quick Bar */}
-            <div className="flex items-center gap-6 pt-6 border-t border-white/10">
-              <span className="text-xs uppercase tracking-widest font-mono text-slate-400 font-bold">Connect</span>
+            {/* Social Connect Bar */}
+            <div className="mt-8 flex items-center gap-6 pt-6 border-t border-white/10 w-full max-w-lg">
+              <span className="text-xs uppercase tracking-widest font-semibold text-white/40">Connect</span>
               <div className="flex items-center gap-3">
                 {personal.socials?.github && (
                   <a
                     href={personal.socials.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 bg-white/5 hover:bg-[#e50914]/20 border border-white/10 hover:border-[#e50914] rounded-full text-slate-200 hover:text-white transition"
+                    className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.02] text-white/70 transition-all hover:border-[#e50914] hover:bg-[#e50914]/10 hover:text-white"
                   >
-                    <Github className="w-4 h-4" />
+                    <Github className="h-5 w-5" />
                   </a>
                 )}
                 {personal.socials?.linkedin && (
@@ -287,38 +350,40 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
                     href={personal.socials.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 bg-white/5 hover:bg-[#e50914]/20 border border-white/10 hover:border-[#e50914] rounded-full text-slate-200 hover:text-white transition"
+                    className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.02] text-white/70 transition-all hover:border-[#e50914] hover:bg-[#e50914]/10 hover:text-white"
                   >
-                    <Linkedin className="w-4 h-4" />
+                    <Linkedin className="h-5 w-5" />
                   </a>
                 )}
               </div>
-              <div className="ml-auto flex items-center gap-1.5 text-xs font-mono text-slate-400">
-                <MapPin className="w-3.5 h-3.5 text-[#e50914]" /> {personal.location || 'Mathura, India'}
+
+              <div className="ml-auto flex items-center gap-1.5 text-xs text-white/50">
+                <MapPin className="h-3.5 w-3.5 text-[#e50914]" /> {personal.location || 'Mathura, India'}
               </div>
             </div>
+
           </div>
 
-          {/* Right Portrait Showcase Card */}
+          {/* Right Executive Portrait Card */}
           <div className="relative flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#e50914] via-rose-500 to-[#e50914] opacity-40 blur-xl animate-pulse" />
-              <div className="relative bg-[#0c0c0e] border border-white/15 rounded-3xl p-4 shadow-2xl space-y-4">
-                <div className="aspect-[3/4] w-full rounded-2xl bg-zinc-900 overflow-hidden relative border border-white/10">
+              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#e50914] via-red-500 to-[#990000] opacity-40 blur-xl animate-pulse-glow" />
+              <div className="glass-card relative overflow-hidden rounded-3xl p-3 border border-white/15 shadow-2xl">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-zinc-900">
                   <img
                     src={personal.avatarUrl || 'https://avatars.githubusercontent.com/u/231909239?v=4'}
                     alt={personal.name}
-                    className="w-full h-full object-cover object-top transition duration-700 hover:scale-105"
+                    className="h-full w-full object-cover object-top transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-4 left-4 right-4 bg-[#050505]/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex justify-between items-center">
+                  <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/10 bg-[#050505]/80 p-4 backdrop-blur-md flex items-center justify-between">
                     <div>
-                      <p className="font-bold text-white text-base">{personal.name}</p>
-                      <p className="text-xs font-mono text-[#e50914]">{personal.title || 'SDE & AI Developer'}</p>
+                      <p className="font-display text-lg font-bold text-white">{personal.name}</p>
+                      <p className="text-xs text-white/60">{personal.title || 'B.Tech AI & ML Undergraduate'}</p>
                     </div>
-                    <div className="w-9 h-9 rounded-full bg-[#e50914]/20 border border-[#e50914]/40 flex items-center justify-center text-[#e50914]">
-                      <Sparkles className="w-4 h-4" />
-                    </div>
+                    <span className="grid h-10 w-10 place-items-center rounded-full bg-[#e50914]/20 text-[#e50914] border border-[#e50914]/30">
+                      <Sparkles className="h-5 w-5" />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -326,48 +391,158 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
           </div>
         </section>
 
-        {/* STATS METRICS COUNTER BAR */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-[#0c0c0e] border border-white/10 rounded-3xl shadow-xl">
+        {/* STATS OVERVIEW COUNTER GRID */}
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 glass-card shadow-xl">
           <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-1">
-            <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">DS & ALGORITHMS</span>
+            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">DS & ALGORITHMS</span>
             <div className="text-2xl font-black text-white font-mono flex items-center gap-1">
               500+ <span className="text-xs text-[#e50914]">Solved</span>
             </div>
-            <span className="text-[10px] text-slate-500">LeetCode & Codeforces</span>
+            <span className="text-[10px] text-white/40">LeetCode & Codeforces</span>
           </div>
 
           <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-1">
-            <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">PROJECTS DEPLOYED</span>
+            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">PROJECTS DEPLOYED</span>
             <div className="text-2xl font-black text-white font-mono flex items-center gap-1">
               {projects.length || '25'}+ <span className="text-xs text-emerald-400">Live</span>
             </div>
-            <span className="text-[10px] text-slate-500">Full Stack & AI Apps</span>
+            <span className="text-[10px] text-white/40">Full Stack & AI Apps</span>
           </div>
 
           <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-1">
-            <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">DEGREE & ACADEMICS</span>
+            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">DEGREE & ACADEMICS</span>
             <div className="text-xl font-black text-white font-mono">
               B.Tech AI/ML
             </div>
-            <span className="text-[10px] text-slate-500">GLA University</span>
+            <span className="text-[10px] text-white/40">GLA University</span>
           </div>
 
           <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-1">
-            <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">AVAILABILITY</span>
+            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">AVAILABILITY</span>
             <div className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 pt-1 font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> OPEN FOR SDE
             </div>
-            <span className="text-[10px] text-slate-500">Fulltime & Internship</span>
+            <span className="text-[10px] text-white/40">Fulltime & Internship</span>
+          </div>
+        </section>
+
+        {/* TECH STACK & INFINITE MARQUEE TICKER */}
+        {skills && skills.length > 0 && (
+          <section id="tech" className="space-y-8">
+            <div>
+              <div className="eyebrow flex items-center gap-2">
+                <span className="h-px w-8 bg-[#e50914]" /> Tech Stack
+              </div>
+              <h2 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                Tools & technologies I build with.
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {skills.map((cat, idx) => (
+                <div
+                  key={idx}
+                  className="group glass-card relative overflow-hidden p-6 transition-all duration-300 hover:border-[#e50914]/40"
+                >
+                  <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#e50914]/15 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="h-8 w-1 rounded-full bg-gradient-to-b from-[#e50914] to-[#990000]" />
+                    <h3 className="font-display text-lg font-bold text-white">{cat.category}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.skills.map((skill, sIdx) => (
+                      <span
+                        key={sIdx}
+                        className="rounded-lg border border-white/[0.06] bg-white/[0.02] px-2.5 py-1.5 text-xs text-white/70 font-mono transition-colors group-hover:border-white/10 group-hover:text-white"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Animated Infinite Horizontal Marquee */}
+            <div className="mt-12 overflow-hidden mask-fade-x py-4">
+              <div className="flex animate-marquee py-3">
+                {[...marqueeItems, ...marqueeItems].map((item, idx) => (
+                  <span key={idx} className="flex items-center gap-6 whitespace-nowrap px-4">
+                    <span className="font-display text-2xl font-bold uppercase tracking-tight text-white/20 sm:text-4xl">
+                      {item}
+                    </span>
+                    <span className="text-[#e50914] text-xl">✦</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* SOFTWARE DEVELOPMENT PROCESS */}
+        <section id="process" className="space-y-8">
+          <div>
+            <div className="eyebrow flex items-center gap-2">
+              <span className="h-px w-8 bg-[#e50914]" /> How I Work
+            </div>
+            <h2 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-white">
+              Software Development Process
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]">
+            <div className="relative">
+              <div className="absolute left-[27px] top-4 h-[calc(100%-2rem)] w-px bg-gradient-to-b from-[#e50914] via-white/10 to-transparent" />
+              <div className="space-y-3">
+                {processSteps.map((step, idx) => {
+                  const IconComp = step.icon;
+                  return (
+                    <div key={idx} className="group flex items-start gap-5 rounded-2xl p-3 transition-colors hover:bg-white/[0.02]">
+                      <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-full border border-white/10 bg-[#0c0c0e] text-[#e50914] transition-all duration-300 group-hover:border-[#e50914] group-hover:shadow-lg group-hover:shadow-[#e50914]/20">
+                        <IconComp className="h-5 w-5" />
+                      </span>
+                      <div className="pt-1.5">
+                        <div className="flex items-center gap-3">
+                          <span className="font-display text-sm font-bold text-[#e50914]">{step.num}</span>
+                          <h3 className="font-display text-lg font-bold uppercase tracking-wide text-white">{step.title}</h3>
+                        </div>
+                        <p className="mt-1 max-w-md text-sm leading-relaxed text-white/50">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-br from-[#990000] via-[#70040a] to-[#400206] p-8 shadow-2xl shadow-[#e50914]/20">
+                <Quote className="h-16 w-16 text-white/20" />
+                <p className="mt-4 font-display text-2xl font-bold leading-snug text-white sm:text-3xl">
+                  “Clean code and optimal algorithms aren't just details — they are the foundation of great software.”
+                </p>
+                <div className="mt-8">
+                  <p className="font-script text-3xl text-white">{personal.name}</p>
+                  <p className="mt-2 text-xs font-mono uppercase tracking-[0.2em] text-white/70">
+                    Software Development Engineer Aspirant
+                  </p>
+                  <span className="mt-3 inline-block text-2xl text-white/80">✦</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* PROJECTS SHOWCASE */}
         {projects && projects.length > 0 && (
-          <section id="projects" className="space-y-6">
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-xs font-mono font-bold text-[#e50914] uppercase tracking-widest">FEATURED WORK</span>
-              <h2 className="text-3xl font-black text-white flex items-center gap-2">
-                <Code2 className="w-6 h-6 text-[#e50914]" /> Software & AI Projects
+          <section id="projects" className="space-y-8">
+            <div>
+              <div className="eyebrow flex items-center gap-2">
+                <span className="h-px w-8 bg-[#e50914]" /> Portfolio Work
+              </div>
+              <h2 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                Featured Software Projects
               </h2>
             </div>
 
@@ -375,10 +550,10 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
               {projects.map((proj) => (
                 <div
                   key={proj.id}
-                  className="p-7 bg-[#0c0c0e] border border-white/10 hover:border-[#e50914]/80 rounded-3xl space-y-5 transition duration-300 group hover:shadow-2xl hover:shadow-[#e50914]/10 transform hover:-translate-y-1"
+                  className="glass-card p-7 space-y-5 transition duration-300 group hover:border-[#e50914]/60 hover:-translate-y-1"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-black text-white text-lg group-hover:text-[#e50914] transition">{proj.name}</h3>
+                    <h3 className="font-display font-bold text-white text-xl group-hover:text-[#e50914] transition">{proj.name}</h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -391,12 +566,12 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-white/70 leading-relaxed font-light">{proj.description}</p>
 
                   {proj.technologies && proj.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
                       {proj.technologies.map((tech, i) => (
-                        <span key={i} className="text-[10px] font-mono font-bold bg-white/5 text-slate-300 px-3 py-1 rounded-lg border border-white/10">
+                        <span key={i} className="text-[10px] font-mono font-bold bg-white/5 text-white/80 px-3 py-1 rounded-lg border border-white/10">
                           {tech}
                         </span>
                       ))}
@@ -408,41 +583,14 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
           </section>
         )}
 
-        {/* TECHNICAL STACK MATRIX */}
-        {skills && skills.length > 0 && (
-          <section id="skills" className="space-y-6">
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-xs font-mono font-bold text-[#e50914] uppercase tracking-widest">SKILLS MATRIX</span>
-              <h2 className="text-3xl font-black text-white flex items-center gap-2">
-                <Cpu className="w-6 h-6 text-[#e50914]" /> Technical Skills & Tools
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {skills.map((grp) => (
-                <div key={grp.id} className="p-6 bg-[#0c0c0e] border border-white/10 rounded-3xl space-y-4 hover:border-slate-700 transition">
-                  <h3 className="text-xs font-bold font-mono text-[#e50914] uppercase tracking-wider border-b border-white/10 pb-2 flex items-center justify-between">
-                    {grp.category} <ChevronRight className="w-4 h-4 text-slate-600" />
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {grp.skills.map((sk, idx) => (
-                      <span key={idx} className="text-xs font-mono bg-white/5 text-slate-200 px-3 py-1 rounded-xl border border-white/10">
-                        {sk}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* INTERACTIVE CLI TERMINAL WIDGET */}
+        {/* INTERACTIVE CLI TERMINAL */}
         <section id="terminal" className="space-y-6">
-          <div className="border-b border-white/10 pb-4">
-            <span className="text-xs font-mono font-bold text-[#e50914] uppercase tracking-widest">INTERACTIVE SHELL</span>
-            <h2 className="text-3xl font-black text-white flex items-center gap-2">
-              <TerminalIcon className="w-6 h-6 text-[#e50914]" /> Developer CLI Terminal
+          <div>
+            <div className="eyebrow flex items-center gap-2">
+              <span className="h-px w-8 bg-[#e50914]" /> Interactive Shell
+            </div>
+            <h2 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-white">
+              Developer CLI Terminal
             </h2>
           </div>
 
@@ -452,11 +600,11 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
                 <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
                 <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
                 <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-                <span className="ml-3 font-mono text-xs text-slate-400 flex items-center gap-1.5">
+                <span className="ml-3 font-mono text-xs text-white/50 flex items-center gap-1.5">
                   <TerminalIcon className="h-3.5 w-3.5 text-[#e50914]" /> {personal.name?.toLowerCase().replace(/\s+/g, '') || 'user'}@portfolio — zsh
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-slate-500 uppercase">Interactive Terminal</span>
+              <span className="text-[10px] font-mono text-white/30 uppercase">Interactive Terminal</span>
             </div>
 
             <div className="h-[300px] overflow-y-auto p-4 font-mono text-xs sm:text-sm leading-relaxed space-y-2">
@@ -465,11 +613,11 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
                   {item.type === 'input' ? (
                     <div className="flex items-center gap-2 text-white">
                       <span className="text-[#e50914]">➜</span>
-                      <span className="text-cyan-400">~</span>
+                      <span className="text-sky-400">~</span>
                       <span>{item.text}</span>
                     </div>
                   ) : (
-                    <div className="whitespace-pre-wrap text-slate-300">
+                    <div className="whitespace-pre-wrap text-white/70">
                       {item.text}
                     </div>
                   )}
@@ -479,7 +627,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
 
               <form onSubmit={handleTerminalSubmit} className="mt-2 flex items-center gap-2">
                 <span className="text-[#e50914]">➜</span>
-                <span className="text-cyan-400">~</span>
+                <span className="text-sky-400">~</span>
                 <input
                   type="text"
                   value={termInput}
@@ -487,7 +635,7 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
                   placeholder="type 'help'..."
                   spellCheck="false"
                   autoComplete="off"
-                  className="flex-1 bg-transparent text-white caret-[#e50914] outline-none placeholder:text-slate-600"
+                  className="flex-1 bg-transparent text-white caret-[#e50914] outline-none placeholder:text-white/20"
                 />
               </form>
             </div>
@@ -496,77 +644,96 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
 
         {/* WORK EXPERIENCE */}
         {experience && experience.length > 0 && (
-          <section id="experience" className="space-y-6">
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-xs font-mono font-bold text-[#e50914] uppercase tracking-widest">TIMELINE</span>
-              <h2 className="text-3xl font-black text-white flex items-center gap-2">
-                <Briefcase className="w-6 h-6 text-[#e50914]" /> Experience & Engineering Roles
+          <section id="experience" className="space-y-8">
+            <div>
+              <div className="eyebrow flex items-center gap-2">
+                <span className="h-px w-8 bg-[#e50914]" /> Career Timeline
+              </div>
+              <h2 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                Engineering Experience
               </h2>
             </div>
 
             <div className="space-y-4">
               {experience.map((exp) => (
-                <div key={exp.id} className="p-6 bg-[#0c0c0e] border border-white/10 rounded-3xl space-y-3">
+                <div key={exp.id} className="glass-card p-6 space-y-3">
                   <div className="flex flex-wrap justify-between items-center gap-2">
                     <div>
-                      <h3 className="font-black text-white text-base">{exp.role}</h3>
-                      <p className="text-xs text-[#e50914] font-mono font-bold">{exp.company} • {exp.location || 'Remote'}</p>
+                      <h3 className="font-display font-bold text-white text-lg">{exp.role}</h3>
+                      <p className="text-xs text-[#e50914] font-mono font-semibold">{exp.company} • {exp.location || 'Remote'}</p>
                     </div>
-                    <span className="text-[11px] font-mono bg-[#e50914]/10 text-[#e50914] px-3 py-1 rounded-full border border-[#e50914]/30 font-bold">
+                    <span className="text-xs font-mono bg-[#e50914]/10 text-[#e50914] px-3.5 py-1 rounded-full border border-[#e50914]/30 font-bold">
                       {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                     </span>
                   </div>
-                  {exp.description && <p className="text-xs text-slate-300 leading-relaxed font-light">{exp.description}</p>}
+                  {exp.description && <p className="text-xs text-white/70 leading-relaxed font-light">{exp.description}</p>}
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* EDUCATION & DEGREES */}
+        {/* EDUCATION & CREDENTIALS */}
         {education && education.length > 0 && (
-          <section id="education" className="space-y-6">
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-xs font-mono font-bold text-[#e50914] uppercase tracking-widest">ACADEMICS</span>
-              <h2 className="text-3xl font-black text-white flex items-center gap-2">
-                <GraduationCap className="w-6 h-6 text-[#e50914]" /> Education & Qualifications
-              </h2>
-            </div>
+          <section id="education" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div>
+                <div className="eyebrow flex items-center gap-2">
+                  <span className="h-px w-8 bg-[#e50914]" /> Academics
+                </div>
+                <h2 className="mt-4 font-display text-4xl font-bold text-white">Education</h2>
+              </div>
 
-            <div className="space-y-4">
               {education.map((edu) => (
-                <div key={edu.id} className="p-6 bg-[#0c0c0e] border border-white/10 rounded-3xl flex flex-wrap justify-between items-center gap-4">
-                  <div>
-                    <h3 className="font-black text-white text-base">{edu.degree}</h3>
-                    <p className="text-xs text-slate-400 font-mono">{edu.institution} • {edu.field}</p>
+                <div key={edu.id} className="glass-card p-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-6 w-6 text-[#e50914]" />
+                    <h3 className="font-display text-2xl font-bold text-white">{edu.institution}</h3>
                   </div>
+                  <p className="text-sm text-white/70">{edu.degree} in {edu.field}</p>
                   {edu.gpa && (
-                    <span className="px-3.5 py-1 bg-[#e50914]/15 text-[#e50914] border border-[#e50914]/30 rounded-full text-xs font-mono font-bold">
-                      GPA {edu.gpa}
-                    </span>
+                    <div className="inline-flex items-center gap-2 rounded-lg border border-[#e50914]/30 bg-[#e50914]/10 px-3.5 py-1.5 text-sm font-semibold text-[#e50914]">
+                      Cumulative CGPA: {edu.gpa}
+                    </div>
                   )}
                 </div>
               ))}
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <div className="eyebrow flex items-center gap-2">
+                  <span className="h-px w-8 bg-[#e50914]" /> Competencies
+                </div>
+                <h2 className="mt-4 font-display text-4xl font-bold text-white">Key Skills</h2>
+              </div>
+
+              <div className="glass-card p-7 space-y-4">
+                <h3 className="font-display text-lg font-bold text-white">Driven by clean architecture & performance.</h3>
+                <p className="text-sm leading-relaxed text-white/60">
+                  Continuously deepening knowledge in Data Structures, Algorithms, system design, and AI integrations. I focus on writing performant code and delivering full-stack solutions.
+                </p>
+              </div>
             </div>
           </section>
         )}
 
         {/* FOOTER */}
-        <footer className="pt-12 border-t border-white/10 text-center text-xs text-slate-500 font-mono space-y-3">
-          <div className="flex justify-center gap-4 text-slate-400">
+        <footer className="pt-12 border-t border-white/10 text-center text-xs text-white/50 font-mono space-y-3">
+          <div className="flex justify-center gap-6 text-white/70">
             {personal.socials?.github && <a href={personal.socials.github} target="_blank" rel="noopener noreferrer" className="hover:text-[#e50914]">GitHub</a>}
             {personal.socials?.linkedin && <a href={personal.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#e50914]">LinkedIn</a>}
             {personal.email && <a href={`mailto:${personal.email}`} className="hover:text-[#e50914]">Email</a>}
           </div>
-          <p>© {new Date().getFullYear()} {personal.name}. Top 1 Premier Flagship Theme.</p>
+          <p>© {new Date().getFullYear()} {personal.name}. Top 1 Premier Flagship Portfolio.</p>
         </footer>
+
       </main>
 
-      {/* AI ASSISTANT MODAL */}
+      {/* AI CHAT ASSISTANT MODAL */}
       {isAiModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="w-full max-w-lg bg-[#0d0d12] border border-[#e50914]/50 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[520px]">
-            {/* Modal Header */}
             <div className="p-4 bg-[#14141d] border-b border-white/10 flex justify-between items-center">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-[#e50914] text-white flex items-center justify-center font-bold">
@@ -579,13 +746,12 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
               </div>
               <button
                 onClick={() => setIsAiModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg transition"
+                className="p-1.5 text-white/40 hover:text-white rounded-lg transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Chat Body */}
             <div className="flex-1 p-4 overflow-y-auto space-y-3 font-sans text-xs">
               {aiMessages.map((m, idx) => (
                 <div
@@ -616,18 +782,17 @@ export default function Top1PremierTheme({ data }: { data: PortfolioData }) {
               <div ref={aiBottomRef} />
             </div>
 
-            {/* Input Footer */}
             <form onSubmit={handleAiSubmit} className="p-3 bg-[#14141d] border-t border-white/10 flex gap-2">
               <input
                 type="text"
                 value={aiInput}
                 onChange={(e) => setAiInput(e.target.value)}
                 placeholder="Ask about skills, projects, contact info..."
-                className="flex-1 px-4 py-2.5 bg-[#0a0a0e] text-white text-xs rounded-xl border border-white/10 outline-none focus:border-[#e50914] placeholder:text-slate-500"
+                className="flex-1 px-4 py-2.5 bg-[#0a0a0e] text-white text-xs rounded-xl border border-white/10 outline-none focus:border-[#e50914] placeholder:text-white/30"
               />
               <button
                 type="submit"
-                className="px-4 py-2.5 bg-[#e50914] hover:bg-[#ff1e27] text-white font-bold text-xs rounded-xl transition flex items-center justify-center"
+                className="px-4 py-2.5 bg-[#e50914] hover:bg-[#ff1f2d] text-white font-bold text-xs rounded-xl transition flex items-center justify-center"
               >
                 <Send className="w-4 h-4" />
               </button>
