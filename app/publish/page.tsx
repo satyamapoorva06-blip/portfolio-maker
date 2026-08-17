@@ -24,6 +24,8 @@ import {
   X,
   Loader2,
   Key,
+  HelpCircle,
+  Zap,
 } from 'lucide-react';
 
 export default function PublishPage() {
@@ -353,57 +355,79 @@ export default function PublishPage() {
 
               {/* STEP 1: GitHub Creation */}
               {deployStep === 1 && (
-                <div className="space-y-4">
-                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
+                <div className="space-y-5">
+                  <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-3">
                       <Github className="w-4 h-4 text-cyan-400" /> Enter Your GitHub Details
                     </div>
 
-                    <div>
-                      <label className="text-[11px] text-slate-400">Your GitHub Username (Required)</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. amansatyam408-prog or https://github.com/amansatyam408-prog"
-                        value={inputGithubUser}
-                        onChange={(e) => {
-                          const raw = e.target.value;
-                          const cleaned = raw.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/.*$/, '').replace(/^@/, '');
-                          setInputGithubUser(cleaned);
-                        }}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
-                      />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-semibold text-slate-300">GitHub Username</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. satyamapoorva06-blip"
+                          value={inputGithubUser}
+                          onChange={(e) => {
+                            const raw = e.target.value;
+                            const cleaned = raw.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/.*$/, '').replace(/^@/, '');
+                            setInputGithubUser(cleaned);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1.5 focus:border-cyan-500 focus:outline-none font-mono"
+                        />
+                        <p className="text-[11px] text-slate-500 mt-1">Your official GitHub handle for automated repository creation.</p>
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-semibold text-slate-300">GitHub Personal Access Token (Optional)</label>
+                        <input
+                          type="password"
+                          placeholder="ghp_xxxxxxxxxxxxxxxxx"
+                          value={inputGithubToken}
+                          onChange={(e) => setInputGithubToken(e.target.value.trim())}
+                          className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1.5 focus:border-cyan-500 focus:outline-none font-mono"
+                        />
+                        <p className="text-[11px] text-slate-500 mt-1">Used to commit source code directly to your GitHub account.</p>
+                      </div>
                     </div>
 
-                    <div>
-                      <label className="text-[11px] text-slate-400">GitHub Personal Access Token (Optional)</label>
-                      <input
-                        type="password"
-                        placeholder="ghp_xxxxxxxxxxxxxxxxx"
-                        value={inputGithubToken}
-                        onChange={(e) => setInputGithubToken(e.target.value.trim())}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
-                      />
-                    </div>
-
-                    {/* 🔑 GitHub 3-Step Token Guide */}
-                    <div className="p-3.5 bg-slate-900/90 border border-[#e50914]/40 rounded-xl space-y-2 text-xs">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-white">
-                        <span className="flex items-center gap-1.5 text-[#e50914]">
-                          <Key className="w-3.5 h-3.5" /> GitHub Token Helper (3 Quick Steps)
+                    {/* 🔑 GitHub 3-Step Token Guide Card (Matches Screenshot 100%) */}
+                    <div className="p-4 bg-[#0b141d] border border-cyan-500/30 rounded-2xl space-y-3 text-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-cyan-400">
+                        <span className="flex items-center gap-2">
+                          <HelpCircle className="w-4 h-4 text-cyan-400 shrink-0" /> How to get your GitHub Access Token (3 Quick Steps):
                         </span>
                         <a
                           href="https://github.com/settings/tokens/new?description=Portify%20AI%20Token&scopes=repo,workflow"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-2.5 py-1 bg-[#e50914] hover:bg-[#ff1f2d] text-white text-[10px] font-extrabold rounded-lg flex items-center gap-1 transition shadow-md w-fit"
+                          className="text-cyan-400 hover:underline font-bold text-xs flex items-center gap-1 shrink-0"
                         >
                           Open GitHub Token Generator ↗
                         </a>
                       </div>
-                      <ol className="list-decimal list-inside text-[11px] text-slate-300 space-y-1 font-sans leading-relaxed">
-                        <li>Click <strong className="text-white font-mono">Open GitHub Token Generator ↗</strong> above (or go to <code className="text-cyan-400">github.com/settings/tokens</code>).</li>
-                        <li>Set Token Name to <strong className="text-white">"Portify AI"</strong> and check the <code className="text-[#e50914] font-bold">repo</code> scope (Full control of repositories).</li>
-                        <li>Click <strong className="text-emerald-400 font-bold">Generate token</strong> and copy your token starting with <code className="text-amber-400 font-bold">ghp_...</code> into the box!</li>
+                      <ol className="list-decimal list-inside text-xs text-slate-300 space-y-1.5 font-sans leading-relaxed">
+                        <li>
+                          Click <strong className="text-white">Open GitHub Token Generator</strong> above (or go to{' '}
+                          <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" className="text-cyan-400 font-mono underline">
+                            github.com/settings/tokens
+                          </a>
+                          ).
+                        </li>
+                        <li>
+                          Set Token Name to <strong className="text-white">"Portify AI"</strong> and check the{' '}
+                          <span className="bg-emerald-500/20 text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] font-bold">
+                            repo
+                          </span>{' '}
+                          scope (Full control of repositories).
+                        </li>
+                        <li>
+                          Click <strong className="text-white">Generate token</strong> at the bottom and copy your token starting with{' '}
+                          <span className="bg-cyan-500/20 text-cyan-300 font-mono px-1.5 py-0.5 rounded border border-cyan-500/40 text-[11px] font-bold">
+                            ghp_...
+                          </span>{' '}
+                          into the box above!
+                        </li>
                       </ol>
                     </div>
                   </div>
@@ -421,7 +445,7 @@ export default function PublishPage() {
 
               {/* STEP 2: Vercel Deployment */}
               {deployStep === 2 && createdGithubRepo && (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div className="p-4 bg-slate-950 border border-emerald-500/40 rounded-2xl space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-emerald-400 font-bold flex items-center gap-1.5">
@@ -438,41 +462,59 @@ export default function PublishPage() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
-                      <Rocket className="w-4 h-4 text-emerald-400" /> Deploy to Vercel from GitHub Repo
+                  <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-bold text-white border-b border-slate-800 pb-3">
+                      <Zap className="w-4 h-4 text-emerald-400" /> Vercel Deployment Integration
                     </div>
 
                     <div>
-                      <label className="text-[11px] text-slate-400">Vercel Access Token (Optional)</label>
+                      <label className="text-xs font-semibold text-slate-300">Vercel Personal Access Token (Optional)</label>
                       <input
                         type="password"
                         placeholder="vercel_token_xxxxxxxxxxxx"
                         value={inputVercelToken}
                         onChange={(e) => setInputVercelToken(e.target.value.trim())}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white mt-1.5 focus:border-emerald-500 focus:outline-none font-mono"
                       />
+                      <p className="text-[11px] text-slate-500 mt-1">Enables 1-Click live deployments to your Vercel cloud dashboard.</p>
                     </div>
 
-                    {/* 🚀 Vercel 3-Step Token Guide */}
-                    <div className="p-3.5 bg-slate-900/90 border border-emerald-500/40 rounded-xl space-y-2 text-xs">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-white">
-                        <span className="flex items-center gap-1.5 text-emerald-400">
-                          <Key className="w-3.5 h-3.5" /> Vercel Token Helper (3 Quick Steps)
+                    {/* 🚀 Vercel 3-Step Token Guide Card (Matches Screenshot 100%) */}
+                    <div className="p-4 bg-[#0b1d16] border border-emerald-500/30 rounded-2xl space-y-3 text-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-emerald-400">
+                        <span className="flex items-center gap-2">
+                          <HelpCircle className="w-4 h-4 text-emerald-400 shrink-0" /> How to get your Vercel Access Token (3 Quick Steps):
                         </span>
                         <a
                           href="https://vercel.com/account/tokens"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-extrabold rounded-lg flex items-center gap-1 transition shadow-md w-fit"
+                          className="text-emerald-400 hover:underline font-bold text-xs flex items-center gap-1 shrink-0"
                         >
                           Open Vercel Token Page ↗
                         </a>
                       </div>
-                      <ol className="list-decimal list-inside text-[11px] text-slate-300 space-y-1 font-sans leading-relaxed">
-                        <li>Click <strong className="text-white font-mono">Open Vercel Token Page ↗</strong> above (or go to <code className="text-cyan-400">vercel.com/account/tokens</code>).</li>
-                        <li>Click <strong className="text-white font-bold">Create Token</strong>, enter Name <strong className="text-white">"Portify AI"</strong>, and select Scope: <strong className="text-emerald-400 font-bold">Full Account</strong>.</li>
-                        <li>Click <strong className="text-emerald-400 font-bold">Create</strong> and copy your generated Vercel token starting with <code className="text-amber-400 font-bold">vercel_...</code> into the box!</li>
+                      <ol className="list-decimal list-inside text-xs text-slate-300 space-y-1.5 font-sans leading-relaxed">
+                        <li>
+                          Click <strong className="text-white">Open Vercel Token Page</strong> above (or go to{' '}
+                          <a href="https://vercel.com/account/tokens" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-mono underline">
+                            vercel.com/account/tokens
+                          </a>
+                          ).
+                        </li>
+                        <li>
+                          Click <strong className="text-white">Create Token</strong>, enter Name <strong className="text-white">"Portify AI"</strong>, and select Scope:{' '}
+                          <span className="bg-emerald-500/20 text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] font-bold">
+                            Full Account
+                          </span>.
+                        </li>
+                        <li>
+                          Click <strong className="text-white">Create</strong> and copy your generated Vercel token starting with{' '}
+                          <span className="bg-emerald-500/20 text-emerald-300 font-mono px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] font-bold">
+                            vercel_...
+                          </span>{' '}
+                          into the box above!
+                        </li>
                       </ol>
                     </div>
                   </div>
