@@ -23,6 +23,7 @@ import {
   Github,
   X,
   Loader2,
+  Key,
 } from 'lucide-react';
 
 export default function PublishPage() {
@@ -362,9 +363,13 @@ export default function PublishPage() {
                       <label className="text-[11px] text-slate-400">Your GitHub Username (Required)</label>
                       <input
                         type="text"
-                        placeholder="e.g. satyamapoorva06-blip"
+                        placeholder="e.g. amansatyam408-prog or https://github.com/amansatyam408-prog"
                         value={inputGithubUser}
-                        onChange={(e) => setInputGithubUser(e.target.value)}
+                        onChange={(e) => {
+                          const raw = e.target.value;
+                          const cleaned = raw.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/.*$/, '').replace(/^@/, '');
+                          setInputGithubUser(cleaned);
+                        }}
                         className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
                       />
                     </div>
@@ -375,9 +380,31 @@ export default function PublishPage() {
                         type="password"
                         placeholder="ghp_xxxxxxxxxxxxxxxxx"
                         value={inputGithubToken}
-                        onChange={(e) => setInputGithubToken(e.target.value)}
+                        onChange={(e) => setInputGithubToken(e.target.value.trim())}
                         className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
                       />
+                    </div>
+
+                    {/* 🔑 GitHub 3-Step Token Guide */}
+                    <div className="p-3.5 bg-slate-900/90 border border-[#e50914]/40 rounded-xl space-y-2 text-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-white">
+                        <span className="flex items-center gap-1.5 text-[#e50914]">
+                          <Key className="w-3.5 h-3.5" /> GitHub Token Helper (3 Quick Steps)
+                        </span>
+                        <a
+                          href="https://github.com/settings/tokens/new?description=Portify%20AI%20Token&scopes=repo,workflow"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1 bg-[#e50914] hover:bg-[#ff1f2d] text-white text-[10px] font-extrabold rounded-lg flex items-center gap-1 transition shadow-md w-fit"
+                        >
+                          Open GitHub Token Generator ↗
+                        </a>
+                      </div>
+                      <ol className="list-decimal list-inside text-[11px] text-slate-300 space-y-1 font-sans leading-relaxed">
+                        <li>Click <strong className="text-white font-mono">Open GitHub Token Generator ↗</strong> above (or go to <code className="text-cyan-400">github.com/settings/tokens</code>).</li>
+                        <li>Set Token Name to <strong className="text-white">"Portify AI"</strong> and check the <code className="text-[#e50914] font-bold">repo</code> scope (Full control of repositories).</li>
+                        <li>Click <strong className="text-emerald-400 font-bold">Generate token</strong> and copy your token starting with <code className="text-amber-400 font-bold">ghp_...</code> into the box!</li>
+                      </ol>
                     </div>
                   </div>
 
@@ -411,14 +438,55 @@ export default function PublishPage() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={handleDeployToVercel}
-                    disabled={deployLoading}
-                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
-                  >
-                    {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
-                    {deployLoading ? 'Deploying to Vercel...' : 'Step 2: Deploy to Vercel Cloud'}
-                  </button>
+                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
+                      <Rocket className="w-4 h-4 text-emerald-400" /> Deploy to Vercel from GitHub Repo
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-slate-400">Vercel Access Token (Optional)</label>
+                      <input
+                        type="password"
+                        placeholder="vercel_token_xxxxxxxxxxxx"
+                        value={inputVercelToken}
+                        onChange={(e) => setInputVercelToken(e.target.value.trim())}
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white mt-1 focus:border-cyan-500 focus:outline-none font-mono"
+                      />
+                    </div>
+
+                    {/* 🚀 Vercel 3-Step Token Guide */}
+                    <div className="p-3.5 bg-slate-900/90 border border-emerald-500/40 rounded-xl space-y-2 text-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-bold text-white">
+                        <span className="flex items-center gap-1.5 text-emerald-400">
+                          <Key className="w-3.5 h-3.5" /> Vercel Token Helper (3 Quick Steps)
+                        </span>
+                        <a
+                          href="https://vercel.com/account/tokens"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-extrabold rounded-lg flex items-center gap-1 transition shadow-md w-fit"
+                        >
+                          Open Vercel Token Page ↗
+                        </a>
+                      </div>
+                      <ol className="list-decimal list-inside text-[11px] text-slate-300 space-y-1 font-sans leading-relaxed">
+                        <li>Click <strong className="text-white font-mono">Open Vercel Token Page ↗</strong> above (or go to <code className="text-cyan-400">vercel.com/account/tokens</code>).</li>
+                        <li>Click <strong className="text-white font-bold">Create Token</strong>, enter Name <strong className="text-white">"Portify AI"</strong>, and select Scope: <strong className="text-emerald-400 font-bold">Full Account</strong>.</li>
+                        <li>Click <strong className="text-emerald-400 font-bold">Create</strong> and copy your generated Vercel token starting with <code className="text-amber-400 font-bold">vercel_...</code> into the box!</li>
+                      </ol>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <button
+                      onClick={handleDeployToVercel}
+                      disabled={deployLoading}
+                      className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-2 transition"
+                    >
+                      {deployLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+                      {deployLoading ? 'Deploying to Vercel...' : 'Step 2: Deploy to Vercel Cloud'}
+                    </button>
+                  </div>
                 </div>
               )}
 
