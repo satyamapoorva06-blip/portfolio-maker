@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/landing/Navbar';
 import ProgressStepper from '@/components/navigation/ProgressStepper';
 import { getStoredPortfolios, getStoredPortfolio } from '@/lib/storage/local-store';
 
-export default function CustomizePage() {
+function CustomizeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -26,12 +26,20 @@ export default function CustomizePage() {
   }, [id, router]);
 
   return (
+    <div className="flex items-center justify-center p-24 text-slate-400 text-sm font-mono">
+      Loading Theme Customizer & Live Preview...
+    </div>
+  );
+}
+
+export default function CustomizePage() {
+  return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
       <ProgressStepper currentStep={3} />
-      <div className="flex items-center justify-center p-24 text-slate-400 text-sm font-mono">
-        Loading Theme Customizer & Live Preview...
-      </div>
+      <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono">Loading...</div>}>
+        <CustomizeContent />
+      </Suspense>
     </div>
   );
 }
