@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/landing/Navbar';
 import ProgressStepper from '@/components/navigation/ProgressStepper';
 import { saveStoredPortfolio, isUserLoggedIn } from '@/lib/storage/local-store';
-import { UploadCloud, CheckCircle2, Loader2, AlertCircle, ArrowRight, Sparkles, FileText } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} Bytes`;

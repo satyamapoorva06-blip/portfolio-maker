@@ -6,7 +6,7 @@ import Navbar from '@/components/landing/Navbar';
 import ProgressStepper from '@/components/navigation/ProgressStepper';
 import { getStoredPortfolio, saveStoredPortfolio } from '@/lib/storage/local-store';
 import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, CheckCircle2, User, Code2, Briefcase, GraduationCap, ArrowRight, ArrowLeft, Save, Plus, Trash2 } from 'lucide-react';
+import { Sparkles, CheckCircle2, User, Code2, Briefcase, GraduationCap, ArrowRight, ArrowLeft, Save, Trash2 } from 'lucide-react';
 
 function ParseReviewContent() {
   const router = useRouter();
