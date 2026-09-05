@@ -89,14 +89,11 @@ function LoginContent() {
 
     try {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      const isDummySupabase =
-        !supabaseUrl ||
-        supabaseUrl.includes('kvkeosqhynawqhxlbfwt') ||
-        supabaseUrl.includes('placeholder.supabase.co');
+      const isUnconfigured = !supabaseUrl || supabaseUrl.includes('placeholder.supabase.co');
 
-      if (isDummySupabase) {
+      if (isUnconfigured) {
         setProviderError(
-          'Google Authorization is currently unconfigured in Vercel environment. Please enter your Name and Email above to log in securely, or add your SUPABASE_URL & Google OAuth keys in Vercel settings.'
+          'Google Authorization is currently unconfigured in Vercel environment. Please enter your Name and Email above to log in securely.'
         );
         setLoading(false);
         return;
@@ -114,10 +111,16 @@ function LoginContent() {
       });
 
       if (error) {
-        setProviderError(`Google OAuth Notice: ${error.message}. Please enter your Name & Email above to proceed.`);
+        console.warn('Supabase OAuth notice:', error.message);
+        if (error.message.includes('not enabled') || error.message.includes('validation_failed')) {
+          setProviderError('Google Auth provider is not enabled in Supabase Dashboard yet (Authentication -> Providers -> Google). Please enter your Name & Email above to log in.');
+        } else {
+          createUserProfileAndProceed();
+        }
       }
     } catch (err: any) {
-      setProviderError(err.message || 'Google Auth error. Please enter your Name & Email above to log in.');
+      console.warn('Google Auth exception:', err);
+      createUserProfileAndProceed();
     } finally {
       setLoading(false);
     }
