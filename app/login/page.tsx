@@ -83,27 +83,17 @@ function LoginContent() {
     return null;
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     setLoading(true);
     setProviderError('');
 
     try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      const isUnconfigured = !supabaseUrl || supabaseUrl.includes('placeholder.supabase.co');
-
-      if (isUnconfigured) {
-        setProviderError(
-          'Google Authorization is currently unconfigured in Vercel environment. Please enter your Name and Email above to log in securely.'
-        );
-        setLoading(false);
-        return;
-      }
-
       const supabase = createClient();
-      let rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio-maker-topaz.vercel.app';
+      const rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio-maker-topaz.vercel.app';
       const cleanOrigin = rawOrigin.replace(/\s+/g, '-');
 
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${cleanOrigin}/login?next=${encodeURIComponent(nextTarget)}`,
@@ -111,17 +101,20 @@ function LoginContent() {
       });
 
       if (error) {
-        console.warn('Supabase OAuth notice:', error.message);
-        if (error.message.includes('not enabled') || error.message.includes('validation_failed')) {
-          setProviderError('Google Auth provider is not enabled in Supabase Dashboard yet (Authentication -> Providers -> Google). Please enter your Name & Email above to log in.');
-        } else {
-          createUserProfileAndProceed();
-        }
+        console.error('Supabase OAuth notice:', error.message);
+        setProviderError(`Google Login Notice: ${error.message}`);
+        setLoading(false);
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        setLoading(false);
       }
     } catch (err: any) {
-      console.warn('Google Auth exception:', err);
-      createUserProfileAndProceed();
-    } finally {
+      console.error('Google Auth exception:', err);
+      setProviderError(err.message || 'Google Auth Error');
       setLoading(false);
     }
   };
@@ -213,7 +206,8 @@ function LoginContent() {
       <div className="space-y-4">
         {/* Continue with Google CTA */}
         <button
-          onClick={handleGoogleLogin}
+          type="button"
+          onClick={(e) => handleGoogleLogin(e)}
           disabled={loading}
           className="w-full py-3.5 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-2xl text-xs shadow-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5"
         >
