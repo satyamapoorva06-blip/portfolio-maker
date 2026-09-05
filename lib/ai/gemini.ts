@@ -3,19 +3,22 @@ import { PortfolioData } from '@/types/portfolio';
 import { parseResumeTextHeuristically } from './heuristic-fallback';
 
 export async function parseResumeWithGemini(resumeText: string, apiKey: string): Promise<PortfolioData> {
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const genAI = new GoogleGenerativeAI(apiKey);
+  let resultText = '';
 
-    const prompt = `
+  // Try modern Gemini models with fallback
+  const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+
+  const prompt = `
 You are an expert resume parser for Portify AI.
 Extract structured portfolio data from the following resume text into a strict JSON object.
 
 RULES:
 1. NEVER invent jobs, degrees, projects, skills, or certifications not mentioned in the resume.
 2. If information is missing, leave the field as an empty string or empty array.
-3. Categorize skills logically (e.g. Programming Languages, Frameworks & Libraries, Databases & Cloud, Tools).
-4. Return ONLY raw valid JSON (no markdown triple backticks, no explanatory text).
+3. Categorize skills logically based on the resume text (e.g. Programming Languages, Frameworks & Libraries, Databases & Infrastructure, Tools & Platforms, Domain Expertise). Include ALL technical and professional skills mentioned.
+4. Extract exact highlights/bullet points from the candidate's projects and experience into "about.highlights".
+5. Return ONLY raw valid JSON (no markdown triple backticks, no explanatory text).
 
 EXPECTED JSON SCHEMA:
 {
@@ -105,18 +108,57 @@ RESUME TEXT:
 ${resumeText}
 `;
 
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text().trim();
-    const cleanJson = responseText.replace(/^```json/i, '').replace(/^```/, '').replace(/```$/, '').trim();
-    
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(prompt);
+      resultText = result.response.text().trim();
+      if (resultText && resultText.length > 20) break;
+    } catch (err) {
+      console.warn(`[Portify AI] Gemini model ${modelName} call failed, trying fallback model:`, err);
+    }
+  }
+
+  if (!resultText) {
+    console.warn('[Portify AI] All Gemini API models failed. Using heuristic parser fallback.');
+    return parseResumeTextHeuristically(resumeText);
+  }
+
+  try {
+    const cleanJson = resultText.replace(/^```json/i, '').replace(/^```/, '').replace(/```$/, '').trim();
     const parsed = JSON.parse(cleanJson);
 
-    // Merge with default base template structure
+    // Merge with baseline structure strictly preserving AI parsed fields
     const base = parseResumeTextHeuristically(resumeText);
+
+    const mergedPersonal = {
+      ...base.personal,
+      name: parsed.personal?.name || base.personal.name,
+      title: parsed.personal?.title || base.personal.title,
+      email: parsed.personal?.email || base.personal.email,
+      phone: parsed.personal?.phone || base.personal.phone,
+      location: parsed.personal?.location || base.personal.location,
+      tagline: parsed.personal?.tagline || base.personal.tagline,
+      socials: {
+        github: parsed.personal?.socials?.github || base.personal.socials?.github || '',
+        linkedin: parsed.personal?.socials?.linkedin || base.personal.socials?.linkedin || '',
+        twitter: parsed.personal?.socials?.twitter || base.personal.socials?.twitter || '',
+        website: parsed.personal?.socials?.website || base.personal.socials?.website || '',
+      },
+    };
+
+    const mergedAbout = {
+      summary: parsed.about?.summary || base.about.summary,
+      highlights: Array.isArray(parsed.about?.highlights) && parsed.about.highlights.length > 0
+        ? parsed.about.highlights
+        : base.about.highlights,
+      openToWork: parsed.about?.openToWork ?? true,
+    };
+
     return {
       ...base,
-      personal: { ...base.personal, ...parsed.personal },
-      about: { ...base.about, ...parsed.about },
+      personal: mergedPersonal,
+      about: mergedAbout,
       skills: Array.isArray(parsed.skills) && parsed.skills.length > 0 ? parsed.skills : base.skills,
       experience: Array.isArray(parsed.experience) && parsed.experience.length > 0 ? parsed.experience : base.experience,
       projects: Array.isArray(parsed.projects) && parsed.projects.length > 0 ? parsed.projects : base.projects,
@@ -125,7 +167,7 @@ ${resumeText}
       achievements: Array.isArray(parsed.achievements) ? parsed.achievements : [],
     };
   } catch (error) {
-    console.error('Gemini parsing error, using heuristic fallback:', error);
+    console.error('Gemini JSON parsing error, using heuristic fallback:', error);
     return parseResumeTextHeuristically(resumeText);
   }
 }

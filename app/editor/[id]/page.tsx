@@ -6,6 +6,7 @@ import { PortfolioData } from '@/types/portfolio';
 import { UserProfile } from '@/types/database';
 import {
   getStoredPortfolios,
+  getStoredPortfolio,
   saveStoredPortfolio,
   getStoredUser,
   INITIAL_PORTFOLIO,
@@ -27,8 +28,7 @@ export default function EditorPage() {
   const [showDeployModal, setShowDeployModal] = useState(false);
 
   useEffect(() => {
-    const list = getStoredPortfolios();
-    const found = list.find((p) => p.id === portfolioId || p.slug === portfolioId);
+    const found = getStoredPortfolio(portfolioId) || getStoredPortfolios().find((p) => p.id === portfolioId || p.slug === portfolioId);
     if (found) {
       setPortfolio(found);
     }

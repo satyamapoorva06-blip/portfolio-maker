@@ -199,19 +199,20 @@ export function getStoredPortfolios(): PortfolioData[] {
   // Return portfolios matching the logged in user's ID
   const userPortfolios = all.filter((p) => p.userId === currentUser.id);
   
-  // Fallback for admin demo account
-  if (userPortfolios.length === 0 && currentUser.id === DEFAULT_USER.id) {
-    return [INITIAL_PORTFOLIO];
+  // If user matches, return user portfolios; otherwise return all stored portfolios as fallback
+  if (userPortfolios.length > 0) {
+    return userPortfolios;
   }
   
-  return userPortfolios;
+  return all;
 }
 
 export function getStoredPortfolio(id?: string): PortfolioData | null {
   if (!IS_BROWSER) return INITIAL_PORTFOLIO;
   const all = getAllPortfolios();
   if (id) {
-    return all.find((p) => p.id === id || p.slug === id) || null;
+    const match = all.find((p) => p.id === id || p.slug === id);
+    if (match) return match;
   }
   return all.length > 0 ? all[0] : null;
 }

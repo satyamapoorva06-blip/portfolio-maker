@@ -32,7 +32,12 @@ Return ONLY the raw extracted text line by line.
     }
   }
 
-  // Fallback if no API key or OCR failed: extract printable text or use clean name
-  const cleanName = (fileName || 'Resume Photo').replace(/\.(jpg|jpeg|png|webp|heic)$/i, '').replace(/[-_]/g, ' ');
-  return `${cleanName}\nSoftware Engineer & Developer\nComputer Science & Engineering Student\nEducation: GLA University B.Tech CSE\nContact Email: candidate@example.com`;
+  // Fallback if no API key or OCR failed: extract clean name without hardcoded dummy details
+  const cleanName = (fileName || 'Candidate Photo')
+    .replace(/\.(jpg|jpeg|png|webp|heic)$/i, '')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b(resume|cv|portfolio|photo|image)\b/gi, '')
+    .trim() || 'Candidate';
+
+  return `${cleanName}\nProfessional Candidate\nResume Photo: ${fileName || 'Resume.jpg'}`;
 }

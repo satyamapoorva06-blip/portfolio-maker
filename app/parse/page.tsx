@@ -290,6 +290,158 @@ function ParseReviewContent() {
         </div>
       )}
 
+      {/* TAB 4: EXPERIENCE */}
+      {activeTab === 'experience' && (
+        <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Work Experience</h3>
+          <div className="space-y-6">
+            {data.experience.length === 0 ? (
+              <p className="text-xs text-slate-400 font-mono">No work experience entries parsed. You can add them in the customize editor.</p>
+            ) : (
+              data.experience.map((exp, idx) => (
+                <div key={exp.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Company Name"
+                      value={exp.company}
+                      onChange={(e) => {
+                        const newExp = [...data.experience];
+                        newExp[idx].company = e.target.value;
+                        setData({ ...data, experience: newExp });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white font-bold"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Role / Position"
+                      value={exp.role}
+                      onChange={(e) => {
+                        const newExp = [...data.experience];
+                        newExp[idx].role = e.target.value;
+                        setData({ ...data, experience: newExp });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-cyan-300 font-bold"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Start Date"
+                      value={exp.startDate || ''}
+                      onChange={(e) => {
+                        const newExp = [...data.experience];
+                        newExp[idx].startDate = e.target.value;
+                        setData({ ...data, experience: newExp });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                    />
+                    <input
+                      type="text"
+                      placeholder="End Date"
+                      value={exp.endDate || ''}
+                      onChange={(e) => {
+                        const newExp = [...data.experience];
+                        newExp[idx].endDate = e.target.value;
+                        setData({ ...data, experience: newExp });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                    />
+                  </div>
+                  <textarea
+                    rows={2}
+                    placeholder="Description / Key Responsibilities"
+                    value={exp.description || ''}
+                    onChange={(e) => {
+                      const newExp = [...data.experience];
+                      newExp[idx].description = e.target.value;
+                      setData({ ...data, experience: newExp });
+                    }}
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                  />
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: EDUCATION */}
+      {activeTab === 'education' && (
+        <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Education & Qualifications</h3>
+          <div className="space-y-6">
+            {data.education.length === 0 ? (
+              <p className="text-xs text-slate-400 font-mono">No education entries parsed. You can add them in the customize editor.</p>
+            ) : (
+              data.education.map((edu, idx) => (
+                <div key={edu.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Institution / School"
+                      value={edu.institution}
+                      onChange={(e) => {
+                        const newEdu = [...data.education];
+                        newEdu[idx].institution = e.target.value;
+                        setData({ ...data, education: newEdu });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white font-bold"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Degree / Course"
+                      value={edu.degree}
+                      onChange={(e) => {
+                        const newEdu = [...data.education];
+                        newEdu[idx].degree = e.target.value;
+                        setData({ ...data, education: newEdu });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-cyan-300"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Field of Study"
+                      value={edu.field || ''}
+                      onChange={(e) => {
+                        const newEdu = [...data.education];
+                        newEdu[idx].field = e.target.value;
+                        setData({ ...data, education: newEdu });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Graduation Year / Dates"
+                      value={edu.endDate || ''}
+                      onChange={(e) => {
+                        const newEdu = [...data.education];
+                        newEdu[idx].endDate = e.target.value;
+                        setData({ ...data, education: newEdu });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                    />
+                    <input
+                      type="text"
+                      placeholder="GPA / Score"
+                      value={edu.gpa || ''}
+                      onChange={(e) => {
+                        const newEdu = [...data.education];
+                        newEdu[idx].gpa = e.target.value;
+                        setData({ ...data, education: newEdu });
+                      }}
+                      className="px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300"
+                    />
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Navigation Action Footer */}
       <div className="flex justify-between items-center pt-4 border-t border-slate-800">
         <button

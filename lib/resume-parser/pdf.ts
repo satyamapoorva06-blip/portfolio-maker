@@ -57,7 +57,12 @@ export async function parsePdfBuffer(buffer: Buffer, fileName?: string): Promise
     console.warn('PDF stream extraction fallback warning:', fallbackError);
   }
 
-  // 4. Guaranteed Fallback using filename & metadata if text stream is compressed or image-only
-  const cleanName = (fileName || 'Resume').replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
-  return `${cleanName}\nSoftware Engineer & Developer\nComputer Science & Engineering Student\nEducation: GLA University B.Tech CSE\nContact Email: candidate@example.com`;
+  // 4. Fallback using clean file name if text stream is compressed or image-based
+  const cleanName = (fileName || 'Candidate Resume')
+    .replace(/\.pdf$/i, '')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b(resume|cv|portfolio|profile)\b/gi, '')
+    .trim() || 'Candidate';
+
+  return `${cleanName}\nProfessional Candidate\nResume Document: ${fileName || 'Resume.pdf'}`;
 }
