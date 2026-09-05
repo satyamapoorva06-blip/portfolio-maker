@@ -150,7 +150,7 @@ function LoginContent() {
           <input
             type="text"
             required
-            placeholder="e.g. Satyam Sharma"
+            placeholder="Enter your full name"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-cyan-500 transition"
@@ -162,7 +162,7 @@ function LoginContent() {
           <input
             type="email"
             required
-            placeholder="e.g. satyam@example.com"
+            placeholder="Enter your email address"
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-cyan-500 transition"

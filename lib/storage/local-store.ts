@@ -1,118 +1,69 @@
 import { PortfolioData } from '@/types/portfolio';
 import { UserProfile, DeploymentRecord } from '@/types/database';
 
-// DEFAULT GUEST / ADMIN PROFILE
+// DEFAULT GUEST PROFILE
 export const DEFAULT_USER: UserProfile = {
-  id: 'usr_satyam_demo_01',
-  name: 'Satyam Sharma',
-  email: 'satyam@example.com',
+  id: 'usr_guest_demo',
+  name: 'Portfolio User',
+  email: 'user@example.com',
   avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-  role: 'admin',
+  role: 'user',
   status: 'active',
   created_at: new Date().toISOString(),
   last_login: new Date().toISOString(),
 };
 
-// INITIAL PORTFOLIO SPECIFIC TO SATYAM DEMO ACCOUNT
+// INITIAL PORTFOLIO SPECIFIC TO SAMPLE DEMO
 export const INITIAL_PORTFOLIO: PortfolioData = {
   id: 'port_demo_sample_01',
   userId: 'usr_satyam_demo_01',
-  title: 'Satyam Sharma — AI & Full Stack Developer',
-  slug: 'satyam-sharma',
+  title: 'Sample Developer — AI & Full Stack Portfolio',
+  slug: 'sample-portfolio',
   isPublished: true,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   personal: {
-    name: 'Satyam Sharma',
-    title: 'Senior Full Stack & AI Systems Engineer',
-    email: 'satyam.sharma@example.com',
-    location: 'Bangalore, India',
-    tagline: 'Building next-gen AI applications & cloud-native web architectures',
+    name: 'Sample Developer',
+    title: 'Full Stack & AI Systems Engineer',
+    email: 'developer@example.com',
+    location: 'Global',
+    tagline: 'Building next-gen web applications & modern software architectures',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
     socials: {
-      github: 'https://github.com/satyam-dev',
-      linkedin: 'https://linkedin.com/in/satyam-dev',
-      twitter: 'https://twitter.com/satyam_ai',
-      website: 'https://satyam.dev',
+      github: 'https://github.com',
+      linkedin: 'https://linkedin.com',
     },
   },
   about: {
-    summary: 'Passionate AI & Full-Stack Engineer with 5+ years of experience building distributed web services, real-time analytics engines, and generative AI platform products.',
+    summary: 'Passionate Full-Stack Engineer experienced in building distributed web services, real-time analytics engines, and AI applications.',
     highlights: [
-      'Architected SaaS platforms serving 500k+ active monthly users',
-      'Specialized in Next.js, React, Node.js, Python, & LLM integrations',
-      'Passionate open-source contributor and Tech Speaker',
+      'Architected web platforms serving active users worldwide',
+      'Specialized in Next.js, React, TypeScript, & Node.js',
+      'Passionate open-source contributor and technical builder',
     ],
     openToWork: true,
-    yearsOfExperience: 5,
+    yearsOfExperience: 3,
   },
   skills: [
     {
       id: 'sk_1',
       category: 'Languages',
-      skills: ['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL', 'HTML5/CSS3'],
+      skills: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'HTML5/CSS3'],
     },
     {
       id: 'sk_2',
       category: 'Frameworks & Frontend',
-      skills: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'Vue.js', 'Redux'],
+      skills: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion'],
     },
     {
       id: 'sk_3',
       category: 'Backend & Cloud',
-      skills: ['Node.js', 'Express', 'FastAPI', 'PostgreSQL', 'Supabase', 'Redis', 'Docker', 'AWS', 'Vercel'],
-    },
-    {
-      id: 'sk_4',
-      category: 'AI & Engineering',
-      skills: ['OpenAI API', 'Gemini API', 'LangChain', 'Vector DBs (Pinecone)', 'RAG Pipelines', 'Git/GitHub'],
+      skills: ['Node.js', 'Express', 'PostgreSQL', 'Supabase', 'Docker', 'Vercel'],
     },
   ],
-  experience: [
-    {
-      id: 'exp_1',
-      company: 'Apex AI Labs',
-      role: 'Lead Full Stack Architect',
-      location: 'Bangalore / Remote',
-      startDate: '2023-01',
-      endDate: 'Present',
-      current: true,
-      description: 'Heading the web platform and generative AI tools team.',
-      achievements: [
-        'Built an AI copilot tool improving developer productivity by 40%',
-        'Reduced server response latency from 320ms to 85ms with Next.js edge caching',
-        'Managed a cross-functional team of 8 software engineers',
-      ],
-      technologies: ['Next.js', 'TypeScript', 'Supabase', 'Python', 'OpenAI API'],
-    },
-  ],
-  projects: [
-    {
-      id: 'proj_1',
-      name: 'Portify AI',
-      description: 'AI-powered SaaS portfolio generator converting resumes into live custom websites.',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Gemini API', 'Vercel API'],
-      features: [
-        'Multi-theme rendering engine (Minimal, Developer, Creative, 3D, Professional, Glass)',
-        'Visual live preview editor with section hover controls',
-        'Automated GitHub repository generation & deployment pipeline',
-      ],
-      githubUrl: 'https://github.com/satyam-dev/portify-ai',
-      liveUrl: 'https://portify-ai.vercel.app',
-      featured: true,
-    },
-  ],
-  education: [
-    {
-      id: 'edu_1',
-      institution: 'Indian Institute of Technology (IIT)',
-      degree: 'Bachelor of Technology (B.Tech)',
-      field: 'Computer Science and Engineering',
-      startDate: '2017',
-      endDate: '2021',
-      current: false,
-    },
-  ],
+  experience: [],
+  projects: [],
+  education: [],
   certifications: [],
   achievements: [],
   customization: {
@@ -178,16 +129,13 @@ export function logoutUser(): void {
 }
 
 export function getAllPortfolios(): PortfolioData[] {
-  if (!IS_BROWSER) return [INITIAL_PORTFOLIO];
+  if (!IS_BROWSER) return [];
   try {
     const raw = localStorage.getItem('portify_portfolios');
-    if (!raw) {
-      localStorage.setItem('portify_portfolios', JSON.stringify([INITIAL_PORTFOLIO]));
-      return [INITIAL_PORTFOLIO];
-    }
+    if (!raw) return [];
     return JSON.parse(raw);
   } catch {
-    return [INITIAL_PORTFOLIO];
+    return [];
   }
 }
 
@@ -199,22 +147,18 @@ export function getStoredPortfolios(): PortfolioData[] {
   // Return portfolios matching the logged in user's ID
   const userPortfolios = all.filter((p) => p.userId === currentUser.id);
   
-  // If user matches, return user portfolios; otherwise return all stored portfolios as fallback
-  if (userPortfolios.length > 0) {
-    return userPortfolios;
-  }
-  
-  return all;
+  return userPortfolios;
 }
 
 export function getStoredPortfolio(id?: string): PortfolioData | null {
-  if (!IS_BROWSER) return INITIAL_PORTFOLIO;
+  if (!IS_BROWSER) return null;
   const all = getAllPortfolios();
   if (id) {
     const match = all.find((p) => p.id === id || p.slug === id);
     if (match) return match;
   }
-  return all.length > 0 ? all[0] : null;
+  const userPortfolios = getStoredPortfolios();
+  return userPortfolios.length > 0 ? userPortfolios[0] : null;
 }
 
 export function saveStoredPortfolio(portfolio: PortfolioData): void {
