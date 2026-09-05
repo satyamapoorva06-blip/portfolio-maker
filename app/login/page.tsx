@@ -67,6 +67,22 @@ function LoginContent() {
     };
   }, [router, nextTarget, userName, userEmail, githubUsername, githubToken, vercelToken]);
 
+  const validateInputs = (): string | null => {
+    const trimmedName = userName.trim();
+    const trimmedEmail = userEmail.trim();
+
+    if (!trimmedName || trimmedName.length < 2 || !/[a-zA-Z]/.test(trimmedName)) {
+      return 'Please enter a valid full name (at least 2 letters).';
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|edu|net|io|co|in|dev|ai|app|me|info|biz|uk|ca|de|fr|au|us|gov)$/i;
+    if (!emailRegex.test(trimmedEmail)) {
+      return 'Please enter a valid email address with a recognized domain (e.g. yourname@gmail.com).';
+    }
+
+    return null;
+  };
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     setProviderError('');
@@ -79,7 +95,10 @@ function LoginContent() {
         supabaseUrl.includes('placeholder.supabase.co');
 
       if (isDummySupabase) {
-        createUserProfileAndProceed();
+        setProviderError(
+          'Google Authorization is currently unconfigured in Vercel environment. Please enter your Name and Email above to log in securely, or add your SUPABASE_URL & Google OAuth keys in Vercel settings.'
+        );
+        setLoading(false);
         return;
       }
 
@@ -95,11 +114,10 @@ function LoginContent() {
       });
 
       if (error) {
-        console.warn('Supabase OAuth notice:', error.message);
-        createUserProfileAndProceed();
+        setProviderError(`Google OAuth Notice: ${error.message}. Please enter your Name & Email above to proceed.`);
       }
-    } catch {
-      createUserProfileAndProceed();
+    } catch (err: any) {
+      setProviderError(err.message || 'Google Auth error. Please enter your Name & Email above to log in.');
     } finally {
       setLoading(false);
     }
@@ -107,14 +125,19 @@ function LoginContent() {
 
   const createUserProfileAndProceed = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    const timeId = Date.now().toString().slice(-4);
-    const finalName = userName.trim() || 'Portfolio User';
-    const finalEmail = userEmail.trim() || `user_${timeId}@gmail.com`;
+    setProviderError('');
 
+    const validationError = validateInputs();
+    if (validationError) {
+      setProviderError(validationError);
+      return;
+    }
+
+    const timeId = Date.now().toString().slice(-4);
     const userProfile: UserProfile = {
       id: `usr_${timeId}`,
-      name: finalName,
-      email: finalEmail,
+      name: userName.trim(),
+      email: userEmail.trim(),
       avatar_url: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
       github_username: githubUsername || undefined,
       github_token: githubToken || undefined,
