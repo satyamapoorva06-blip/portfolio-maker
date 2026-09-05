@@ -17,6 +17,10 @@ function LoginContent() {
   const [providerError, setProviderError] = useState('');
   const [showIntegrations, setShowIntegrations] = useState(false);
 
+  // User input fields
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+
   // GitHub & Vercel optional fields at login
   const [githubUsername, setGithubUsername] = useState('');
   const [githubToken, setGithubToken] = useState('');
@@ -30,8 +34,8 @@ function LoginContent() {
       if (user && user.email) {
         const userProfile: UserProfile = {
           id: user.id,
-          name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
-          email: user.email,
+          name: userName || user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
+          email: userEmail || user.email,
           avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
           github_username: githubUsername || user.user_metadata?.preferred_username || undefined,
           github_token: githubToken || undefined,
@@ -61,7 +65,7 @@ function LoginContent() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, nextTarget, githubUsername, githubToken, vercelToken]);
+  }, [router, nextTarget, userName, userEmail, githubUsername, githubToken, vercelToken]);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -74,17 +78,13 @@ function LoginContent() {
         supabaseUrl.includes('kvkeosqhynawqhxlbfwt') ||
         supabaseUrl.includes('placeholder.supabase.co');
 
-      // If Supabase URL is unconfigured or dummy, authenticate seamlessly without breaking browser navigation
       if (isDummySupabase) {
-        console.warn('Supabase URL is unconfigured or placeholder. Using instant seamless authentication.');
-        createFallbackUser();
-        router.push(nextTarget);
+        createUserProfileAndProceed();
         return;
       }
 
       const supabase = createClient();
       let rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio-maker-topaz.vercel.app';
-      // Clean domain formatting to fix spaces in redirect URL
       const cleanOrigin = rawOrigin.replace(/\s+/g, '-');
 
       const { error } = await supabase.auth.signInWithOAuth({
@@ -96,23 +96,25 @@ function LoginContent() {
 
       if (error) {
         console.warn('Supabase OAuth notice:', error.message);
-        createFallbackUser();
-        router.push(nextTarget);
+        createUserProfileAndProceed();
       }
     } catch {
-      createFallbackUser();
-      router.push(nextTarget);
+      createUserProfileAndProceed();
     } finally {
       setLoading(false);
     }
   };
 
-  const createFallbackUser = () => {
+  const createUserProfileAndProceed = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     const timeId = Date.now().toString().slice(-4);
+    const finalName = userName.trim() || 'Portfolio User';
+    const finalEmail = userEmail.trim() || `user_${timeId}@gmail.com`;
+
     const userProfile: UserProfile = {
       id: `usr_${timeId}`,
-      name: `User Account #${timeId}`,
-      email: `user_${timeId}@example.com`,
+      name: finalName,
+      email: finalEmail,
       avatar_url: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
       github_username: githubUsername || undefined,
       github_token: githubToken || undefined,
@@ -123,10 +125,6 @@ function LoginContent() {
       last_login: new Date().toISOString(),
     };
     setUserLoggedIn(true, userProfile);
-  };
-
-  const handleDirectDemoLogin = () => {
-    createFallbackUser();
     router.push(nextTarget);
   };
 
@@ -142,8 +140,48 @@ function LoginContent() {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="text-2xl font-extrabold text-white">Login to Create Your Portfolio</h1>
-        <p className="text-xs text-slate-400">Authenticate with Google to build, edit, and publish your personal portfolio website.</p>
+        <h1 className="text-2xl font-extrabold text-white">Create Portfolio Account</h1>
+        <p className="text-xs text-slate-400">Enter your name and email to build, customize, and publish your website.</p>
+      </div>
+
+      <form onSubmit={createUserProfileAndProceed} className="space-y-4 text-left">
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-slate-300">Your Full Name</label>
+          <input
+            type="text"
+            required
+            placeholder="e.g. Satyam Sharma"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-cyan-500 transition"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-slate-300">Your Email Address</label>
+          <input
+            type="email"
+            required
+            placeholder="e.g. satyam@example.com"
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
+            className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-cyan-500 transition"
+          />
+        </div>
+
+        {/* Submit CTA Button */}
+        <button
+          type="submit"
+          className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold rounded-2xl text-xs shadow-xl flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5"
+        >
+          Continue to Resume Upload <ArrowRight className="w-4 h-4" />
+        </button>
+      </form>
+
+      <div className="relative flex py-1 items-center">
+        <div className="flex-grow border-t border-slate-800"></div>
+        <span className="flex-shrink mx-3 text-[11px] text-slate-500 uppercase tracking-widest font-mono">Or</span>
+        <div className="flex-grow border-t border-slate-800"></div>
       </div>
 
       <div className="space-y-4">
@@ -151,9 +189,9 @@ function LoginContent() {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full py-4 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-2xl text-sm shadow-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5"
+          className="w-full py-3.5 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-2xl text-xs shadow-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5"
         >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -233,7 +271,7 @@ function LoginContent() {
               <span>{providerError}</span>
             </div>
             <button
-              onClick={handleDirectDemoLogin}
+              onClick={(e) => createUserProfileAndProceed(e)}
               className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition"
             >
               Continue to App Now <ArrowRight className="w-4 h-4" />
