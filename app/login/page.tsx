@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -22,9 +24,7 @@ import {
 function LoginContentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextTarget = searchParams
-    ? searchParams.get("next") || "/upload"
-    : "/upload";
+  const [nextTarget, setNextTarget] = useState("/upload");
 
   const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email");
   const [loading, setLoading] = useState(false);
@@ -51,6 +51,18 @@ function LoginContentInner() {
 
   const otpInputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
+  // Safely extract nextTarget on client mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const target = params.get("next");
+      if (target) setNextTarget(target);
+    } else if (searchParams) {
+      const target = searchParams.get("next");
+      if (target) setNextTarget(target);
+    }
+  }, [searchParams]);
+
   // Timer for OTP Resend
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -62,7 +74,7 @@ function LoginContentInner() {
     return () => clearInterval(interval);
   }, [otpSent, resendTimer]);
 
-  // Listen to Supabase auth state changes (runs once on mount)
+  // Listen to Supabase auth state changes
   useEffect(() => {
     const supabase = createClient();
 
@@ -611,7 +623,7 @@ export default function LoginPage() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[140px] pointer-events-none"></div>
       <Suspense
         fallback={
-          <div className="text-center text-slate-400 font-mono text-xs">
+          <div className="p-12 text-center text-slate-400 font-mono text-xs">
             Loading authentication screen...
           </div>
         }
