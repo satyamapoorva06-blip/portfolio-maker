@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/landing/Navbar";
 import ThemeRenderer from "@/components/portfolio/ThemeRenderer";
 import { PortfolioData, ThemeType } from "@/types/portfolio";
@@ -538,9 +538,6 @@ const COMPLETE_61_THEME_CATALOG: ThemeCardItem[] = [
 
 function ThemesContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const portfolioId = searchParams.get("id") || INITIAL_PORTFOLIO.id;
-
   const [portfolio, setPortfolio] = useState<PortfolioData>(INITIAL_PORTFOLIO);
   const [selectedTheme, setSelectedTheme] = useState<ThemeType>("minimal");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -551,13 +548,19 @@ function ThemesContent() {
   );
 
   useEffect(() => {
+    let portfolioId = INITIAL_PORTFOLIO.id;
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      if (id) portfolioId = id;
+    }
     const list = getStoredPortfolios();
     const found = list.find((p) => p.id === portfolioId);
     if (found) {
       setPortfolio(found);
       setSelectedTheme(found.customization?.theme || "minimal");
     }
-  }, [portfolioId]);
+  }, []);
 
   const filteredThemes = COMPLETE_61_THEME_CATALOG.filter((t) => {
     const matchesCategory =
@@ -809,15 +812,7 @@ export default function ThemesPage() {
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
       <Navbar />
       <div className="flex-1">
-        <Suspense
-          fallback={
-            <div className="p-12 text-center text-slate-400">
-              Loading theme gallery...
-            </div>
-          }
-        >
-          <ThemesContent />
-        </Suspense>
+        <ThemesContent />
       </div>
     </div>
   );
