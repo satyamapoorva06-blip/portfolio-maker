@@ -255,7 +255,7 @@ export default function DeployModal({
                   </li>
                   <li>
                     Set Token Name to{" "}
-                    <strong className="text-white">"Portify AI"</strong> and
+                    <strong className="text-white">&quot;Portify AI&quot;</strong> and
                     check the{" "}
                     <span className="bg-emerald-500/20 text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] font-bold">
                       repo
@@ -369,7 +369,7 @@ export default function DeployModal({
                   <li>
                     Click <strong className="text-white">Create Token</strong>,
                     enter Name{" "}
-                    <strong className="text-white">"Portify AI"</strong>, and
+                    <strong className="text-white">&quot;Portify AI&quot;</strong>, and
                     select Scope:{" "}
                     <span className="bg-emerald-500/20 text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] font-bold">
                       Full Account
