@@ -41,63 +41,49 @@ export default function LoginPage() {
     }
   }, []);
 
-  // Listen to Supabase auth state changes
+  // Listen to Supabase OAuth callback on mount only
   useEffect(() => {
-    const supabase = createClient();
+    try {
+      const supabase = createClient();
 
-    const handleUserSession = (user: any) => {
-      if (user && user.email) {
-        const userProfile: UserProfile = {
-          id: user.id,
-          name:
-            userName ||
-            user.user_metadata?.full_name ||
-            user.user_metadata?.name ||
-            user.email.split("@")[0],
-          email: userEmail || user.email,
-          avatar_url:
-            user.user_metadata?.avatar_url ||
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
-          github_username:
-            githubUsername ||
-            user.user_metadata?.preferred_username ||
-            undefined,
-          github_token: githubToken || undefined,
-          vercel_token: vercelToken || undefined,
-          role: "user",
-          status: "active",
-          created_at: new Date().toISOString(),
-          last_login: new Date().toISOString(),
-        };
-        setUserLoggedIn(true, userProfile);
-        router.push(nextTarget);
-      }
-    };
+      const handleUserSession = (user: any) => {
+        if (user && user.email) {
+          const userProfile: UserProfile = {
+            id: user.id,
+            name:
+              user.user_metadata?.full_name ||
+              user.user_metadata?.name ||
+              user.email.split("@")[0],
+            email: user.email,
+            avatar_url:
+              user.user_metadata?.avatar_url ||
+              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+            github_username: user.user_metadata?.preferred_username || undefined,
+            role: "user",
+            status: "active",
+            created_at: new Date().toISOString(),
+            last_login: new Date().toISOString(),
+          };
+          setUserLoggedIn(true, userProfile);
+          router.push(nextTarget);
+        }
+      };
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) handleUserSession(user);
-    });
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          handleUserSession(session.user);
+        }
+      });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        handleUserSession(session.user);
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [
-    router,
-    nextTarget,
-    userName,
-    userEmail,
-    githubUsername,
-    githubToken,
-    vercelToken,
-  ]);
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (e) {
+      console.warn("Supabase listener error:", e);
+    }
+  }, [router, nextTarget]);
 
   const validateEmailInputs = (): string | null => {
     const trimmedName = userName.trim();
