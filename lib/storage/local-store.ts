@@ -117,41 +117,104 @@ const IS_BROWSER = typeof window !== "undefined";
 
 export function isUserLoggedIn(): boolean {
   if (!IS_BROWSER) return false;
+  if ((window as any).__portify_auth === true) return true;
   try {
-    return localStorage.getItem("portify_is_authenticated") === "true";
-  } catch {
-    return false;
-  }
+    if (localStorage.getItem("portify_is_authenticated") === "true") return true;
+  } catch (e) {}
+  try {
+    if (sessionStorage.getItem("portify_is_authenticated") === "true") return true;
+  } catch (e) {}
+  try {
+    if (document.cookie.includes("portify_is_authenticated=true")) return true;
+  } catch (e) {}
+  return false;
 }
 
 export function getStoredUser(): UserProfile {
   if (!IS_BROWSER) return DEFAULT_USER;
+  if ((window as any).__portify_user) return (window as any).__portify_user;
   try {
     const raw = localStorage.getItem("portify_user");
     if (raw) return JSON.parse(raw);
-    return DEFAULT_USER;
-  } catch {
-    return DEFAULT_USER;
-  }
+  } catch (e) {}
+  try {
+    const raw = sessionStorage.getItem("portify_user");
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  try {
+    const match = document.cookie.match(/portify_user=([^;]+)/);
+    if (match && match[1]) {
+      return JSON.parse(decodeURIComponent(match[1]));
+    }
+  } catch (e) {}
+  return DEFAULT_USER;
 }
 
 export function setStoredUser(user: UserProfile): void {
   if (!IS_BROWSER) return;
-  localStorage.setItem("portify_user", JSON.stringify(user));
+  (window as any).__portify_user = user;
+  try {
+    localStorage.setItem("portify_user", JSON.stringify(user));
+  } catch (e) {}
+  try {
+    sessionStorage.setItem("portify_user", JSON.stringify(user));
+  } catch (e) {}
+  try {
+    document.cookie = `portify_user=${encodeURIComponent(JSON.stringify(user))}; path=/; max-age=31536000; SameSite=Lax`;
+  } catch (e) {}
 }
 
 export function setUserLoggedIn(status: boolean, user?: UserProfile): void {
   if (!IS_BROWSER) return;
-  localStorage.setItem("portify_is_authenticated", status ? "true" : "false");
+  (window as any).__portify_auth = status;
   if (user) {
-    localStorage.setItem("portify_user", JSON.stringify(user));
+    (window as any).__portify_user = user;
   }
+
+  try {
+    localStorage.setItem("portify_is_authenticated", status ? "true" : "false");
+    if (user) {
+      localStorage.setItem("portify_user", JSON.stringify(user));
+    }
+  } catch (e) {}
+
+  try {
+    sessionStorage.setItem("portify_is_authenticated", status ? "true" : "false");
+    if (user) {
+      sessionStorage.setItem("portify_user", JSON.stringify(user));
+    }
+  } catch (e) {}
+
+  try {
+    if (status) {
+      document.cookie = "portify_is_authenticated=true; path=/; max-age=31536000; SameSite=Lax";
+      if (user) {
+        document.cookie = `portify_user=${encodeURIComponent(JSON.stringify(user))}; path=/; max-age=31536000; SameSite=Lax`;
+      }
+    } else {
+      document.cookie = "portify_is_authenticated=false; path=/; max-age=0; SameSite=Lax";
+      document.cookie = "portify_user=; path=/; max-age=0; SameSite=Lax";
+    }
+  } catch (e) {}
 }
 
 export function logoutUser(): void {
   if (!IS_BROWSER) return;
-  localStorage.setItem("portify_is_authenticated", "false");
-  localStorage.removeItem("portify_user");
+  (window as any).__portify_auth = false;
+  delete (window as any).__portify_user;
+
+  try {
+    localStorage.setItem("portify_is_authenticated", "false");
+    localStorage.removeItem("portify_user");
+  } catch (e) {}
+  try {
+    sessionStorage.setItem("portify_is_authenticated", "false");
+    sessionStorage.removeItem("portify_user");
+  } catch (e) {}
+  try {
+    document.cookie = "portify_is_authenticated=false; path=/; max-age=0; SameSite=Lax";
+    document.cookie = "portify_user=; path=/; max-age=0; SameSite=Lax";
+  } catch (e) {}
 }
 
 export function getAllPortfolios(): PortfolioData[] {

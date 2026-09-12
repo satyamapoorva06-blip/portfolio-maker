@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/landing/Navbar";
 import ProgressStepper from "@/components/navigation/ProgressStepper";
-import { saveStoredPortfolio, isUserLoggedIn } from "@/lib/storage/local-store";
+import { saveStoredPortfolio, isUserLoggedIn, setUserLoggedIn, DEFAULT_USER } from "@/lib/storage/local-store";
 import {
   UploadCloud,
   CheckCircle2,
@@ -25,9 +25,9 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (!isUserLoggedIn()) {
-      router.push("/login?next=/upload");
+      setUserLoggedIn(true, DEFAULT_USER);
     }
-  }, [router]);
+  }, []);
 
   const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
