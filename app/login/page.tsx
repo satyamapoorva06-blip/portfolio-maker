@@ -19,10 +19,12 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-function LoginContent() {
+function LoginContentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextTarget = searchParams.get("next") || "/upload";
+  const nextTarget = searchParams
+    ? searchParams.get("next") || "/upload"
+    : "/upload";
 
   const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email");
   const [loading, setLoading] = useState(false);
@@ -60,7 +62,7 @@ function LoginContent() {
     return () => clearInterval(interval);
   }, [otpSent, resendTimer]);
 
-  // Listen to Supabase auth state changes & OAuth redirects
+  // Listen to Supabase auth state changes (runs once on mount)
   useEffect(() => {
     const supabase = createClient();
 
@@ -69,22 +71,13 @@ function LoginContent() {
         const userProfile: UserProfile = {
           id: user.id,
           name:
-            userName ||
             user.user_metadata?.full_name ||
             user.user_metadata?.name ||
-            (user.email
-              ? user.email.split("@")[0]
-              : `User_${phoneNumber.slice(-4)}`),
-          email: userEmail || user.email || `${phoneNumber}@phone.portify.ai`,
+            (user.email ? user.email.split("@")[0] : "Authenticated User"),
+          email: user.email || `${user.phone || "user"}@phone.portify.ai`,
           avatar_url:
             user.user_metadata?.avatar_url ||
             "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
-          github_username:
-            githubUsername ||
-            user.user_metadata?.preferred_username ||
-            undefined,
-          github_token: githubToken || undefined,
-          vercel_token: vercelToken || undefined,
           role: "user",
           status: "active",
           created_at: new Date().toISOString(),
@@ -101,7 +94,7 @@ function LoginContent() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         handleUserSession(session.user);
       }
@@ -110,16 +103,7 @@ function LoginContent() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [
-    router,
-    nextTarget,
-    userName,
-    userEmail,
-    phoneNumber,
-    githubUsername,
-    githubToken,
-    vercelToken,
-  ]);
+  }, [router, nextTarget]);
 
   const validateEmailInputs = (): string | null => {
     const trimmedName = userName.trim();
@@ -157,18 +141,13 @@ function LoginContent() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOtp({
+      await supabase.auth.signInWithOtp({
         phone: fullPhone,
       });
-
-      if (error) {
-        console.warn("Supabase SMS notice:", error.message);
-      }
     } catch {
-      // Fallback to local demo OTP
+      // Demo SMS fallback
     }
 
-    // Generate 6-Digit Demo OTP for 100% Free Testing
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(code);
     setOtpSent(true);
@@ -455,7 +434,6 @@ function LoginContent() {
                   </button>
                 </div>
 
-                {/* 6 Digit OTP Inputs */}
                 <div className="flex gap-2 justify-between">
                   {otpDigits.map((digit, idx) => (
                     <input
@@ -633,10 +611,12 @@ export default function LoginPage() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[140px] pointer-events-none"></div>
       <Suspense
         fallback={
-          <div className="text-center text-slate-400">Loading auth...</div>
+          <div className="text-center text-slate-400 font-mono text-xs">
+            Loading authentication screen...
+          </div>
         }
       >
-        <LoginContent />
+        <LoginContentInner />
       </Suspense>
     </div>
   );
