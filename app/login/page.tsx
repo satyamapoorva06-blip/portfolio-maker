@@ -65,7 +65,11 @@ export default function LoginPage() {
             last_login: new Date().toISOString(),
           };
           setUserLoggedIn(true, userProfile);
-          router.push(nextTarget);
+          if (typeof window !== "undefined") {
+            window.location.href = nextTarget || "/upload";
+          } else {
+            router.push(nextTarget || "/upload");
+          }
         }
       };
 
@@ -122,7 +126,11 @@ export default function LoginPage() {
     };
 
     setUserLoggedIn(true, googleProfile);
-    router.push(nextTarget);
+    if (typeof window !== "undefined") {
+      window.location.href = nextTarget || "/upload";
+    } else {
+      router.push(nextTarget || "/upload");
+    }
   };
 
   const createEmailProfileAndProceed = (e?: React.FormEvent) => {
@@ -150,7 +158,11 @@ export default function LoginPage() {
       last_login: new Date().toISOString(),
     };
     setUserLoggedIn(true, userProfile);
-    router.push(nextTarget);
+    if (typeof window !== "undefined") {
+      window.location.href = nextTarget || "/upload";
+    } else {
+      router.push(nextTarget || "/upload");
+    }
   };
 
   return (
