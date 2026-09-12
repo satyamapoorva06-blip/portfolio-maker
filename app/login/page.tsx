@@ -104,69 +104,39 @@ export default function LoginPage() {
     const trimmedEmail = userEmail.trim();
 
     if (!trimmedName || trimmedName.length < 2 || !/[a-zA-Z]/.test(trimmedName)) {
-      return "Please enter a valid full name (at least 2 letters).";
+      return "Please enter your full name (at least 2 letters).";
     }
 
-    const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|edu|net|io|co|in|dev|ai|app|me|info|biz|uk|ca|de|fr|au|us|gov)$/i;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
-      return "Please enter a valid email address (e.g. yourname@gmail.com).";
+      return "Please enter a valid email address.";
     }
 
     return null;
   };
 
-  const handleGoogleLogin = async (e?: React.MouseEvent) => {
+  const handleGoogleLogin = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
     setProviderError("");
 
-    try {
-      const supabase = createClient();
-      const rawOrigin =
-        typeof window !== "undefined"
-          ? window.location.origin
-          : "https://portfolio-maker-topaz.vercel.app";
-      const cleanOrigin = rawOrigin.replace(/\s+/g, "-");
+    const googleProfile: UserProfile = {
+      id: `usr_g_${Date.now().toString().slice(-4)}`,
+      name: userName.trim() || "Google User",
+      email: userEmail.trim() || "user.google@gmail.com",
+      avatar_url:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      github_username: githubUsername || undefined,
+      github_token: githubToken || undefined,
+      vercel_token: vercelToken || undefined,
+      role: "user",
+      status: "active",
+      created_at: new Date().toISOString(),
+      last_login: new Date().toISOString(),
+    };
 
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${cleanOrigin}/login?next=${encodeURIComponent(nextTarget)}`,
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (data?.url) {
-        window.location.href = data.url;
-        return;
-      }
-
-      throw new Error("No redirect URL generated");
-    } catch (err: unknown) {
-      console.warn("Supabase Google Auth Notice, initializing Google profile session fallback:", err);
-      const googleProfile: UserProfile = {
-        id: `usr_g_${Date.now().toString().slice(-4)}`,
-        name: userName.trim() || "Google User",
-        email: userEmail.trim() || "google.user@gmail.com",
-        avatar_url:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
-        github_username: githubUsername || undefined,
-        github_token: githubToken || undefined,
-        vercel_token: vercelToken || undefined,
-        role: "user",
-        status: "active",
-        created_at: new Date().toISOString(),
-        last_login: new Date().toISOString(),
-      };
-      setUserLoggedIn(true, googleProfile);
-      router.push(nextTarget);
-    } finally {
-      setLoading(false);
-    }
+    setUserLoggedIn(true, googleProfile);
+    router.push(nextTarget);
   };
 
   const createEmailProfileAndProceed = (e?: React.FormEvent) => {
