@@ -167,6 +167,9 @@ function PublishContent() {
               <img
                 src={qrImageUrl}
                 alt={`${portfolio.personal.name} QR Code`}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `https://quickchart.io/qr?text=${encodeURIComponent(publicUrl)}&size=250`;
+                }}
                 className="w-44 h-44 object-contain mx-auto"
               />
             </div>
