@@ -115,13 +115,16 @@ export default function LoginPage() {
     try {
       const supabase = createClient();
       if (supabase) {
-        const { error } = await supabase.auth.signInWithOAuth({
+        const { data, error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
             redirectTo: `${window.location.origin}/login?next=${encodeURIComponent(nextTarget)}`,
           },
         });
-        if (!error) return; // Google OAuth redirect initiated!
+        if (!error && data?.url) {
+          window.location.href = data.url;
+          return;
+        }
       }
     } catch (err: any) {
       console.warn("Supabase OAuth attempt skipped:", err);
