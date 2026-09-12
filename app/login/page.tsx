@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { setUserLoggedIn } from "@/lib/storage/local-store";
+import { setUserLoggedIn, isUserLoggedIn } from "@/lib/storage/local-store";
 import { UserProfile } from "@/types/database";
 import {
   Sparkles,
@@ -32,12 +32,28 @@ export default function LoginPage() {
   const [githubToken, setGithubToken] = useState("");
   const [vercelToken, setVercelToken] = useState("");
 
-  // Safely extract nextTarget on client mount without triggering Suspense
+  // Helper to sanitize target route and avoid login redirect loop
+  const getSanitizedTarget = (targetParam?: string | null): string => {
+    if (!targetParam) return "/upload";
+    const cleaned = targetParam.trim();
+    if (!cleaned || cleaned.startsWith("/login") || cleaned === "login") {
+      return "/upload";
+    }
+    return cleaned;
+  };
+
+  // Safely extract nextTarget on client mount and check existing session
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const target = params.get("next");
-      if (target) setNextTarget(target);
+      const safeTarget = getSanitizedTarget(target);
+      setNextTarget(safeTarget);
+
+      // If already logged in, redirect directly to safe target
+      if (isUserLoggedIn()) {
+        window.location.href = safeTarget;
+      }
     }
   }, []);
 
@@ -65,7 +81,8 @@ export default function LoginPage() {
             last_login: new Date().toISOString(),
           };
           setUserLoggedIn(true, userProfile);
-          router.push(nextTarget);
+          const safeTarget = getSanitizedTarget(nextTarget);
+          window.location.href = safeTarget;
         }
       };
 
@@ -122,24 +139,34 @@ export default function LoginPage() {
     };
 
     setUserLoggedIn(true, googleProfile);
-    router.push(nextTarget);
+    const targetUrl = getSanitizedTarget(nextTarget);
+    if (typeof window !== "undefined") {
+      window.location.href = targetUrl;
+    } else {
+      router.push(targetUrl);
+    }
   };
 
-  const createEmailProfileAndProceed = (e?: React.FormEvent) => {
+  const createEmailProfileAndProceed = (e?: React.FormEvent, skipValidation = false) => {
     if (e) e.preventDefault();
     setProviderError("");
 
-    const validationError = validateEmailInputs();
-    if (validationError) {
-      setProviderError(validationError);
-      return;
+    if (!skipValidation) {
+      const validationError = validateEmailInputs();
+      if (validationError) {
+        setProviderError(validationError);
+        return;
+      }
     }
 
+    const finalName = userName.trim() || "Portfolio User";
+    const finalEmail = userEmail.trim() || "user@example.com";
     const timeId = Date.now().toString().slice(-4);
+
     const userProfile: UserProfile = {
       id: `usr_${timeId}`,
-      name: userName.trim(),
-      email: userEmail.trim(),
+      name: finalName,
+      email: finalEmail,
       avatar_url: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
       github_username: githubUsername || undefined,
       github_token: githubToken || undefined,
@@ -149,8 +176,14 @@ export default function LoginPage() {
       created_at: new Date().toISOString(),
       last_login: new Date().toISOString(),
     };
+
     setUserLoggedIn(true, userProfile);
-    router.push(nextTarget);
+    const targetUrl = getSanitizedTarget(nextTarget);
+    if (typeof window !== "undefined") {
+      window.location.href = targetUrl;
+    } else {
+      router.push(targetUrl);
+    }
   };
 
   return (
@@ -319,7 +352,8 @@ export default function LoginPage() {
               <span>{providerError}</span>
             </div>
             <button
-              onClick={(e) => createEmailProfileAndProceed(e)}
+              type="button"
+              onClick={(e) => createEmailProfileAndProceed(e, true)}
               className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition"
             >
               Continue to App Now <ArrowRight className="w-4 h-4" />
