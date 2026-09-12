@@ -1,9 +1,7 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import React, { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { setUserLoggedIn } from "@/lib/storage/local-store";
@@ -17,9 +15,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-function LoginContentInner() {
+export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [nextTarget, setNextTarget] = useState("/upload");
 
   const [loading, setLoading] = useState(false);
@@ -35,17 +32,14 @@ function LoginContentInner() {
   const [githubToken, setGithubToken] = useState("");
   const [vercelToken, setVercelToken] = useState("");
 
-  // Safely extract nextTarget on client mount
+  // Safely extract nextTarget on client mount without triggering Suspense
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const target = params.get("next");
       if (target) setNextTarget(target);
-    } else if (searchParams) {
-      const target = searchParams.get("next");
-      if (target) setNextTarget(target);
     }
-  }, [searchParams]);
+  }, []);
 
   // Listen to Supabase auth state changes
   useEffect(() => {
@@ -189,7 +183,9 @@ function LoginContentInner() {
   };
 
   return (
-    <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-2xl relative z-10 text-center">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-2xl relative z-10 text-center">
       <Link href="/" className="inline-flex items-center gap-2 group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
           <Sparkles className="w-5 h-5 text-white" />
@@ -367,22 +363,6 @@ function LoginContentInner() {
         <span>Passwordless Google OAuth Security</span>
       </div>
     </div>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[140px] pointer-events-none"></div>
-      <Suspense
-        fallback={
-          <div className="p-12 text-center text-slate-400 font-mono text-xs">
-            Loading login form...
-          </div>
-        }
-      >
-        <LoginContentInner />
-      </Suspense>
-    </div>
+  </div>
   );
 }
