@@ -192,6 +192,7 @@ export default function LoginPage() {
       {/* EMAIL LOGIN FORM */}
       <form
         onSubmit={createEmailProfileAndProceed}
+        noValidate
         className="space-y-4 text-left"
       >
         <div className="space-y-1">
@@ -200,7 +201,6 @@ export default function LoginPage() {
           </label>
           <input
             type="text"
-            required
             placeholder="Enter your full name"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
@@ -214,7 +214,6 @@ export default function LoginPage() {
           </label>
           <input
             type="email"
-            required
             placeholder="Enter your email address"
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
