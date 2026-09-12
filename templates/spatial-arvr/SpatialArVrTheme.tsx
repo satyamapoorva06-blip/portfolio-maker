@@ -1,8 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, Layers, Box, ExternalLink, Github, Linkedin, Mail, Eye } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Sparkles,
+  Layers,
+  Box,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Eye,
+} from "lucide-react";
 
 export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -22,17 +31,24 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
                 <Box className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-white">{personal.name}</h1>
-                <span className="text-xs font-mono text-purple-300 font-semibold">{personal.title}</span>
+                <h1 className="text-2xl font-black text-white">
+                  {personal.name}
+                </h1>
+                <span className="text-xs font-mono text-purple-300 font-semibold">
+                  {personal.title}
+                </span>
               </div>
             </div>
 
             <span className="px-3 py-1 bg-purple-950/80 border border-purple-700 text-purple-300 text-xs font-mono rounded-full flex items-center gap-1.5">
-              <Eye className="w-3.5 h-3.5 text-pink-400" /> AR/VR & 3D Spatial Computing
+              <Eye className="w-3.5 h-3.5 text-pink-400" /> AR/VR & 3D Spatial
+              Computing
             </span>
           </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -60,7 +76,8 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Layers className="w-5 h-5 text-pink-400" /> 3D Spatial Projects & Immersive Demos
+              <Layers className="w-5 h-5 text-pink-400" /> 3D Spatial Projects &
+              Immersive Demos
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,7 +87,9 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#110d1f]/60 border border-purple-500/30 hover:border-pink-500/60 rounded-3xl space-y-4 backdrop-blur-xl transition duration-300 group hover:shadow-xl hover:shadow-purple-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-pink-400 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-pink-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -83,11 +102,16 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-purple-950/90 text-pink-300 px-2.5 py-0.5 rounded-lg border border-purple-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-purple-950/90 text-pink-300 px-2.5 py-0.5 rounded-lg border border-purple-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -102,16 +126,25 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-400" /> WebGL & Spatial Stack
+              <Sparkles className="w-5 h-5 text-purple-400" /> WebGL & Spatial
+              Stack
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#110d1f]/60 border border-purple-500/30 rounded-3xl space-y-3 backdrop-blur-xl">
-                  <h3 className="text-xs font-bold text-pink-400 font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#110d1f]/60 border border-purple-500/30 rounded-3xl space-y-3 backdrop-blur-xl"
+                >
+                  <h3 className="text-xs font-bold text-pink-400 font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#17112b] text-slate-200 px-3 py-1 rounded-xl border border-purple-500/20 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#17112b] text-slate-200 px-3 py-1 rounded-xl border border-purple-500/20 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -123,7 +156,8 @@ export default function SpatialArVrTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-purple-900/30 text-center text-xs text-slate-500 font-mono">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Spatial Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Spatial Engine.
         </footer>
       </div>
     </div>

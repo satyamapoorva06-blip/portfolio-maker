@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import React, { useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Navbar from '@/components/landing/Navbar';
-import ProgressStepper from '@/components/navigation/ProgressStepper';
-import { getStoredPortfolios, getStoredPortfolio } from '@/lib/storage/local-store';
+import React, { useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Navbar from "@/components/landing/Navbar";
+import ProgressStepper from "@/components/navigation/ProgressStepper";
+import {
+  getStoredPortfolios,
+  getStoredPortfolio,
+} from "@/lib/storage/local-store";
 
 function CustomizeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams.get("id");
 
   useEffect(() => {
     const p = getStoredPortfolio(id || undefined);
@@ -20,7 +23,7 @@ function CustomizeContent() {
       if (list.length > 0) {
         router.push(`/editor/${list[0].id}`);
       } else {
-        router.push('/upload');
+        router.push("/upload");
       }
     }
   }, [id, router]);
@@ -37,7 +40,13 @@ export default function CustomizePage() {
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
       <ProgressStepper currentStep={3} />
-      <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono">Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="p-12 text-center text-slate-400 font-mono">
+            Loading...
+          </div>
+        }
+      >
         <CustomizeContent />
       </Suspense>
     </div>

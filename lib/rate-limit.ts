@@ -5,7 +5,7 @@ const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 export function checkRateLimit(
   ip: string,
   limit = 10,
-  windowMs = 60 * 1000
+  windowMs = 60 * 1000,
 ): { success: boolean; remaining: number; resetMs: number } {
   const now = Date.now();
   const userData = rateLimitMap.get(ip) || { count: 0, lastReset: now };

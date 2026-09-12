@@ -1,13 +1,20 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { PortfolioData } from '@/types/portfolio';
-import { parseResumeTextHeuristically } from './heuristic-fallback';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { PortfolioData } from "@/types/portfolio";
+import { parseResumeTextHeuristically } from "./heuristic-fallback";
 
-export async function parseResumeWithGemini(resumeText: string, apiKey: string): Promise<PortfolioData> {
+export async function parseResumeWithGemini(
+  resumeText: string,
+  apiKey: string,
+): Promise<PortfolioData> {
   const genAI = new GoogleGenerativeAI(apiKey);
-  let resultText = '';
+  let resultText = "";
 
   // Try modern Gemini models with fallback
-  const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+  const modelsToTry = [
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+  ];
 
   const prompt = `
 You are an expert resume parser for Portify AI.
@@ -115,17 +122,26 @@ ${resumeText}
       resultText = result.response.text().trim();
       if (resultText && resultText.length > 20) break;
     } catch (err) {
-      console.warn(`[Portify AI] Gemini model ${modelName} call failed, trying fallback model:`, err);
+      console.warn(
+        `[Portify AI] Gemini model ${modelName} call failed, trying fallback model:`,
+        err,
+      );
     }
   }
 
   if (!resultText) {
-    console.warn('[Portify AI] All Gemini API models failed. Using heuristic parser fallback.');
+    console.warn(
+      "[Portify AI] All Gemini API models failed. Using heuristic parser fallback.",
+    );
     return parseResumeTextHeuristically(resumeText);
   }
 
   try {
-    const cleanJson = resultText.replace(/^```json/i, '').replace(/^```/, '').replace(/```$/, '').trim();
+    const cleanJson = resultText
+      .replace(/^```json/i, "")
+      .replace(/^```/, "")
+      .replace(/```$/, "")
+      .trim();
     const parsed = JSON.parse(cleanJson);
 
     // Merge with baseline structure strictly preserving AI parsed fields
@@ -140,18 +156,32 @@ ${resumeText}
       location: parsed.personal?.location || base.personal.location,
       tagline: parsed.personal?.tagline || base.personal.tagline,
       socials: {
-        github: parsed.personal?.socials?.github || base.personal.socials?.github || '',
-        linkedin: parsed.personal?.socials?.linkedin || base.personal.socials?.linkedin || '',
-        twitter: parsed.personal?.socials?.twitter || base.personal.socials?.twitter || '',
-        website: parsed.personal?.socials?.website || base.personal.socials?.website || '',
+        github:
+          parsed.personal?.socials?.github ||
+          base.personal.socials?.github ||
+          "",
+        linkedin:
+          parsed.personal?.socials?.linkedin ||
+          base.personal.socials?.linkedin ||
+          "",
+        twitter:
+          parsed.personal?.socials?.twitter ||
+          base.personal.socials?.twitter ||
+          "",
+        website:
+          parsed.personal?.socials?.website ||
+          base.personal.socials?.website ||
+          "",
       },
     };
 
     const mergedAbout = {
       summary: parsed.about?.summary || base.about.summary,
-      highlights: Array.isArray(parsed.about?.highlights) && parsed.about.highlights.length > 0
-        ? parsed.about.highlights
-        : base.about.highlights,
+      highlights:
+        Array.isArray(parsed.about?.highlights) &&
+        parsed.about.highlights.length > 0
+          ? parsed.about.highlights
+          : base.about.highlights,
       openToWork: parsed.about?.openToWork ?? true,
     };
 
@@ -159,15 +189,34 @@ ${resumeText}
       ...base,
       personal: mergedPersonal,
       about: mergedAbout,
-      skills: Array.isArray(parsed.skills) && parsed.skills.length > 0 ? parsed.skills : base.skills,
-      experience: Array.isArray(parsed.experience) && parsed.experience.length > 0 ? parsed.experience : base.experience,
-      projects: Array.isArray(parsed.projects) && parsed.projects.length > 0 ? parsed.projects : base.projects,
-      education: Array.isArray(parsed.education) && parsed.education.length > 0 ? parsed.education : base.education,
-      certifications: Array.isArray(parsed.certifications) ? parsed.certifications : [],
-      achievements: Array.isArray(parsed.achievements) ? parsed.achievements : [],
+      skills:
+        Array.isArray(parsed.skills) && parsed.skills.length > 0
+          ? parsed.skills
+          : base.skills,
+      experience:
+        Array.isArray(parsed.experience) && parsed.experience.length > 0
+          ? parsed.experience
+          : base.experience,
+      projects:
+        Array.isArray(parsed.projects) && parsed.projects.length > 0
+          ? parsed.projects
+          : base.projects,
+      education:
+        Array.isArray(parsed.education) && parsed.education.length > 0
+          ? parsed.education
+          : base.education,
+      certifications: Array.isArray(parsed.certifications)
+        ? parsed.certifications
+        : [],
+      achievements: Array.isArray(parsed.achievements)
+        ? parsed.achievements
+        : [],
     };
   } catch (error) {
-    console.error('Gemini JSON parsing error, using heuristic fallback:', error);
+    console.error(
+      "Gemini JSON parsing error, using heuristic fallback:",
+      error,
+    );
     return parseResumeTextHeuristically(resumeText);
   }
 }
@@ -176,11 +225,11 @@ export async function improveSectionWithGemini(
   sectionName: string,
   currentContent: string,
   instruction: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<string> {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
 You are an expert AI resume editor for Portify AI.
@@ -197,7 +246,7 @@ RULES:
     const result = await model.generateContent(prompt);
     return result.response.text().trim();
   } catch (error) {
-    console.error('Gemini section improvement error:', error);
+    console.error("Gemini section improvement error:", error);
     return currentContent;
   }
 }

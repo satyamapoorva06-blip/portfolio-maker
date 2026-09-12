@@ -6,8 +6,8 @@ export interface UserProfile {
   github_username?: string;
   github_token?: string;
   vercel_token?: string;
-  role: 'user' | 'admin';
-  status: 'active' | 'disabled';
+  role: "user" | "admin";
+  status: "active" | "disabled";
   created_at: string;
   last_login?: string;
 }
@@ -45,10 +45,10 @@ export interface DeploymentRecord {
   id: string;
   portfolio_id: string;
   user_id: string;
-  provider: 'vercel' | 'netlify';
+  provider: "vercel" | "netlify";
   repository_url?: string;
   deployment_url: string;
-  status: 'pending' | 'building' | 'live' | 'failed';
+  status: "pending" | "building" | "live" | "failed";
   created_at: string;
   updated_at: string;
 }
@@ -59,4 +59,16 @@ export interface PortfolioViewRecord {
   viewed_at: string;
   device?: string;
   referrer?: string;
+}
+
+export interface ContactMessageRecord {
+  id: string;
+  portfolio_id: string;
+  portfolio_title?: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  read: boolean;
+  created_at: string;
 }

@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Terminal, ShieldAlert, ExternalLink, Github, Mail, Activity } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Terminal,
+  ShieldAlert,
+  ExternalLink,
+  Github,
+  Mail,
+  Activity,
+} from "lucide-react";
 
 export default function GlitchHackerTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -24,16 +31,21 @@ export default function GlitchHackerTheme({ data }: { data: PortfolioData }) {
                 <h1 className="text-3xl font-black text-white tracking-widest uppercase animate-pulse">
                   {personal.name}
                 </h1>
-                <p className="text-xs text-[#00ff66]/80 font-bold mt-1">root@{data.slug || 'hacker'}:~# {personal.title}</p>
+                <p className="text-xs text-[#00ff66]/80 font-bold mt-1">
+                  root@{data.slug || "hacker"}:~# {personal.title}
+                </p>
               </div>
             </div>
 
             <span className="px-3.5 py-1.5 bg-[#00ff66]/10 border border-[#00ff66]/40 text-[#00ff66] text-xs rounded-full flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-[#00ff66] animate-ping" /> CRT SCANLINE ACTIVE
+              <Activity className="w-3.5 h-3.5 text-[#00ff66] animate-ping" />{" "}
+              CRT SCANLINE ACTIVE
             </span>
           </div>
 
-          <p className="text-xs text-[#00ff66]/90 leading-relaxed font-mono">{about.summary}</p>
+          <p className="text-xs text-[#00ff66]/90 leading-relaxed font-mono">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -61,7 +73,8 @@ export default function GlitchHackerTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-widest border-b border-[#00ff66]/30 pb-3 flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-[#ff0055]" /> [ DEPLOYED EXPLOITS & PROJECTS ]
+              <ShieldAlert className="w-4 h-4 text-[#ff0055]" /> [ DEPLOYED
+              EXPLOITS & PROJECTS ]
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,19 +84,31 @@ export default function GlitchHackerTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#0a0f0d] border border-[#00ff66]/30 hover:border-[#ff0055] rounded-3xl space-y-4 transition duration-300 group hover:shadow-[0_0_15px_#ff0055]"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-[#ff0055] transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-[#ff0055] transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-[#00ff66] hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-[#00ff66] hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-[#00ff66]/80 leading-relaxed font-sans">{proj.description}</p>
+                  <p className="text-xs text-[#00ff66]/80 leading-relaxed font-sans">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-[#00ff66]/10 text-[#00ff66] px-2.5 py-0.5 rounded-md border border-[#00ff66]/30">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-[#00ff66]/10 text-[#00ff66] px-2.5 py-0.5 rounded-md border border-[#00ff66]/30"
+                      >
                         {t}
                       </span>
                     ))}
@@ -98,16 +123,25 @@ export default function GlitchHackerTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-widest border-b border-[#00ff66]/30 pb-3 flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-[#00ff66]" /> [ SYSTEM ARSENAL & TOOLCHAIN ]
+              <Terminal className="w-4 h-4 text-[#00ff66]" /> [ SYSTEM ARSENAL &
+              TOOLCHAIN ]
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#0a0f0d] border border-[#00ff66]/30 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-[#00ff66] uppercase">[ {cat.category} ]</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#0a0f0d] border border-[#00ff66]/30 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-[#00ff66] uppercase">
+                    [ {cat.category} ]
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#0f1713] text-[#00ff66] px-3 py-1 rounded-lg border border-[#00ff66]/20">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#0f1713] text-[#00ff66] px-3 py-1 rounded-lg border border-[#00ff66]/20"
+                      >
                         {s}
                       </span>
                     ))}

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Zap, ExternalLink, Github, Mail, Radio } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import { Zap, ExternalLink, Github, Mail, Radio } from "lucide-react";
 
 export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -29,7 +29,9 @@ export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
                 <h1 className="text-3xl font-black text-white tracking-tight leading-none drop-shadow-[0_0_10px_#00f0ff]">
                   {personal.name}
                 </h1>
-                <p className="text-xs font-mono text-[#00f0ff] font-semibold mt-1">{personal.title}</p>
+                <p className="text-xs font-mono text-[#00f0ff] font-semibold mt-1">
+                  {personal.title}
+                </p>
               </div>
             </div>
 
@@ -38,7 +40,9 @@ export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
             </span>
           </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -76,19 +80,31 @@ export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#080814]/90 border border-[#00f0ff]/30 hover:border-[#ff0055] rounded-3xl space-y-4 transition duration-300 group hover:shadow-[0_0_20px_#ff0055]"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-[#00f0ff] transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-[#00f0ff] transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-[#00f0ff] hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-[#00f0ff] hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-[#ff0055]/10 text-[#ff0055] px-2.5 py-0.5 rounded-lg border border-[#ff0055]/30 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-[#ff0055]/10 text-[#ff0055] px-2.5 py-0.5 rounded-lg border border-[#ff0055]/30 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -103,16 +119,25 @@ export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
-              <Zap className="w-5 h-5 text-[#00f0ff]" /> TECH MATRIX & LASER STACK
+              <Zap className="w-5 h-5 text-[#00f0ff]" /> TECH MATRIX & LASER
+              STACK
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#080814]/90 border border-[#00f0ff]/30 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-[#00f0ff] font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#080814]/90 border border-[#00f0ff]/30 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-[#00f0ff] font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#0f0f26] text-slate-200 px-3 py-1 rounded-xl border border-[#00f0ff]/20 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#0f0f26] text-slate-200 px-3 py-1 rounded-xl border border-[#00f0ff]/20 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -124,7 +149,8 @@ export default function LaserNeonTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-[#00f0ff]/30 text-center text-xs font-mono text-slate-500">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Laser Neon Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Laser Neon Engine.
         </footer>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { PortfolioData } from '@/types/portfolio';
+import { PortfolioData } from "@/types/portfolio";
 
 export interface VercelDeployParams {
   portfolio: PortfolioData;
@@ -7,31 +7,41 @@ export interface VercelDeployParams {
   appOrigin?: string;
 }
 
-export async function deployToVercel({ portfolio, repoFullName, token, appOrigin }: VercelDeployParams) {
+export async function deployToVercel({
+  portfolio,
+  repoFullName,
+  token,
+  appOrigin,
+}: VercelDeployParams) {
   const vercelToken = token || process.env.PORTIFY_VERCEL_BEARER_TOKEN;
 
   const cleanSlug = portfolio.slug
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
-  const baseOrigin = appOrigin || process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
-  const instantPublicUrl = baseOrigin ? `${baseOrigin}/u/${cleanSlug}` : `/u/${cleanSlug}`;
+  const baseOrigin =
+    appOrigin ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (typeof window !== "undefined" ? window.location.origin : "");
+  const instantPublicUrl = baseOrigin
+    ? `${baseOrigin}/u/${cleanSlug}`
+    : `/u/${cleanSlug}`;
 
-  if (vercelToken && vercelToken !== 'your-vercel-bearer-token') {
+  if (vercelToken && vercelToken !== "your-vercel-bearer-token") {
     try {
       // 1. Create project on Vercel
-      const res = await fetch('https://api.vercel.com/v9/projects', {
-        method: 'POST',
+      const res = await fetch("https://api.vercel.com/v9/projects", {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${vercelToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: cleanSlug,
-          framework: 'nextjs',
+          framework: "nextjs",
           gitRepository: {
-            type: 'github',
+            type: "github",
             repo: repoFullName,
           },
         }),
@@ -42,11 +52,11 @@ export async function deployToVercel({ portfolio, repoFullName, token, appOrigin
           success: true,
           deploymentUrl: `https://${cleanSlug}.vercel.app`,
           instantPublicUrl,
-          status: 'live',
+          status: "live",
         };
       }
     } catch (err) {
-      console.error('Vercel API error, using fallback:', err);
+      console.error("Vercel API error, using fallback:", err);
     }
   }
 
@@ -55,6 +65,6 @@ export async function deployToVercel({ portfolio, repoFullName, token, appOrigin
     success: true,
     deploymentUrl: instantPublicUrl,
     instantPublicUrl,
-    status: 'live',
+    status: "live",
   };
 }

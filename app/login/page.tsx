@@ -1,30 +1,38 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
-import { setUserLoggedIn } from '@/lib/storage/local-store';
-import { UserProfile } from '@/types/database';
-import { Sparkles, ShieldCheck, AlertCircle, ArrowRight, Github, Rocket, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import { setUserLoggedIn } from "@/lib/storage/local-store";
+import { UserProfile } from "@/types/database";
+import {
+  Sparkles,
+  ShieldCheck,
+  AlertCircle,
+  ArrowRight,
+  Github,
+  Rocket,
+  ChevronDown,
+} from "lucide-react";
 
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextTarget = searchParams.get('next') || '/upload';
+  const nextTarget = searchParams.get("next") || "/upload";
 
   const [loading, setLoading] = useState(false);
-  const [providerError, setProviderError] = useState('');
+  const [providerError, setProviderError] = useState("");
   const [showIntegrations, setShowIntegrations] = useState(false);
 
   // User input fields
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   // GitHub & Vercel optional fields at login
-  const [githubUsername, setGithubUsername] = useState('');
-  const [githubToken, setGithubToken] = useState('');
-  const [vercelToken, setVercelToken] = useState('');
+  const [githubUsername, setGithubUsername] = useState("");
+  const [githubToken, setGithubToken] = useState("");
+  const [vercelToken, setVercelToken] = useState("");
 
   // Listen to Supabase auth state changes & OAuth redirects
   useEffect(() => {
@@ -34,14 +42,23 @@ function LoginContent() {
       if (user && user.email) {
         const userProfile: UserProfile = {
           id: user.id,
-          name: userName || user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
+          name:
+            userName ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.email.split("@")[0],
           email: userEmail || user.email,
-          avatar_url: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-          github_username: githubUsername || user.user_metadata?.preferred_username || undefined,
+          avatar_url:
+            user.user_metadata?.avatar_url ||
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+          github_username:
+            githubUsername ||
+            user.user_metadata?.preferred_username ||
+            undefined,
           github_token: githubToken || undefined,
           vercel_token: vercelToken || undefined,
-          role: 'user',
-          status: 'active',
+          role: "user",
+          status: "active",
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
@@ -56,7 +73,9 @@ function LoginContent() {
     });
 
     // 2. Real-time auth listener for OAuth callback
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
         handleUserSession(session.user);
       }
@@ -65,19 +84,32 @@ function LoginContent() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, nextTarget, userName, userEmail, githubUsername, githubToken, vercelToken]);
+  }, [
+    router,
+    nextTarget,
+    userName,
+    userEmail,
+    githubUsername,
+    githubToken,
+    vercelToken,
+  ]);
 
   const validateInputs = (): string | null => {
     const trimmedName = userName.trim();
     const trimmedEmail = userEmail.trim();
 
-    if (!trimmedName || trimmedName.length < 2 || !/[a-zA-Z]/.test(trimmedName)) {
-      return 'Please enter a valid full name (at least 2 letters).';
+    if (
+      !trimmedName ||
+      trimmedName.length < 2 ||
+      !/[a-zA-Z]/.test(trimmedName)
+    ) {
+      return "Please enter a valid full name (at least 2 letters).";
     }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|edu|net|io|co|in|dev|ai|app|me|info|biz|uk|ca|de|fr|au|us|gov)$/i;
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|edu|net|io|co|in|dev|ai|app|me|info|biz|uk|ca|de|fr|au|us|gov)$/i;
     if (!emailRegex.test(trimmedEmail)) {
-      return 'Please enter a valid email address with a recognized domain (e.g. yourname@gmail.com).';
+      return "Please enter a valid email address with a recognized domain (e.g. yourname@gmail.com).";
     }
 
     return null;
@@ -86,22 +118,25 @@ function LoginContent() {
   const handleGoogleLogin = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
-    setProviderError('');
+    setProviderError("");
 
     try {
       const supabase = createClient();
-      const rawOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio-maker-topaz.vercel.app';
-      const cleanOrigin = rawOrigin.replace(/\s+/g, '-');
+      const rawOrigin =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : "https://portfolio-maker-topaz.vercel.app";
+      const cleanOrigin = rawOrigin.replace(/\s+/g, "-");
 
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo: `${cleanOrigin}/login?next=${encodeURIComponent(nextTarget)}`,
         },
       });
 
       if (error) {
-        console.error('Supabase OAuth notice:', error.message);
+        console.error("Supabase OAuth notice:", error.message);
         setProviderError(`Google Login Notice: ${error.message}`);
         setLoading(false);
         return;
@@ -113,15 +148,15 @@ function LoginContent() {
         setLoading(false);
       }
     } catch (err: any) {
-      console.error('Google Auth exception:', err);
-      setProviderError(err.message || 'Google Auth Error');
+      console.error("Google Auth exception:", err);
+      setProviderError(err.message || "Google Auth Error");
       setLoading(false);
     }
   };
 
   const createUserProfileAndProceed = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    setProviderError('');
+    setProviderError("");
 
     const validationError = validateInputs();
     if (validationError) {
@@ -138,8 +173,8 @@ function LoginContent() {
       github_username: githubUsername || undefined,
       github_token: githubToken || undefined,
       vercel_token: vercelToken || undefined,
-      role: 'user',
-      status: 'active',
+      role: "user",
+      status: "active",
       created_at: new Date().toISOString(),
       last_login: new Date().toISOString(),
     };
@@ -159,13 +194,23 @@ function LoginContent() {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="text-2xl font-extrabold text-white">Create Portfolio Account</h1>
-        <p className="text-xs text-slate-400">Enter your name and email to build, customize, and publish your website.</p>
+        <h1 className="text-2xl font-extrabold text-white">
+          Create Portfolio Account
+        </h1>
+        <p className="text-xs text-slate-400">
+          Enter your name and email to build, customize, and publish your
+          website.
+        </p>
       </div>
 
-      <form onSubmit={createUserProfileAndProceed} className="space-y-4 text-left">
+      <form
+        onSubmit={createUserProfileAndProceed}
+        className="space-y-4 text-left"
+      >
         <div className="space-y-1">
-          <label className="text-xs font-bold text-slate-300">Your Full Name</label>
+          <label className="text-xs font-bold text-slate-300">
+            Your Full Name
+          </label>
           <input
             type="text"
             required
@@ -177,7 +222,9 @@ function LoginContent() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-xs font-bold text-slate-300">Your Email Address</label>
+          <label className="text-xs font-bold text-slate-300">
+            Your Email Address
+          </label>
           <input
             type="email"
             required
@@ -199,7 +246,9 @@ function LoginContent() {
 
       <div className="relative flex py-1 items-center">
         <div className="flex-grow border-t border-slate-800"></div>
-        <span className="flex-shrink mx-3 text-[11px] text-slate-500 uppercase tracking-widest font-mono">Or</span>
+        <span className="flex-shrink mx-3 text-[11px] text-slate-500 uppercase tracking-widest font-mono">
+          Or
+        </span>
         <div className="flex-grow border-t border-slate-800"></div>
       </div>
 
@@ -229,7 +278,7 @@ function LoginContent() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
             />
           </svg>
-          {loading ? 'Authenticating...' : 'Continue with Google'}
+          {loading ? "Authenticating..." : "Continue with Google"}
         </button>
 
         {/* Collapsible GitHub & Vercel Connect Option */}
@@ -240,15 +289,20 @@ function LoginContent() {
             className="w-full p-4 flex justify-between items-center text-xs font-semibold text-slate-300 hover:text-cyan-400 transition"
           >
             <span className="flex items-center gap-2">
-              <Github className="w-4 h-4 text-cyan-400" /> Connect GitHub & Vercel Accounts (Optional)
+              <Github className="w-4 h-4 text-cyan-400" /> Connect GitHub &
+              Vercel Accounts (Optional)
             </span>
-            <ChevronDown className={`w-4 h-4 transition transform ${showIntegrations ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`w-4 h-4 transition transform ${showIntegrations ? "rotate-180" : ""}`}
+            />
           </button>
 
           {showIntegrations && (
             <div className="p-4 border-t border-slate-800/80 space-y-3 bg-slate-950">
               <div>
-                <label className="text-[11px] text-slate-400">GitHub Username</label>
+                <label className="text-[11px] text-slate-400">
+                  GitHub Username
+                </label>
                 <input
                   type="text"
                   placeholder="e.g. satyamapoorva06-blip"
@@ -258,7 +312,9 @@ function LoginContent() {
                 />
               </div>
               <div>
-                <label className="text-[11px] text-slate-400">GitHub Access Token (Optional)</label>
+                <label className="text-[11px] text-slate-400">
+                  GitHub Access Token (Optional)
+                </label>
                 <input
                   type="password"
                   placeholder="ghp_xxxxxxxxxxxxxxxxx"
@@ -268,7 +324,9 @@ function LoginContent() {
                 />
               </div>
               <div>
-                <label className="text-[11px] text-slate-400">Vercel Access Token (Optional)</label>
+                <label className="text-[11px] text-slate-400">
+                  Vercel Access Token (Optional)
+                </label>
                 <input
                   type="password"
                   placeholder="vercel_token_xxxxxxxxxxxx"
@@ -278,7 +336,8 @@ function LoginContent() {
                 />
               </div>
               <p className="text-[10px] text-slate-500">
-                You can also edit or update these anytime inside Account Settings.
+                You can also edit or update these anytime inside Account
+                Settings.
               </p>
             </div>
           )}
@@ -312,7 +371,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex items-center justify-center p-6 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[140px] pointer-events-none"></div>
-      <Suspense fallback={<div className="text-center text-slate-400">Loading auth...</div>}>
+      <Suspense
+        fallback={
+          <div className="text-center text-slate-400">Loading auth...</div>
+        }
+      >
         <LoginContent />
       </Suspense>
     </div>

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Github, Linkedin, Mail, ExternalLink, ArrowRight } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import { Github, Linkedin, Mail, ExternalLink, ArrowRight } from "lucide-react";
 
 export default function SwissBrutalistTheme({ data }: { data: PortfolioData }) {
   const p = data.personal;
@@ -19,12 +19,22 @@ export default function SwissBrutalistTheme({ data }: { data: PortfolioData }) {
             </span>
             <div className="flex gap-3">
               {p.socials?.github && (
-                <a href={p.socials.github} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-yellow-400 border-2 border-black text-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition">
+                <a
+                  href={p.socials.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 bg-yellow-400 border-2 border-black text-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition"
+                >
                   <Github className="w-5 h-5" />
                 </a>
               )}
               {p.socials?.linkedin && (
-                <a href={p.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-yellow-400 border-2 border-black text-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition">
+                <a
+                  href={p.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 bg-yellow-400 border-2 border-black text-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
               )}
@@ -36,7 +46,7 @@ export default function SwissBrutalistTheme({ data }: { data: PortfolioData }) {
               {p.name}
             </h1>
             <p className="text-xl sm:text-2xl font-bold bg-yellow-400 inline-block px-3 py-1 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              {p.title || 'Neo-Brutalist Web Engineer'}
+              {p.title || "Neo-Brutalist Web Engineer"}
             </p>
           </div>
 
@@ -53,11 +63,19 @@ export default function SwissBrutalistTheme({ data }: { data: PortfolioData }) {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {data.skills.map((grp) => (
-                <div key={grp.id} className="p-6 bg-yellow-300 border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-4">
-                  <h3 className="font-black text-sm uppercase">{grp.category}</h3>
+                <div
+                  key={grp.id}
+                  className="p-6 bg-yellow-300 border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-4"
+                >
+                  <h3 className="font-black text-sm uppercase">
+                    {grp.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {grp.skills.map((sk, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-white border-2 border-black text-xs font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-white border-2 border-black text-xs font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                      >
                         {sk}
                       </span>
                     ))}
@@ -76,9 +94,14 @@ export default function SwissBrutalistTheme({ data }: { data: PortfolioData }) {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {data.projects.map((proj) => (
-                <div key={proj.id} className="p-6 bg-white border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+                <div
+                  key={proj.id}
+                  className="p-6 bg-white border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4"
+                >
                   <h3 className="font-black text-xl uppercase">{proj.name}</h3>
-                  <p className="text-xs font-medium leading-relaxed">{proj.description}</p>
+                  <p className="text-xs font-medium leading-relaxed">
+                    {proj.description}
+                  </p>
                 </div>
               ))}
             </div>

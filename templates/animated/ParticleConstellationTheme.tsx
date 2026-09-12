@@ -1,10 +1,21 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Network, ExternalLink, Github, Mail, Sparkles, Activity } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Network,
+  ExternalLink,
+  Github,
+  Mail,
+  Sparkles,
+  Activity,
+} from "lucide-react";
 
-export default function ParticleConstellationTheme({ data }: { data: PortfolioData }) {
+export default function ParticleConstellationTheme({
+  data,
+}: {
+  data: PortfolioData;
+}) {
   const { personal, about, projects, skills } = data;
 
   return (
@@ -24,17 +35,24 @@ export default function ParticleConstellationTheme({ data }: { data: PortfolioDa
                 <Network className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-3xl font-extrabold text-white">{personal.name}</h1>
-                <p className="text-xs text-sky-400 font-semibold">{personal.title}</p>
+                <h1 className="text-3xl font-extrabold text-white">
+                  {personal.name}
+                </h1>
+                <p className="text-xs text-sky-400 font-semibold">
+                  {personal.title}
+                </p>
               </div>
             </div>
 
             <span className="px-3.5 py-1.5 bg-sky-950 border border-sky-800 text-sky-300 text-xs rounded-full flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-sky-400 animate-pulse" /> CONSTELLATION NODES
+              <Activity className="w-3.5 h-3.5 text-sky-400 animate-pulse" />{" "}
+              CONSTELLATION NODES
             </span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed font-sans">{about.summary}</p>
+          <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -61,7 +79,8 @@ export default function ParticleConstellationTheme({ data }: { data: PortfolioDa
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-3">
-              <Sparkles className="w-4 h-4 text-sky-400" /> CONSTELLATION NETWORK PROJECTS
+              <Sparkles className="w-4 h-4 text-sky-400" /> CONSTELLATION
+              NETWORK PROJECTS
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,19 +90,31 @@ export default function ParticleConstellationTheme({ data }: { data: PortfolioDa
                   className="p-6 bg-[#111827] border border-slate-800 hover:border-sky-500 rounded-3xl space-y-4 transition duration-300 group shadow-xl"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-sky-400 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-sky-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-sky-400 hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-sky-400 hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-sans">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-sky-950 text-sky-300 px-2.5 py-0.5 rounded-lg border border-sky-800">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-sky-950 text-sky-300 px-2.5 py-0.5 rounded-lg border border-sky-800"
+                      >
                         {t}
                       </span>
                     ))}
@@ -97,16 +128,25 @@ export default function ParticleConstellationTheme({ data }: { data: PortfolioDa
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-3">
-              <Network className="w-4 h-4 text-sky-400" /> CONSTELLATION SKILL NODES
+              <Network className="w-4 h-4 text-sky-400" /> CONSTELLATION SKILL
+              NODES
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#111827] border border-slate-800 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-sky-400 uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#111827] border border-slate-800 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-sky-400 uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700">
+                      <span
+                        key={i}
+                        className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700"
+                      >
                         {s}
                       </span>
                     ))}
@@ -118,7 +158,8 @@ export default function ParticleConstellationTheme({ data }: { data: PortfolioDa
         )}
 
         <footer className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Node Constellation Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Node Constellation Engine.
         </footer>
       </div>
     </div>

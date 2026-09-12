@@ -1,11 +1,32 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Mail, Github, Linkedin, ExternalLink, Code2, Flame, Award, Terminal, CheckCircle2, Sparkles, Trophy, BookOpen } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Mail,
+  Github,
+  Linkedin,
+  ExternalLink,
+  Code2,
+  Flame,
+  Award,
+  Terminal,
+  CheckCircle2,
+  Sparkles,
+  Trophy,
+  BookOpen,
+} from "lucide-react";
 
 export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
-  const { personal, about, projects, skills, experience, education, certifications } = data;
+  const {
+    personal,
+    about,
+    projects,
+    skills,
+    experience,
+    education,
+    certifications,
+  } = data;
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#e50914] selection:text-white relative overflow-x-hidden p-6 sm:p-12">
@@ -21,8 +42,12 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
               {personal.name.charAt(0)}
             </div>
             <div>
-              <span className="text-base font-extrabold text-white tracking-wide block">{personal.name}</span>
-              <span className="text-xs text-zinc-400 font-mono">{personal.title}</span>
+              <span className="text-base font-extrabold text-white tracking-wide block">
+                {personal.name}
+              </span>
+              <span className="text-xs text-zinc-400 font-mono">
+                {personal.title}
+              </span>
             </div>
           </div>
 
@@ -41,14 +66,20 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
         {/* Hero Banner Section */}
         <section className="space-y-6 pt-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-red-400 font-mono">
-            <Flame className="w-4 h-4 text-[#e50914] animate-pulse" /> SDE & AI/ML Developer Portfolio
+            <Flame className="w-4 h-4 text-[#e50914] animate-pulse" /> SDE &
+            AI/ML Developer Portfolio
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-none uppercase">
-            Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e50914] to-red-400">{personal.name}</span>
+            Hi, I'm{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e50914] to-red-400">
+              {personal.name}
+            </span>
           </h1>
 
-          <p className="text-lg text-zinc-300 max-w-3xl leading-relaxed font-light">{about.summary}</p>
+          <p className="text-lg text-zinc-300 max-w-3xl leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           {/* Social Links & Resume Download */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -78,35 +109,53 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
         {/* LeetCode & Problem Solving Metrics Bar */}
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-zinc-900/60 border border-zinc-800 rounded-3xl backdrop-blur-md">
           <div className="space-y-1">
-            <span className="text-[11px] text-zinc-400 font-mono uppercase">Problem Solving</span>
+            <span className="text-[11px] text-zinc-400 font-mono uppercase">
+              Problem Solving
+            </span>
             <div className="text-2xl font-black text-white font-mono flex items-center gap-2">
               <Code2 className="w-5 h-5 text-[#e50914]" /> 500+
             </div>
-            <span className="text-[10px] text-zinc-500">LeetCode & Algo Problems</span>
+            <span className="text-[10px] text-zinc-500">
+              LeetCode & Algo Problems
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-zinc-400 font-mono uppercase">Experience</span>
+            <span className="text-[11px] text-zinc-400 font-mono uppercase">
+              Experience
+            </span>
             <div className="text-2xl font-black text-white font-mono flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-red-400" /> {about.yearsOfExperience || 3}+ Yrs
+              <Trophy className="w-5 h-5 text-red-400" />{" "}
+              {about.yearsOfExperience || 3}+ Yrs
             </div>
-            <span className="text-[10px] text-zinc-500">Software Engineering</span>
+            <span className="text-[10px] text-zinc-500">
+              Software Engineering
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-zinc-400 font-mono uppercase">Projects Built</span>
+            <span className="text-[11px] text-zinc-400 font-mono uppercase">
+              Projects Built
+            </span>
             <div className="text-2xl font-black text-white font-mono flex items-center gap-2">
               <Terminal className="w-5 h-5 text-[#e50914]" /> {projects.length}+
             </div>
-            <span className="text-[10px] text-zinc-500">Full Stack & AI Apps</span>
+            <span className="text-[10px] text-zinc-500">
+              Full Stack & AI Apps
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-zinc-400 font-mono uppercase">Status</span>
+            <span className="text-[11px] text-zinc-400 font-mono uppercase">
+              Status
+            </span>
             <div className="text-sm font-bold text-emerald-400 flex items-center gap-1.5 pt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Available for Work
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>{" "}
+              Available for Work
             </div>
-            <span className="text-[10px] text-zinc-500">Full-Time / Contract</span>
+            <span className="text-[10px] text-zinc-500">
+              Full-Time / Contract
+            </span>
           </div>
         </section>
 
@@ -117,7 +166,9 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
               <h2 className="text-2xl font-extrabold text-white flex items-center gap-2 uppercase tracking-wide">
                 <Flame className="w-6 h-6 text-[#e50914]" /> Featured Projects
               </h2>
-              <span className="text-xs text-zinc-500 font-mono">{projects.length} Repositories</span>
+              <span className="text-xs text-zinc-500 font-mono">
+                {projects.length} Repositories
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -127,7 +178,9 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-zinc-900/80 border border-zinc-800 hover:border-[#e50914]/50 rounded-3xl space-y-4 transition duration-300 group hover:shadow-2xl hover:shadow-[#e50914]/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition">{proj.name}</h3>
+                    <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -140,7 +193,9 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-zinc-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-zinc-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((tech, idx) => (
@@ -167,8 +222,13 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-zinc-900/60 border border-zinc-800 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-red-400 uppercase font-mono tracking-wider">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-zinc-900/60 border border-zinc-800 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-red-400 uppercase font-mono tracking-wider">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((skill, idx) => (
                       <span
@@ -194,17 +254,26 @@ export default function ObsidianRedTheme({ data }: { data: PortfolioData }) {
 
             <div className="space-y-4">
               {experience.map((exp) => (
-                <div key={exp.id} className="p-6 bg-zinc-900/60 border border-zinc-800 rounded-3xl space-y-2">
+                <div
+                  key={exp.id}
+                  className="p-6 bg-zinc-900/60 border border-zinc-800 rounded-3xl space-y-2"
+                >
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                     <div>
-                      <h3 className="font-extrabold text-white text-base">{exp.role}</h3>
-                      <span className="text-xs text-red-400 font-mono">{exp.company}</span>
+                      <h3 className="font-extrabold text-white text-base">
+                        {exp.role}
+                      </h3>
+                      <span className="text-xs text-red-400 font-mono">
+                        {exp.company}
+                      </span>
                     </div>
                     <span className="text-[11px] text-zinc-500 font-mono mt-1 sm:mt-0">
-                      {exp.startDate} — {exp.current ? 'Present' : exp.endDate}
+                      {exp.startDate} — {exp.current ? "Present" : exp.endDate}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-300 leading-relaxed font-light pt-1">{exp.description}</p>
+                  <p className="text-xs text-zinc-300 leading-relaxed font-light pt-1">
+                    {exp.description}
+                  </p>
                 </div>
               ))}
             </div>

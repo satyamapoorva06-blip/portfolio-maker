@@ -1,10 +1,24 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Server, Activity, ShieldCheck, Cpu, ExternalLink, Github, Mail, Layers, CheckCircle } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Server,
+  Activity,
+  ShieldCheck,
+  Cpu,
+  ExternalLink,
+  Github,
+  Mail,
+  Layers,
+  CheckCircle,
+} from "lucide-react";
 
-export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData }) {
+export default function EngineeringShowcaseTheme({
+  data,
+}: {
+  data: PortfolioData;
+}) {
   const { personal, about, projects, skills } = data;
 
   return (
@@ -18,19 +32,26 @@ export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData
                 ⚙️
               </div>
               <div>
-                <h1 className="text-2xl font-extrabold text-white">{personal.name}</h1>
-                <span className="text-xs font-mono text-cyan-400 font-semibold">{personal.title}</span>
+                <h1 className="text-2xl font-extrabold text-white">
+                  {personal.name}
+                </h1>
+                <span className="text-xs font-mono text-cyan-400 font-semibold">
+                  {personal.title}
+                </span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="px-3.5 py-1.5 bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-mono rounded-full flex items-center gap-1.5">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> System SLA 99.999%
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> System
+                SLA 99.999%
               </span>
             </div>
           </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -58,7 +79,8 @@ export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Server className="w-5 h-5 text-cyan-400" /> Software Systems & Engineering Projects
+              <Server className="w-5 h-5 text-cyan-400" /> Software Systems &
+              Engineering Projects
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -68,19 +90,31 @@ export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData
                   className="p-6 bg-[#111520] border border-slate-800 hover:border-cyan-500/50 rounded-3xl space-y-4 transition duration-300 group hover:shadow-xl hover:shadow-cyan-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-cyan-400 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-cyan-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-cyan-400 hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-cyan-400 hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-cyan-950/80 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-cyan-950/80 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -95,16 +129,25 @@ export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-cyan-400" /> Technical Competencies Matrix
+              <Cpu className="w-5 h-5 text-cyan-400" /> Technical Competencies
+              Matrix
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#111520] border border-slate-800 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-cyan-400 font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#111520] border border-slate-800 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-cyan-400 font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -116,7 +159,8 @@ export default function EngineeringShowcaseTheme({ data }: { data: PortfolioData
         )}
 
         <footer className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 font-mono">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Engineering Showcase Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Engineering Showcase Engine.
         </footer>
       </div>
     </div>

@@ -1,21 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { PortfolioData } from '@/types/portfolio';
-import { UserProfile } from '@/types/database';
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { PortfolioData } from "@/types/portfolio";
+import { UserProfile } from "@/types/database";
 import {
   getStoredPortfolios,
   getStoredPortfolio,
   saveStoredPortfolio,
   getStoredUser,
   INITIAL_PORTFOLIO,
-} from '@/lib/storage/local-store';
-import EditorTabs from '@/components/editor/EditorTabs';
-import LivePreviewFrame from '@/components/editor/LivePreviewFrame';
-import ProgressStepper from '@/components/navigation/ProgressStepper';
-import DeployModal from '@/components/modals/DeployModal';
-import { ArrowLeft, CheckCircle2, Eye, ArrowRight } from 'lucide-react';
+} from "@/lib/storage/local-store";
+import { savePortfolioVersion } from "@/lib/storage/versioning";
+import EditorTabs from "@/components/editor/EditorTabs";
+import LivePreviewFrame from "@/components/editor/LivePreviewFrame";
+import ProgressStepper from "@/components/navigation/ProgressStepper";
+import DeployModal from "@/components/modals/DeployModal";
+import JobMatchModal from "@/components/editor/JobMatchModal";
+import VersionHistoryDrawer from "@/components/editor/VersionHistoryDrawer";
+import PrePublishChecklist from "@/components/editor/PrePublishChecklist";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Eye,
+  ArrowRight,
+  Target,
+  History,
+  ShieldCheck,
+} from "lucide-react";
 
 export default function EditorPage() {
   const router = useRouter();
@@ -23,12 +35,19 @@ export default function EditorPage() {
   const portfolioId = params?.id as string;
 
   const [portfolio, setPortfolio] = useState<PortfolioData>(INITIAL_PORTFOLIO);
-  const [savedStatus, setSavedStatus] = useState<string>('Saved');
+  const [savedStatus, setSavedStatus] = useState<string>("Saved");
   const [user, setUser] = useState<UserProfile>(getStoredUser());
   const [showDeployModal, setShowDeployModal] = useState(false);
+  const [showJobMatchModal, setShowJobMatchModal] = useState(false);
+  const [showHistoryDrawer, setShowHistoryDrawer] = useState(false);
+  const [showChecklistModal, setShowChecklistModal] = useState(false);
 
   useEffect(() => {
-    const found = getStoredPortfolio(portfolioId) || getStoredPortfolios().find((p) => p.id === portfolioId || p.slug === portfolioId);
+    const found =
+      getStoredPortfolio(portfolioId) ||
+      getStoredPortfolios().find(
+        (p) => p.id === portfolioId || p.slug === portfolioId,
+      );
     if (found) {
       setPortfolio(found);
     }
@@ -37,10 +56,11 @@ export default function EditorPage() {
 
   const handleDataChange = (updated: PortfolioData) => {
     setPortfolio(updated);
-    setSavedStatus('Unsaved changes...');
+    setSavedStatus("Unsaved changes...");
     saveStoredPortfolio(updated);
+    savePortfolioVersion(updated);
     setTimeout(() => {
-      setSavedStatus('All changes saved');
+      setSavedStatus("All changes saved");
     }, 600);
   };
 
@@ -55,7 +75,7 @@ export default function EditorPage() {
             onClick={() => router.push(`/parse?id=${portfolio.id}`)}
             className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition flex items-center gap-1.5 text-xs font-medium"
           >
-            <ArrowLeft className="w-4 h-4" /> ← Back to AI Review
+            <ArrowLeft className="w-4 h-4" /> ← Back
           </button>
 
           <div className="h-4 w-px bg-slate-800" />
@@ -64,7 +84,9 @@ export default function EditorPage() {
             <input
               type="text"
               value={portfolio.title}
-              onChange={(e) => handleDataChange({ ...portfolio, title: e.target.value })}
+              onChange={(e) =>
+                handleDataChange({ ...portfolio, title: e.target.value })
+              }
               className="bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white focus:outline-none transition"
             />
             <span className="text-[11px] bg-[#e50914]/20 text-[#e50914] px-2.5 py-0.5 rounded-full border border-[#e50914]/40 capitalize font-mono font-bold">
@@ -74,24 +96,40 @@ export default function EditorPage() {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-4">
-          <div className="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>{savedStatus}</span>
-          </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowJobMatchModal(true)}
+            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 transition"
+          >
+            <Target className="w-3.5 h-3.5 text-cyan-400" /> Job Match
+          </button>
+
+          <button
+            onClick={() => setShowHistoryDrawer(true)}
+            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 transition"
+          >
+            <History className="w-3.5 h-3.5 text-slate-400" /> History
+          </button>
+
+          <button
+            onClick={() => setShowChecklistModal(true)}
+            className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 transition"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Pre-Publish
+          </button>
 
           <button
             onClick={() => router.push(`/u/${portfolio.slug}`)}
             className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 transition"
           >
-            <Eye className="w-3.5 h-3.5" /> Preview Public
+            <Eye className="w-3.5 h-3.5" /> Preview
           </button>
 
           <button
             onClick={() => router.push(`/publish?id=${portfolio.id}`)}
             className="px-5 py-2 bg-[#e50914] hover:bg-[#ff1f2d] text-white font-extrabold text-xs rounded-xl flex items-center gap-2 shadow-lg shadow-[#e50914]/30 transition transform hover:-translate-y-0.5"
           >
-            Next: Publish & Share ➔ <ArrowRight className="w-4 h-4" />
+            Publish ➔ <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </header>
@@ -112,6 +150,30 @@ export default function EditorPage() {
         isOpen={showDeployModal}
         onClose={() => setShowDeployModal(false)}
       />
+
+      {showJobMatchModal && (
+        <JobMatchModal
+          portfolio={portfolio}
+          onApplyOptimization={handleDataChange}
+          onClose={() => setShowJobMatchModal(false)}
+        />
+      )}
+
+      {showHistoryDrawer && (
+        <VersionHistoryDrawer
+          portfolio={portfolio}
+          onRestoreVersion={handleDataChange}
+          onClose={() => setShowHistoryDrawer(false)}
+        />
+      )}
+
+      {showChecklistModal && (
+        <PrePublishChecklist
+          portfolio={portfolio}
+          onConfirmPublish={() => router.push(`/publish?id=${portfolio.id}`)}
+          onClose={() => setShowChecklistModal(false)}
+        />
+      )}
     </div>
   );
 }

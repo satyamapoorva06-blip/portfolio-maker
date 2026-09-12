@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { ArrowUpRight, Mail, Github, Linkedin, Sparkles, Terminal } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  ArrowUpRight,
+  Mail,
+  Github,
+  Linkedin,
+  Sparkles,
+  Terminal,
+} from "lucide-react";
 
 export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -14,11 +21,15 @@ export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
         {/* Header Ribbon */}
         <header className="flex justify-between items-start border-b border-zinc-800 pb-8">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#facc15] font-bold">VOL. 2026 // POSTER EDITION</span>
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#facc15] font-bold">
+              VOL. 2026 // POSTER EDITION
+            </span>
             <h1 className="text-4xl sm:text-7xl font-black uppercase tracking-tighter text-white leading-none mt-2">
               {personal.name}
             </h1>
-            <p className="text-sm font-mono text-zinc-400 uppercase tracking-wide mt-2">{personal.title}</p>
+            <p className="text-sm font-mono text-zinc-400 uppercase tracking-wide mt-2">
+              {personal.title}
+            </p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -67,15 +78,24 @@ export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-12">
             <div className="border-b border-[#facc15] pb-4 flex justify-between items-center">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-[#facc15] font-bold">PROJECT ARCHIVE</h3>
-              <span className="text-xs font-mono text-zinc-500">{projects.length} WORKS</span>
+              <h3 className="text-xs font-mono uppercase tracking-widest text-[#facc15] font-bold">
+                PROJECT ARCHIVE
+              </h3>
+              <span className="text-xs font-mono text-zinc-500">
+                {projects.length} WORKS
+              </span>
             </div>
 
             <div className="space-y-12">
               {projects.map((proj, idx) => (
-                <div key={proj.id} className="border-b border-zinc-800 pb-10 space-y-4 group">
+                <div
+                  key={proj.id}
+                  className="border-b border-zinc-800 pb-10 space-y-4 group"
+                >
                   <div className="flex justify-between items-baseline">
-                    <span className="text-xs font-mono text-[#facc15]">NO. 0{idx + 1}</span>
+                    <span className="text-xs font-mono text-[#facc15]">
+                      NO. 0{idx + 1}
+                    </span>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -92,11 +112,16 @@ export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
                     {proj.name}
                   </h4>
 
-                  <p className="text-sm text-zinc-400 max-w-3xl leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-sm text-zinc-400 max-w-3xl leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-2 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-xs font-mono bg-zinc-900 text-zinc-300 px-3 py-1 border border-zinc-800 uppercase">
+                      <span
+                        key={i}
+                        className="text-xs font-mono bg-zinc-900 text-zinc-300 px-3 py-1 border border-zinc-800 uppercase"
+                      >
                         {t}
                       </span>
                     ))}
@@ -111,16 +136,23 @@ export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-8">
             <div className="border-b border-zinc-800 pb-4">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-[#facc15] font-bold">CAPABILITY MATRIX</h3>
+              <h3 className="text-xs font-mono uppercase tracking-widest text-[#facc15] font-bold">
+                CAPABILITY MATRIX
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {skills.map((cat) => (
                 <div key={cat.id} className="space-y-3">
-                  <h4 className="text-xs font-mono font-bold text-white uppercase">{cat.category}</h4>
+                  <h4 className="text-xs font-mono font-bold text-white uppercase">
+                    {cat.category}
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs font-mono text-zinc-300 border-b border-[#facc15]/40 pb-1">
+                      <span
+                        key={i}
+                        className="text-xs font-mono text-zinc-300 border-b border-[#facc15]/40 pb-1"
+                      >
                         {s}
                       </span>
                     ))}
@@ -133,7 +165,8 @@ export default function KineticPosterTheme({ data }: { data: PortfolioData }) {
 
         {/* Footer */}
         <footer className="pt-16 border-t border-zinc-800 text-center text-xs font-mono text-zinc-500">
-          © {new Date().getFullYear()} {personal.name} // PORTIFY AI KINETIC POSTER
+          © {new Date().getFullYear()} {personal.name} // PORTIFY AI KINETIC
+          POSTER
         </footer>
       </div>
     </div>

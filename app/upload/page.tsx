@@ -1,11 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Navbar from '@/components/landing/Navbar';
-import ProgressStepper from '@/components/navigation/ProgressStepper';
-import { saveStoredPortfolio, isUserLoggedIn } from '@/lib/storage/local-store';
-import { UploadCloud, CheckCircle2, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/landing/Navbar";
+import ProgressStepper from "@/components/navigation/ProgressStepper";
+import { saveStoredPortfolio, isUserLoggedIn } from "@/lib/storage/local-store";
+import {
+  UploadCloud,
+  CheckCircle2,
+  Loader2,
+  AlertCircle,
+  ArrowRight,
+} from "lucide-react";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} Bytes`;
@@ -19,23 +25,23 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (!isUserLoggedIn()) {
-      router.push('/login?next=/upload');
+      router.push("/login?next=/upload");
     }
   }, [router]);
 
   const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [progressStep, setProgressStep] = useState(0);
 
   const progressSteps = [
-    'Reading resume file / photo...',
-    'Extracting personal details & contact info...',
-    'Categorizing technical skills & domain expertise...',
-    'Parsing work experience & key achievements...',
-    'Structuring projects & academic education...',
-    'Finalizing structured portfolio JSON...',
+    "Reading resume file / photo...",
+    "Extracting personal details & contact info...",
+    "Categorizing technical skills & domain expertise...",
+    "Parsing work experience & key achievements...",
+    "Structuring projects & academic education...",
+    "Finalizing structured portfolio JSON...",
   ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,23 +59,36 @@ export default function UploadPage() {
   };
 
   const validateAndSetFile = (f: File) => {
-    setError('');
-    const validExtensions = ['.pdf', '.docx', '.doc', '.txt', '.jpg', '.jpeg', '.png', '.webp'];
+    setError("");
+    const validExtensions = [
+      ".pdf",
+      ".docx",
+      ".doc",
+      ".txt",
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp",
+    ];
     const name = f.name.toLowerCase();
     const isValidExt = validExtensions.some((ext) => name.endsWith(ext));
 
     if (!isValidExt) {
-      setError('Please upload a valid PDF (.pdf), Word document (.docx), or JPG/PNG image photo.');
+      setError(
+        "Please upload a valid PDF (.pdf), Word document (.docx), or JPG/PNG image photo.",
+      );
       return;
     }
 
     if (f.size === 0) {
-      setError('The selected file appears to be empty (0 bytes). Please select your actual resume file.');
+      setError(
+        "The selected file appears to be empty (0 bytes). Please select your actual resume file.",
+      );
       return;
     }
 
     if (f.size > 10 * 1024 * 1024) {
-      setError('File size exceeds the 10MB maximum limit.');
+      setError("File size exceeds the 10MB maximum limit.");
       return;
     }
 
@@ -80,7 +99,7 @@ export default function UploadPage() {
     if (!file) return;
 
     setLoading(true);
-    setError('');
+    setError("");
     setProgressStep(0);
 
     const interval = setInterval(() => {
@@ -93,24 +112,27 @@ export default function UploadPage() {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const res = await fetch('/api/resume/parse', {
-        method: 'POST',
+      const res = await fetch("/api/resume/parse", {
+        method: "POST",
         body: formData,
       });
 
       const json = await res.json();
       clearInterval(interval);
 
-      if (!res.ok) throw new Error(json.error || 'Failed to parse resume');
+      if (!res.ok) throw new Error(json.error || "Failed to parse resume");
 
       const portfolioData = json.data;
       saveStoredPortfolio(portfolioData);
       router.push(`/parse?id=${portfolioData.id}`);
     } catch (err: any) {
       clearInterval(interval);
-      setError(err.message || "We couldn't analyze your resume. Please check that your file is a valid PDF, DOCX, or JPG/PNG photo and try again.");
+      setError(
+        err.message ||
+          "We couldn't analyze your resume. Please check that your file is a valid PDF, DOCX, or JPG/PNG photo and try again.",
+      );
       setLoading(false);
     }
   };
@@ -126,9 +148,12 @@ export default function UploadPage() {
           <span className="text-xs font-mono uppercase tracking-widest text-[#e50914] font-bold bg-[#e50914]/15 px-3 py-1 rounded-full border border-[#e50914]/40">
             Step 1 of 4 — Upload Resume
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white">Upload Your Resume or Photo</h1>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
+            Upload Your Resume or Photo
+          </h1>
           <p className="text-slate-400 text-base max-w-xl mx-auto font-light">
-            Our Gemini AI extracts your skills, experience, and projects from PDF, Word, or camera photos.
+            Our Gemini AI extracts your skills, experience, and projects from
+            PDF, Word, or camera photos.
           </p>
         </div>
 
@@ -143,13 +168,19 @@ export default function UploadPage() {
           onClick={() => fileInputRef.current?.click()}
           className={`p-12 border-2 border-dashed rounded-3xl text-center space-y-6 cursor-pointer transition duration-300 ${
             dragActive
-              ? 'border-[#e50914] bg-[#e50914]/10'
+              ? "border-[#e50914] bg-[#e50914]/10"
               : file
-              ? 'border-emerald-500/50 bg-emerald-950/20'
-              : 'border-slate-800 bg-slate-900/60 hover:border-slate-700'
+                ? "border-emerald-500/50 bg-emerald-950/20"
+                : "border-slate-800 bg-slate-900/60 hover:border-slate-700"
           }`}
         >
-          <input ref={fileInputRef} type="file" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png,.webp" onChange={handleFileChange} className="hidden" />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png,.webp"
+            onChange={handleFileChange}
+            className="hidden"
+          />
 
           <div className="w-16 h-16 rounded-2xl bg-[#e50914]/10 border border-[#e50914]/30 flex items-center justify-center text-[#e50914] mx-auto">
             <UploadCloud className="w-8 h-8" />
@@ -160,12 +191,19 @@ export default function UploadPage() {
               <span className="inline-flex items-center gap-2 text-emerald-400 font-bold text-base">
                 <CheckCircle2 className="w-5 h-5" /> {file.name}
               </span>
-              <p className="text-xs text-slate-400 font-mono">{formatFileSize(file.size)} • Ready to analyze</p>
+              <p className="text-xs text-slate-400 font-mono">
+                {formatFileSize(file.size)} • Ready to analyze
+              </p>
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-lg font-semibold text-white">Drag & drop your resume or photo here, or <span className="text-[#e50914] underline">browse</span></p>
-              <p className="text-xs text-slate-500">Supports PDF, DOCX, TXT, or JPG/PNG image photos (1 KB to 10 MB)</p>
+              <p className="text-lg font-semibold text-white">
+                Drag & drop your resume or photo here, or{" "}
+                <span className="text-[#e50914] underline">browse</span>
+              </p>
+              <p className="text-xs text-slate-500">
+                Supports PDF, DOCX, TXT, or JPG/PNG image photos (1 KB to 10 MB)
+              </p>
             </div>
           )}
         </div>
@@ -185,12 +223,16 @@ export default function UploadPage() {
                 <Loader2 className="w-4 h-4 text-[#e50914] animate-spin" />
                 {progressSteps[progressStep]}
               </span>
-              <span className="font-mono text-[#e50914]">{Math.round(((progressStep + 1) / progressSteps.length) * 100)}%</span>
+              <span className="font-mono text-[#e50914]">
+                {Math.round(((progressStep + 1) / progressSteps.length) * 100)}%
+              </span>
             </div>
             <div className="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
               <div
                 className="bg-[#e50914] h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((progressStep + 1) / progressSteps.length) * 100}%` }}
+                style={{
+                  width: `${((progressStep + 1) / progressSteps.length) * 100}%`,
+                }}
               ></div>
             </div>
           </div>
@@ -203,7 +245,8 @@ export default function UploadPage() {
             disabled={!file || loading}
             className="px-10 py-4 bg-[#e50914] hover:bg-[#ff1f2d] disabled:opacity-50 text-white font-extrabold rounded-2xl text-base shadow-xl shadow-[#e50914]/25 flex items-center gap-3 transition transform hover:-translate-y-0.5"
           >
-            {loading ? 'AI Parsing Document...' : 'Next: AI Data Extraction ➔'} <ArrowRight className="w-5 h-5" />
+            {loading ? "AI Parsing Document..." : "Next: AI Data Extraction ➔"}{" "}
+            <ArrowRight className="w-5 h-5" />
           </button>
         </div>
       </main>

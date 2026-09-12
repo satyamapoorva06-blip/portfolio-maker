@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { isUserLoggedIn } from '@/lib/storage/local-store';
-import { Sparkles, ArrowRight, User } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { isUserLoggedIn } from "@/lib/storage/local-store";
+import { Sparkles, ArrowRight, User } from "lucide-react";
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,7 +12,7 @@ export default function Navbar() {
     setLoggedIn(isUserLoggedIn());
   }, []);
 
-  const createTarget = loggedIn ? '/upload' : '/login?next=/upload';
+  const createTarget = loggedIn ? "/upload" : "/login?next=/upload";
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800/80">
@@ -27,11 +27,21 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-          <a href="#features" className="hover:text-cyan-400 transition">Features</a>
-          <a href="#how-it-works" className="hover:text-cyan-400 transition">How It Works</a>
-          <a href="#themes" className="hover:text-cyan-400 transition">Themes</a>
-          <a href="#deployments" className="hover:text-cyan-400 transition">Deployments</a>
-          <a href="#faq" className="hover:text-cyan-400 transition">FAQ</a>
+          <a href="#features" className="hover:text-cyan-400 transition">
+            Features
+          </a>
+          <a href="#how-it-works" className="hover:text-cyan-400 transition">
+            How It Works
+          </a>
+          <a href="#themes" className="hover:text-cyan-400 transition">
+            Themes
+          </a>
+          <a href="#deployments" className="hover:text-cyan-400 transition">
+            Deployments
+          </a>
+          <a href="#faq" className="hover:text-cyan-400 transition">
+            FAQ
+          </a>
         </nav>
 
         <div className="flex items-center gap-4">

@@ -1,16 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { deployToVercel } from '@/lib/vercel';
+import { NextRequest, NextResponse } from "next/server";
+import { deployToVercel } from "@/lib/vercel";
+import { PortfolioData } from "@/types/portfolio";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { portfolio, repoFullName, token } = body;
+    const { portfolio, repoFullName, token } = body as {
+      portfolio?: PortfolioData;
+      repoFullName?: string;
+      token?: string;
+    };
 
     if (!portfolio) {
-      return NextResponse.json({ error: 'Missing portfolio data' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing portfolio data" },
+        { status: 400 },
+      );
     }
 
-    const origin = req.headers.get('origin') || (req.headers.get('referer') ? new URL(req.headers.get('referer')!).origin : undefined);
+    const origin =
+      req.headers.get("origin") ||
+      (req.headers.get("referer")
+        ? new URL(req.headers.get("referer")!).origin
+        : undefined);
 
     const result = await deployToVercel({
       portfolio,
@@ -20,8 +32,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(result);
-  } catch (err: any) {
-    console.error('Vercel Deploy API Error:', err);
-    return NextResponse.json({ error: err.message || 'Failed to deploy to Vercel' }, { status: 500 });
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Failed to deploy to Vercel";
+    console.error("Vercel Deploy API Error:", error);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

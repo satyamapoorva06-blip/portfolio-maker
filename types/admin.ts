@@ -1,5 +1,5 @@
-import { UserProfile, DeploymentRecord } from './database';
-import { PortfolioData } from './portfolio';
+import { UserProfile, DeploymentRecord } from "./database";
+import { PortfolioData } from "./portfolio";
 
 export interface AdminDashboardMetrics {
   totalUsers: number;

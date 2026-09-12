@@ -1,17 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import ThemeRenderer from '@/components/portfolio/ThemeRenderer';
-import { Monitor, Tablet, Smartphone, ExternalLink, RefreshCw } from 'lucide-react';
+import React, { useState } from "react";
+import { PortfolioData } from "@/types/portfolio";
+import ThemeRenderer from "@/components/portfolio/ThemeRenderer";
+import {
+  Monitor,
+  Tablet,
+  Smartphone,
+  ExternalLink,
+  RefreshCw,
+} from "lucide-react";
 
 export default function LivePreviewFrame({ data }: { data: PortfolioData }) {
-  const [device, setDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">(
+    "desktop",
+  );
 
   const widthClasses = {
-    desktop: 'w-full max-w-full',
-    tablet: 'w-[768px] max-w-full shadow-2xl rounded-2xl border-4 border-slate-700 overflow-hidden my-4',
-    mobile: 'w-[375px] max-w-full shadow-2xl rounded-3xl border-8 border-slate-800 overflow-hidden my-4',
+    desktop: "w-full max-w-full",
+    tablet:
+      "w-[768px] max-w-full shadow-2xl rounded-2xl border-4 border-slate-700 overflow-hidden my-4",
+    mobile:
+      "w-[375px] max-w-full shadow-2xl rounded-3xl border-8 border-slate-800 overflow-hidden my-4",
   };
 
   return (
@@ -20,26 +30,28 @@ export default function LivePreviewFrame({ data }: { data: PortfolioData }) {
       <div className="h-14 bg-slate-950 px-6 flex justify-between items-center border-b border-slate-800 shrink-0">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="text-xs font-semibold text-slate-300">Live Preview</span>
+          <span className="text-xs font-semibold text-slate-300">
+            Live Preview
+          </span>
         </div>
 
         {/* Device Switcher */}
         <div className="flex items-center bg-slate-900 p-1 rounded-lg border border-slate-800 gap-1 text-xs">
           <button
-            onClick={() => setDevice('desktop')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === 'desktop' ? 'bg-blue-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+            onClick={() => setDevice("desktop")}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === "desktop" ? "bg-blue-600 text-white font-medium" : "text-slate-400 hover:text-white"}`}
           >
             <Monitor className="w-3.5 h-3.5" /> Desktop
           </button>
           <button
-            onClick={() => setDevice('tablet')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === 'tablet' ? 'bg-blue-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+            onClick={() => setDevice("tablet")}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === "tablet" ? "bg-blue-600 text-white font-medium" : "text-slate-400 hover:text-white"}`}
           >
             <Tablet className="w-3.5 h-3.5" /> Tablet
           </button>
           <button
-            onClick={() => setDevice('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === 'mobile' ? 'bg-blue-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+            onClick={() => setDevice("mobile")}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition ${device === "mobile" ? "bg-blue-600 text-white font-medium" : "text-slate-400 hover:text-white"}`}
           >
             <Smartphone className="w-3.5 h-3.5" /> Mobile
           </button>
@@ -52,7 +64,8 @@ export default function LivePreviewFrame({ data }: { data: PortfolioData }) {
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-blue-400" /> Open Full Screen
+            <ExternalLink className="w-3.5 h-3.5 text-blue-400" /> Open Full
+            Screen
           </a>
         </div>
       </div>

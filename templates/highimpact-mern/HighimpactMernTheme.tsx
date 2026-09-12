@@ -1,8 +1,16 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Zap, Layers, Cpu, Rocket, Github, Linkedin, Globe } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Zap,
+  Layers,
+  Cpu,
+  Rocket,
+  Github,
+  Linkedin,
+  Globe,
+} from "lucide-react";
 
 export default function HighimpactMernTheme({ data }: { data: PortfolioData }) {
   const p = data.personal;
@@ -24,12 +32,22 @@ export default function HighimpactMernTheme({ data }: { data: PortfolioData }) {
             </span>
             <div className="flex gap-3">
               {p.socials?.github && (
-                <a href={p.socials.github} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-emerald-400 hover:bg-emerald-500 hover:text-black transition">
+                <a
+                  href={p.socials.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-emerald-400 hover:bg-emerald-500 hover:text-black transition"
+                >
                   <Github className="w-5 h-5" />
                 </a>
               )}
               {p.socials?.linkedin && (
-                <a href={p.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-emerald-400 hover:bg-emerald-500 hover:text-black transition">
+                <a
+                  href={p.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-emerald-400 hover:bg-emerald-500 hover:text-black transition"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
               )}
@@ -40,25 +58,38 @@ export default function HighimpactMernTheme({ data }: { data: PortfolioData }) {
             <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight leading-tight">
               {p.name}
             </h1>
-            <p className="text-xl text-emerald-400 font-bold font-mono">{p.title || 'MERN Stack Developer'}</p>
+            <p className="text-xl text-emerald-400 font-bold font-mono">
+              {p.title || "MERN Stack Developer"}
+            </p>
           </div>
 
-          <p className="text-slate-300 leading-relaxed text-sm sm:text-base max-w-3xl font-light">{a.summary}</p>
+          <p className="text-slate-300 leading-relaxed text-sm sm:text-base max-w-3xl font-light">
+            {a.summary}
+          </p>
         </section>
 
         {/* Skills */}
         {data.skills && data.skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-2xl font-black text-white flex items-center gap-2 border-b border-emerald-950 pb-3">
-              <Zap className="w-6 h-6 text-emerald-400" /> MERN Ecosystem & Database Stack
+              <Zap className="w-6 h-6 text-emerald-400" /> MERN Ecosystem &
+              Database Stack
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {data.skills.map((grp) => (
-                <div key={grp.id} className="p-6 bg-[#091f16] border border-emerald-900/60 rounded-2xl space-y-4">
-                  <h3 className="text-sm font-bold text-emerald-300 font-mono uppercase">{grp.category}</h3>
+                <div
+                  key={grp.id}
+                  className="p-6 bg-[#091f16] border border-emerald-900/60 rounded-2xl space-y-4"
+                >
+                  <h3 className="text-sm font-bold text-emerald-300 font-mono uppercase">
+                    {grp.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {grp.skills.map((sk, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-emerald-950 text-emerald-300 text-xs font-bold font-mono rounded-lg border border-emerald-800">
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-emerald-950 text-emerald-300 text-xs font-bold font-mono rounded-lg border border-emerald-800"
+                      >
                         {sk}
                       </span>
                     ))}
@@ -73,13 +104,19 @@ export default function HighimpactMernTheme({ data }: { data: PortfolioData }) {
         {data.projects && data.projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-2xl font-black text-white flex items-center gap-2 border-b border-emerald-950 pb-3">
-              <Rocket className="w-6 h-6 text-emerald-400" /> MERN Web Applications
+              <Rocket className="w-6 h-6 text-emerald-400" /> MERN Web
+              Applications
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {data.projects.map((proj) => (
-                <div key={proj.id} className="p-6 bg-[#091f16] border border-emerald-900/60 rounded-2xl space-y-4 hover:border-emerald-400 transition">
+                <div
+                  key={proj.id}
+                  className="p-6 bg-[#091f16] border border-emerald-900/60 rounded-2xl space-y-4 hover:border-emerald-400 transition"
+                >
                   <h3 className="font-bold text-white text-xl">{proj.name}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {proj.description}
+                  </p>
                 </div>
               ))}
             </div>

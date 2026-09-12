@@ -1,74 +1,74 @@
 export type ThemeType =
-  | 'minimal'
-  | 'developer'
-  | 'creative'
-  | 'three-d'
-  | 'professional'
-  | 'glass'
-  | 'obsidian-red'
-  | 'nordic-editorial'
-  | 'dev-gallery'
-  | 'cyber-matrix'
-  | 'bento-grid'
-  | 'kinetic-poster'
-  | 'genai-neural'
-  | 'cloud-architect'
-  | 'mern-stack'
-  | 'iot-hardware'
-  | 'java-enterprise'
-  | 'cs-student'
-  | 'spatial-arvr'
-  | 'cyber-sentinel'
-  | 'kuber-ai-creative'
-  | 'tvnskm-aiml-fullstack'
-  | 'priyanshu-creative'
-  | 'kirti-aiml'
-  | 'harsh-aiml-mern'
-  | 'hari-aiml'
-  | 'nishil-cloud'
-  | 'prince-ai'
-  | 'sahil-aiml-student'
-  | 'suraj-agentic-ai'
-  | 'srikhanth-arvr'
-  | 'abhinav-cv-ml'
-  | 'sahil-sahu-ai'
-  | 'shreya-datascience'
-  | 'aman-genai'
-  | 'nikhil-fullstack'
-  | 'abhay-cs-ai'
-  | 'saad-fullstack'
-  | 'prashant-cse-aiml'
-  | 'anmol-creative-sys'
-  | 'abhishek-beginner'
-  | 'harsh-cs-student'
-  | 'dheeraj-mern'
-  | 'rishav-java-backend'
-  | 'adil-java-microservices'
-  | 'megha-mern'
-  | 'harsh-backend-ai'
-  | 'karan-webdev'
-  | 'shashank-fullstack'
-  | 'suraj-mern'
-  | 'abdulhussain-uiux'
-  | 'sakesh-fullstack'
-  | 'arun-fullstack'
-  | 'ritik-cybersec'
-  | 'shivam-frontend'
-  | 'vinay-java-fullstack'
-  | 'subhadeep-fullstack'
-  | 'wasif-cs-student'
-  | 'prince-shah-learning'
-  | 'dhanaraj-frontend-ai'
-  | 'ayush-iot-creative'
-  | 'priyank-fullstack'
-  | 'aadi-neobrutalist'
-  | 'cs-student-collection'
-  | 'emma-bostian-curated'
-  | 'github-topic-student'
-  | 'sitesplaced-examples'
-  | 'nikola-janjic-2025'
-  | 'gist-inspiration'
-  | 'onehour-digital'
+  | "minimal"
+  | "developer"
+  | "creative"
+  | "three-d"
+  | "professional"
+  | "glass"
+  | "obsidian-red"
+  | "nordic-editorial"
+  | "dev-gallery"
+  | "cyber-matrix"
+  | "bento-grid"
+  | "kinetic-poster"
+  | "genai-neural"
+  | "cloud-architect"
+  | "mern-stack"
+  | "iot-hardware"
+  | "java-enterprise"
+  | "cs-student"
+  | "spatial-arvr"
+  | "cyber-sentinel"
+  | "kuber-ai-creative"
+  | "tvnskm-aiml-fullstack"
+  | "priyanshu-creative"
+  | "kirti-aiml"
+  | "harsh-aiml-mern"
+  | "hari-aiml"
+  | "nishil-cloud"
+  | "prince-ai"
+  | "sahil-aiml-student"
+  | "suraj-agentic-ai"
+  | "srikhanth-arvr"
+  | "abhinav-cv-ml"
+  | "sahil-sahu-ai"
+  | "shreya-datascience"
+  | "aman-genai"
+  | "nikhil-fullstack"
+  | "abhay-cs-ai"
+  | "saad-fullstack"
+  | "prashant-cse-aiml"
+  | "anmol-creative-sys"
+  | "abhishek-beginner"
+  | "harsh-cs-student"
+  | "dheeraj-mern"
+  | "rishav-java-backend"
+  | "adil-java-microservices"
+  | "megha-mern"
+  | "harsh-backend-ai"
+  | "karan-webdev"
+  | "shashank-fullstack"
+  | "suraj-mern"
+  | "abdulhussain-uiux"
+  | "sakesh-fullstack"
+  | "arun-fullstack"
+  | "ritik-cybersec"
+  | "shivam-frontend"
+  | "vinay-java-fullstack"
+  | "subhadeep-fullstack"
+  | "wasif-cs-student"
+  | "prince-shah-learning"
+  | "dhanaraj-frontend-ai"
+  | "ayush-iot-creative"
+  | "priyank-fullstack"
+  | "aadi-neobrutalist"
+  | "cs-student-collection"
+  | "emma-bostian-curated"
+  | "github-topic-student"
+  | "sitesplaced-examples"
+  | "nikola-janjic-2025"
+  | "gist-inspiration"
+  | "onehour-digital"
   | string;
 
 export interface PersonalInfo {
@@ -161,16 +161,34 @@ export interface AchievementItem {
   awardUrl?: string;
 }
 
+export interface PublicationItem {
+  id: string;
+  title: string;
+  publisher: string;
+  date: string;
+  url?: string;
+  description?: string;
+}
+
+export interface CodingProfile {
+  leetcode?: string;
+  github?: string;
+  kaggle?: string;
+  codeforces?: string;
+  codechef?: string;
+  hackerrank?: string;
+}
+
 export interface VisualCustomization {
   theme: ThemeType;
   primaryColor: string;
   accentColor: string;
   backgroundColor?: string;
   textColor?: string;
-  fontFamily: 'inter' | 'jetbrains' | 'playfair' | 'system';
-  borderRadius: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  fontFamily: "inter" | "jetbrains" | "playfair" | "system";
+  borderRadius: "none" | "sm" | "md" | "lg" | "full";
   animationsEnabled: boolean;
-  animationIntensity: 'subtle' | 'normal' | 'expressive';
+  animationIntensity: "subtle" | "normal" | "expressive";
 }
 
 export interface SectionVisibility {
@@ -181,6 +199,8 @@ export interface SectionVisibility {
   education: boolean;
   certifications: boolean;
   achievements: boolean;
+  publications?: boolean;
+  codingProfiles?: boolean;
   contact: boolean;
 }
 
@@ -197,6 +217,9 @@ export interface PortfolioData {
   education: EducationItem[];
   certifications: CertificationItem[];
   achievements: AchievementItem[];
+  publications?: PublicationItem[];
+  codingProfiles?: CodingProfile;
+  sectionOrder?: string[];
   customization: VisualCustomization;
   sectionVisibility: SectionVisibility;
   isPublished: boolean;

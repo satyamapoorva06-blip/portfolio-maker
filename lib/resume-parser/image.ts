@@ -1,18 +1,26 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function parseImageBuffer(buffer: Buffer, mimeType: string, fileName?: string): Promise<string> {
+export async function parseImageBuffer(
+  buffer: Buffer,
+  mimeType: string,
+  fileName?: string,
+): Promise<string> {
   const geminiKey = process.env.GEMINI_API_KEY;
 
-  if (geminiKey && geminiKey !== 'your-gemini-api-key' && geminiKey !== 'placeholder-gemini-key') {
+  if (
+    geminiKey &&
+    geminiKey !== "your-gemini-api-key" &&
+    geminiKey !== "placeholder-gemini-key"
+  ) {
     try {
       const genAI = new GoogleGenerativeAI(geminiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const base64Data = buffer.toString('base64');
+      const base64Data = buffer.toString("base64");
       const imagePart = {
         inlineData: {
           data: base64Data,
-          mimeType: mimeType || 'image/jpeg',
+          mimeType: mimeType || "image/jpeg",
         },
       };
 
@@ -28,16 +36,20 @@ Return ONLY the raw extracted text line by line.
         return extractedText;
       }
     } catch (error) {
-      console.warn('[Portify AI] Image OCR via Gemini failed, using fallback:', error);
+      console.warn(
+        "[Portify AI] Image OCR via Gemini failed, using fallback:",
+        error,
+      );
     }
   }
 
   // Fallback if no API key or OCR failed: extract clean name without hardcoded dummy details
-  const cleanName = (fileName || 'Candidate Photo')
-    .replace(/\.(jpg|jpeg|png|webp|heic)$/i, '')
-    .replace(/[-_]/g, ' ')
-    .replace(/\b(resume|cv|portfolio|photo|image)\b/gi, '')
-    .trim() || 'Candidate';
+  const cleanName =
+    (fileName || "Candidate Photo")
+      .replace(/\.(jpg|jpeg|png|webp|heic)$/i, "")
+      .replace(/[-_]/g, " ")
+      .replace(/\b(resume|cv|portfolio|photo|image)\b/gi, "")
+      .trim() || "Candidate";
 
-  return `${cleanName}\nProfessional Candidate\nResume Photo: ${fileName || 'Resume.jpg'}`;
+  return `${cleanName}\nProfessional Candidate\nResume Photo: ${fileName || "Resume.jpg"}`;
 }

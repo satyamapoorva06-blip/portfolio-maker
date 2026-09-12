@@ -1,13 +1,15 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://portfolio-maker-topaz.vercel.app';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://portfolio-maker-topaz.vercel.app";
 
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/admin/', '/api/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin/", "/api/"],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };

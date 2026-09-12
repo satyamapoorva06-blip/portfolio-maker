@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Radio, ExternalLink, Github, Mail, Zap } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import { Radio, ExternalLink, Github, Mail, Zap } from "lucide-react";
 
 export default function SynthwaveRetroTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -24,16 +24,21 @@ export default function SynthwaveRetroTheme({ data }: { data: PortfolioData }) {
                 <h1 className="text-3xl font-black text-white tracking-widest uppercase drop-shadow-[0_0_10px_#f43f5e]">
                   {personal.name}
                 </h1>
-                <p className="text-xs text-[#f97316] font-extrabold mt-1">{personal.title}</p>
+                <p className="text-xs text-[#f97316] font-extrabold mt-1">
+                  {personal.title}
+                </p>
               </div>
             </div>
 
             <span className="px-3.5 py-1.5 bg-[#f43f5e]/20 border border-[#f43f5e]/60 text-[#f43f5e] text-xs rounded-full flex items-center gap-1.5 shadow-[0_0_10px_#f43f5e]">
-              <Radio className="w-3.5 h-3.5 animate-pulse" /> SYNTHWAVE 80S ACTIVE
+              <Radio className="w-3.5 h-3.5 animate-pulse" /> SYNTHWAVE 80S
+              ACTIVE
             </span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed font-sans">{about.summary}</p>
+          <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -60,7 +65,8 @@ export default function SynthwaveRetroTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-widest border-b border-[#f43f5e]/30 pb-3 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-[#f97316]" /> [ NEON SYNTHWAVE PROJECTS ]
+              <Zap className="w-4 h-4 text-[#f97316]" /> [ NEON SYNTHWAVE
+              PROJECTS ]
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,19 +76,31 @@ export default function SynthwaveRetroTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#180530]/90 border border-[#f43f5e]/30 hover:border-[#f97316] rounded-3xl space-y-4 transition duration-300 group hover:shadow-[0_0_20px_#f43f5e]"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-[#f97316] transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-[#f97316] transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-[#f43f5e] hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-[#f43f5e] hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-sans">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-[#f43f5e]/20 text-[#f43f5e] px-2.5 py-0.5 rounded-md border border-[#f43f5e]/40">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-[#f43f5e]/20 text-[#f43f5e] px-2.5 py-0.5 rounded-md border border-[#f43f5e]/40"
+                      >
                         {t}
                       </span>
                     ))}
@@ -96,16 +114,25 @@ export default function SynthwaveRetroTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xs font-bold text-white uppercase tracking-widest border-b border-[#f43f5e]/30 pb-3 flex items-center gap-2">
-              <Radio className="w-4 h-4 text-[#f43f5e]" /> [ RETRO ARCADE STACK ]
+              <Radio className="w-4 h-4 text-[#f43f5e]" /> [ RETRO ARCADE STACK
+              ]
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#180530]/90 border border-[#f43f5e]/30 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-[#f97316] uppercase">[ {cat.category} ]</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#180530]/90 border border-[#f43f5e]/30 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-[#f97316] uppercase">
+                    [ {cat.category} ]
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#25084a] text-[#f43f5e] px-3 py-1 rounded-lg border border-[#f43f5e]/30">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#25084a] text-[#f43f5e] px-3 py-1 rounded-lg border border-[#f43f5e]/30"
+                      >
                         {s}
                       </span>
                     ))}

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, ExternalLink, Github, Mail, Layers } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import { Sparkles, ExternalLink, Github, Mail, Layers } from "lucide-react";
 
 export default function AuroraMeshTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -23,17 +23,24 @@ export default function AuroraMeshTheme({ data }: { data: PortfolioData }) {
                 ✨
               </div>
               <div>
-                <h1 className="text-3xl font-black text-white">{personal.name}</h1>
-                <p className="text-xs font-mono text-teal-300 font-semibold">{personal.title}</p>
+                <h1 className="text-3xl font-black text-white">
+                  {personal.name}
+                </h1>
+                <p className="text-xs font-mono text-teal-300 font-semibold">
+                  {personal.title}
+                </p>
               </div>
             </div>
 
             <span className="px-3.5 py-1.5 bg-teal-950/80 border border-teal-700 text-teal-300 text-xs font-mono rounded-full flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-pink-400 animate-spin" /> AURORA MESH
+              <Sparkles className="w-3.5 h-3.5 text-pink-400 animate-spin" />{" "}
+              AURORA MESH
             </span>
           </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -70,19 +77,31 @@ export default function AuroraMeshTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#110d24]/70 border border-teal-500/30 hover:border-pink-500/60 rounded-3xl space-y-4 backdrop-blur-xl transition duration-300 group hover:shadow-xl hover:shadow-teal-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-teal-300 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-teal-300 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-teal-300 hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-teal-300 hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-purple-950/80 text-pink-300 px-2.5 py-0.5 rounded-lg border border-purple-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-purple-950/80 text-pink-300 px-2.5 py-0.5 rounded-lg border border-purple-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -101,11 +120,19 @@ export default function AuroraMeshTheme({ data }: { data: PortfolioData }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#110d24]/70 border border-teal-500/30 rounded-3xl space-y-3 backdrop-blur-xl">
-                  <h3 className="text-xs font-bold text-teal-300 font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#110d24]/70 border border-teal-500/30 rounded-3xl space-y-3 backdrop-blur-xl"
+                >
+                  <h3 className="text-xs font-bold text-teal-300 font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#1a1436] text-slate-200 px-3 py-1 rounded-xl border border-teal-500/20 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#1a1436] text-slate-200 px-3 py-1 rounded-xl border border-teal-500/20 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -117,7 +144,8 @@ export default function AuroraMeshTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-purple-900/30 text-center text-xs font-mono text-slate-500">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Living Aurora Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Living Aurora Engine.
         </footer>
       </div>
     </div>

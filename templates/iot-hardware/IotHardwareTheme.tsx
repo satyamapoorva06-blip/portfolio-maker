@@ -1,8 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Cpu, Zap, Radio, ExternalLink, Github, Linkedin, Mail, Activity, Terminal } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Cpu,
+  Zap,
+  Radio,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Activity,
+  Terminal,
+} from "lucide-react";
 
 export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -21,17 +31,24 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
                 <Cpu className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-white">{personal.name}</h1>
-                <span className="text-xs text-amber-400 font-semibold">{personal.title}</span>
+                <h1 className="text-2xl font-black text-white">
+                  {personal.name}
+                </h1>
+                <span className="text-xs text-amber-400 font-semibold">
+                  {personal.title}
+                </span>
               </div>
             </div>
 
             <span className="px-3 py-1 bg-amber-950 text-amber-300 border border-amber-800 text-xs rounded-full flex items-center gap-1.5">
-              <Radio className="w-3.5 h-3.5 text-amber-400 animate-pulse" /> IoT & Embedded Systems
+              <Radio className="w-3.5 h-3.5 text-amber-400 animate-pulse" /> IoT
+              & Embedded Systems
             </span>
           </div>
 
-          <p className="text-xs text-amber-200/80 leading-relaxed font-sans">{about.summary}</p>
+          <p className="text-xs text-amber-200/80 leading-relaxed font-sans">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -58,29 +75,51 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
         {/* Telemetry Hardware Metrics */}
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-[#14140e] border border-amber-500/30 rounded-3xl">
           <div className="space-y-1">
-            <span className="text-[11px] text-amber-400/70 font-mono uppercase">Microcontrollers</span>
-            <div className="text-xl font-extrabold text-amber-400">ESP32 & STM32</div>
-            <span className="text-[10px] text-amber-500/70">Raspberry Pi & Arduino</span>
+            <span className="text-[11px] text-amber-400/70 font-mono uppercase">
+              Microcontrollers
+            </span>
+            <div className="text-xl font-extrabold text-amber-400">
+              ESP32 & STM32
+            </div>
+            <span className="text-[10px] text-amber-500/70">
+              Raspberry Pi & Arduino
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-amber-400/70 font-mono uppercase">Wireless Protocols</span>
-            <div className="text-xl font-extrabold text-amber-300">BLE / MQTT</div>
-            <span className="text-[10px] text-amber-500/70">LoRaWAN & Wi-Fi</span>
+            <span className="text-[11px] text-amber-400/70 font-mono uppercase">
+              Wireless Protocols
+            </span>
+            <div className="text-xl font-extrabold text-amber-300">
+              BLE / MQTT
+            </div>
+            <span className="text-[10px] text-amber-500/70">
+              LoRaWAN & Wi-Fi
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-amber-400/70 font-mono uppercase">Sensors & PCB</span>
-            <div className="text-xl font-extrabold text-amber-400">KiCAD Design</div>
-            <span className="text-[10px] text-amber-500/70">I2C / SPI / UART</span>
+            <span className="text-[11px] text-amber-400/70 font-mono uppercase">
+              Sensors & PCB
+            </span>
+            <div className="text-xl font-extrabold text-amber-400">
+              KiCAD Design
+            </div>
+            <span className="text-[10px] text-amber-500/70">
+              I2C / SPI / UART
+            </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[11px] text-amber-400/70 font-mono uppercase">Status</span>
+            <span className="text-[11px] text-amber-400/70 font-mono uppercase">
+              Status
+            </span>
             <div className="text-sm font-bold text-emerald-400 flex items-center gap-1.5 pt-1">
               <Zap className="w-4 h-4" /> System Online
             </div>
-            <span className="text-[10px] text-amber-500/70">Hardware & Firmware</span>
+            <span className="text-[10px] text-amber-500/70">
+              Hardware & Firmware
+            </span>
           </div>
         </section>
 
@@ -88,7 +127,8 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-amber-400" /> IoT Hardware & Firmware Builds
+              <Cpu className="w-5 h-5 text-amber-400" /> IoT Hardware & Firmware
+              Builds
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,7 +138,9 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#14140e] border border-amber-900/60 hover:border-amber-500 rounded-3xl space-y-4 transition duration-300 group hover:shadow-xl hover:shadow-amber-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-amber-400 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-amber-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -111,11 +153,16 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-amber-200/80 leading-relaxed font-sans">{proj.description}</p>
+                  <p className="text-xs text-amber-200/80 leading-relaxed font-sans">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-amber-950/80 text-amber-300 px-2.5 py-0.5 rounded-lg border border-amber-800">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-amber-950/80 text-amber-300 px-2.5 py-0.5 rounded-lg border border-amber-800"
+                      >
                         {t}
                       </span>
                     ))}
@@ -130,16 +177,25 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Terminal className="w-5 h-5 text-amber-400" /> Hardware & Software Matrix
+              <Terminal className="w-5 h-5 text-amber-400" /> Hardware &
+              Software Matrix
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#14140e] border border-amber-900/60 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-amber-400 uppercase">[ {cat.category} ]</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#14140e] border border-amber-900/60 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-amber-400 uppercase">
+                    [ {cat.category} ]
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-[#1a1a12] text-amber-200 px-3 py-1 rounded-xl border border-amber-900/50">
+                      <span
+                        key={i}
+                        className="text-xs bg-[#1a1a12] text-amber-200 px-3 py-1 rounded-xl border border-amber-900/50"
+                      >
                         {s}
                       </span>
                     ))}
@@ -151,7 +207,8 @@ export default function IotHardwareTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-amber-900/40 text-center text-xs text-amber-500/70">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI IoT Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          IoT Engine.
         </footer>
       </div>
     </div>

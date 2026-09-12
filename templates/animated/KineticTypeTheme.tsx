@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, ArrowUpRight, Github, Mail, ExternalLink, Zap } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Sparkles,
+  ArrowUpRight,
+  Github,
+  Mail,
+  ExternalLink,
+  Zap,
+} from "lucide-react";
 
 export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -37,7 +44,9 @@ export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
             {personal.name}
           </h1>
 
-          <p className="text-xl font-sans text-zinc-300 font-light max-w-3xl leading-relaxed">{about.summary}</p>
+          <p className="text-xl font-sans text-zinc-300 font-light max-w-3xl leading-relaxed">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap gap-4 pt-4 font-mono text-xs">
             {personal.email && (
@@ -70,11 +79,19 @@ export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
 
             <div className="space-y-12">
               {projects.map((proj, idx) => (
-                <div key={proj.id} className="border-b border-zinc-800 pb-10 space-y-4 group">
+                <div
+                  key={proj.id}
+                  className="border-b border-zinc-800 pb-10 space-y-4 group"
+                >
                   <div className="flex justify-between items-baseline text-xs">
                     <span className="text-[#facc15]">NO. 0{idx + 1}</span>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white flex items-center gap-1">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white flex items-center gap-1"
+                      >
                         LIVE DEMO <ArrowUpRight className="w-4 h-4" />
                       </a>
                     )}
@@ -84,11 +101,16 @@ export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
                     {proj.name}
                   </h3>
 
-                  <p className="text-sm font-sans text-zinc-400 max-w-3xl leading-relaxed">{proj.description}</p>
+                  <p className="text-sm font-sans text-zinc-400 max-w-3xl leading-relaxed">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-2 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-xs bg-zinc-900 text-zinc-300 px-3 py-1 border border-zinc-800 uppercase">
+                      <span
+                        key={i}
+                        className="text-xs bg-zinc-900 text-zinc-300 px-3 py-1 border border-zinc-800 uppercase"
+                      >
                         {t}
                       </span>
                     ))}
@@ -109,10 +131,15 @@ export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {skills.map((cat) => (
                 <div key={cat.id} className="space-y-3">
-                  <h3 className="text-xs font-bold text-white uppercase">{cat.category}</h3>
+                  <h3 className="text-xs font-bold text-white uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs text-zinc-400 border-b border-[#facc15]/50 pb-1">
+                      <span
+                        key={i}
+                        className="text-xs text-zinc-400 border-b border-[#facc15]/50 pb-1"
+                      >
                         {s}
                       </span>
                     ))}
@@ -124,7 +151,8 @@ export default function KineticTypeTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-16 border-t border-zinc-900 text-center text-xs text-zinc-600">
-          © {new Date().getFullYear()} {personal.name} // KINETIC MARQUEE EDITION
+          © {new Date().getFullYear()} {personal.name} // KINETIC MARQUEE
+          EDITION
         </footer>
       </div>
     </div>

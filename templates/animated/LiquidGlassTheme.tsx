@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, ExternalLink, Github, Mail, Layers } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import { Sparkles, ExternalLink, Github, Mail, Layers } from "lucide-react";
 
 export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -21,17 +21,24 @@ export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
                 💧
               </div>
               <div>
-                <h1 className="text-3xl font-black text-white tracking-tight">{personal.name}</h1>
-                <p className="text-xs font-mono text-cyan-300 font-semibold">{personal.title}</p>
+                <h1 className="text-3xl font-black text-white tracking-tight">
+                  {personal.name}
+                </h1>
+                <p className="text-xs font-mono text-cyan-300 font-semibold">
+                  {personal.title}
+                </p>
               </div>
             </div>
 
             <span className="px-3.5 py-1.5 bg-cyan-950/60 border border-cyan-400/40 text-cyan-200 text-xs font-mono rounded-full flex items-center gap-1.5 backdrop-blur-xl">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" /> LIQUID GLASS BUBBLES
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />{" "}
+              LIQUID GLASS BUBBLES
             </span>
           </div>
 
-          <p className="text-sm text-slate-200 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-200 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -58,7 +65,8 @@ export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Layers className="w-5 h-5 text-cyan-400" /> FROSTED GLASS PROJECTS
+              <Layers className="w-5 h-5 text-cyan-400" /> FROSTED GLASS
+              PROJECTS
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -68,19 +76,31 @@ export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-white/5 border border-white/15 hover:border-cyan-400/60 rounded-3xl space-y-4 backdrop-blur-2xl transition duration-300 group hover:shadow-2xl hover:shadow-cyan-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-cyan-300 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-cyan-300 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 text-cyan-300 hover:text-white rounded-xl transition">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-cyan-300 hover:text-white rounded-xl transition"
+                      >
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-cyan-950/80 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-cyan-950/80 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -99,11 +119,19 @@ export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-white/5 border border-white/15 rounded-3xl space-y-3 backdrop-blur-2xl">
-                  <h3 className="text-xs font-bold text-cyan-300 font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-white/5 border border-white/15 rounded-3xl space-y-3 backdrop-blur-2xl"
+                >
+                  <h3 className="text-xs font-bold text-cyan-300 font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-white/10 text-slate-200 px-3 py-1 rounded-xl border border-white/20 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-white/10 text-slate-200 px-3 py-1 rounded-xl border border-white/20 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -115,7 +143,8 @@ export default function LiquidGlassTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-white/10 text-center text-xs font-mono text-slate-400">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Liquid Glass Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Liquid Glass Engine.
         </footer>
       </div>
     </div>

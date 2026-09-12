@@ -1,19 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { ExternalLink, Github, Mail, Search, Code, Sparkles, Filter, Terminal, Layers } from 'lucide-react';
+import React, { useState } from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  ExternalLink,
+  Github,
+  Mail,
+  Search,
+  Code,
+  Sparkles,
+  Filter,
+  Terminal,
+  Layers,
+} from "lucide-react";
 
 export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills, experience } = data;
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const allTechs = Array.from(new Set(projects.flatMap((p) => p.technologies)));
 
   const filteredProjects =
-    selectedCategory === 'all'
+    selectedCategory === "all"
       ? projects
-      : projects.filter((p) => p.technologies.some((t) => t.toLowerCase().includes(selectedCategory.toLowerCase())));
+      : projects.filter((p) =>
+          p.technologies.some((t) =>
+            t.toLowerCase().includes(selectedCategory.toLowerCase()),
+          ),
+        );
 
   return (
     <div className="min-h-screen bg-[#101010] text-zinc-100 font-sans p-6 sm:p-12 relative">
@@ -24,7 +38,9 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
             <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800">
               Dev Gallery Showcase
             </span>
-            <h1 className="text-3xl font-black text-white uppercase tracking-tight mt-1">{personal.name}</h1>
+            <h1 className="text-3xl font-black text-white uppercase tracking-tight mt-1">
+              {personal.name}
+            </h1>
             <p className="text-xs text-zinc-400 font-mono">{personal.title}</p>
           </div>
 
@@ -52,26 +68,33 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
 
         {/* Bio Summary Section */}
         <section className="p-6 bg-[#1a1a1a] border border-[#262626] rounded-2xl space-y-3">
-          <h2 className="text-xs font-bold text-zinc-400 font-mono uppercase tracking-wider">About Engineering</h2>
-          <p className="text-sm text-zinc-300 leading-relaxed font-light">{about.summary}</p>
+          <h2 className="text-xs font-bold text-zinc-400 font-mono uppercase tracking-wider">
+            About Engineering
+          </h2>
+          <p className="text-sm text-zinc-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
         </section>
 
         {/* Filter Ribbon Bar (Scraped from DevPortfolios.dev) */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-white font-mono uppercase tracking-wider flex items-center gap-2">
-              <Filter className="w-4 h-4 text-cyan-400" /> Filter Works by Technology
+              <Filter className="w-4 h-4 text-cyan-400" /> Filter Works by
+              Technology
             </h3>
-            <span className="text-xs text-zinc-500 font-mono">{filteredProjects.length} Projects Displayed</span>
+            <span className="text-xs text-zinc-500 font-mono">
+              {filteredProjects.length} Projects Displayed
+            </span>
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             <button
-              onClick={() => setSelectedCategory('all')}
+              onClick={() => setSelectedCategory("all")}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold font-mono transition uppercase ${
-                selectedCategory === 'all'
-                  ? 'bg-white text-black border border-white'
-                  : 'bg-[#1a1a1a] text-zinc-400 border border-[#262626] hover:bg-[#262626]'
+                selectedCategory === "all"
+                  ? "bg-white text-black border border-white"
+                  : "bg-[#1a1a1a] text-zinc-400 border border-[#262626] hover:bg-[#262626]"
               }`}
             >
               All ({projects.length})
@@ -82,8 +105,8 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
                 onClick={() => setSelectedCategory(tech)}
                 className={`px-4 py-1.5 rounded-lg text-xs font-bold font-mono transition uppercase whitespace-nowrap ${
                   selectedCategory === tech
-                    ? 'bg-white text-black border border-white'
-                    : 'bg-[#1a1a1a] text-zinc-400 border border-[#262626] hover:bg-[#262626]'
+                    ? "bg-white text-black border border-white"
+                    : "bg-[#1a1a1a] text-zinc-400 border border-[#262626] hover:bg-[#262626]"
                 }`}
               >
                 {tech}
@@ -101,7 +124,9 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
             >
               <div className="p-5 flex-1 space-y-3">
                 <div className="flex justify-between items-start">
-                  <h4 className="font-extrabold text-white text-base group-hover:text-cyan-400 transition">{proj.name}</h4>
+                  <h4 className="font-extrabold text-white text-base group-hover:text-cyan-400 transition">
+                    {proj.name}
+                  </h4>
                   {proj.liveUrl && (
                     <a
                       href={proj.liveUrl}
@@ -114,13 +139,18 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
                   )}
                 </div>
 
-                <p className="text-xs text-zinc-400 leading-relaxed font-light">{proj.description}</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                  {proj.description}
+                </p>
               </div>
 
               <div className="p-3 bg-[#202020] border-t border-[#262626] flex items-center justify-between">
                 <div className="flex flex-wrap gap-1">
                   {proj.technologies.slice(0, 3).map((t, idx) => (
-                    <span key={idx} className="text-[10px] bg-[#101010] text-zinc-300 font-mono px-2 py-0.5 rounded border border-[#303030]">
+                    <span
+                      key={idx}
+                      className="text-[10px] bg-[#101010] text-zinc-300 font-mono px-2 py-0.5 rounded border border-[#303030]"
+                    >
                       {t}
                     </span>
                   ))}
@@ -149,11 +179,19 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-4 bg-[#1a1a1a] border border-[#262626] rounded-xl space-y-2">
-                  <h4 className="text-xs font-bold text-cyan-400 font-mono uppercase">{cat.category}</h4>
+                <div
+                  key={cat.id}
+                  className="p-4 bg-[#1a1a1a] border border-[#262626] rounded-xl space-y-2"
+                >
+                  <h4 className="text-xs font-bold text-cyan-400 font-mono uppercase">
+                    {cat.category}
+                  </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {cat.skills.map((s, idx) => (
-                      <span key={idx} className="text-xs bg-[#202020] text-zinc-300 px-2.5 py-1 rounded font-mono">
+                      <span
+                        key={idx}
+                        className="text-xs bg-[#202020] text-zinc-300 px-2.5 py-1 rounded font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -166,7 +204,8 @@ export default function DevGalleryTheme({ data }: { data: PortfolioData }) {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-[#202020] text-center text-xs text-zinc-500 font-mono">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Dev Gallery.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Dev Gallery.
         </footer>
       </div>
     </div>

@@ -1,12 +1,24 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Terminal, Shield, Cpu, Code2, ExternalLink, Github, Linkedin, Mail, Zap } from 'lucide-react';
+import React, { useState } from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Terminal,
+  Shield,
+  Cpu,
+  Code2,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Zap,
+} from "lucide-react";
 
 export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills, experience } = data;
-  const [activeTab, setActiveTab] = useState<'all' | 'system' | 'projects'>('all');
+  const [activeTab, setActiveTab] = useState<"all" | "system" | "projects">(
+    "all",
+  );
 
   return (
     <div className="min-h-screen bg-[#070a0d] text-[#00ff66] font-mono selection:bg-[#00ff66] selection:text-black p-6 sm:p-12 relative overflow-x-hidden">
@@ -21,7 +33,9 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
               <span className="w-3 h-3 rounded-full bg-red-500"></span>
               <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
               <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
-              <span className="text-xs text-[#00ff66]/70 ml-2 font-mono">user@{data.slug || 'developer'}:~</span>
+              <span className="text-xs text-[#00ff66]/70 ml-2 font-mono">
+                user@{data.slug || "developer"}:~
+              </span>
             </div>
 
             <div className="flex items-center gap-2 text-xs font-bold text-[#00ff66] bg-[#00ff66]/10 px-3 py-1 rounded-md border border-[#00ff66]/30">
@@ -33,7 +47,7 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
           <div className="space-y-4">
             <div className="text-xs text-[#00ff66]/80 leading-relaxed font-mono">
               <pre className="text-[9px] sm:text-xs text-[#00ff66] leading-none select-none overflow-x-auto">
-{`
+                {`
  _____   ____   _____  _______ _____ _____ __   __
 |  __ \\ / __ \\ |  __ \\|__   __|_   _/ ____|\\ \\ / /
 | |__) | |  | || |__) |  | |    | || |      \\ V / 
@@ -46,9 +60,14 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
 
             <div className="space-y-2 pt-2">
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight">
-                {personal.name} <span className="text-[#00ff66] text-sm">[{personal.title}]</span>
+                {personal.name}{" "}
+                <span className="text-[#00ff66] text-sm">
+                  [{personal.title}]
+                </span>
               </h1>
-              <p className="text-xs text-[#00ff66]/80 leading-relaxed max-w-3xl">{about.summary}</p>
+              <p className="text-xs text-[#00ff66]/80 leading-relaxed max-w-3xl">
+                {about.summary}
+              </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -91,7 +110,8 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-[#00ff66]/30 pb-3">
-              <Code2 className="w-5 h-5 text-[#00ff66]" /> // REPOSITORIES_AND_PAYLOADS
+              <Code2 className="w-5 h-5 text-[#00ff66]" /> //
+              REPOSITORIES_AND_PAYLOADS
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,7 +121,9 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
                   className="bg-[#0b1017] border border-[#00ff66]/30 hover:border-[#00ff66] p-6 rounded-2xl space-y-4 transition duration-300 group hover:shadow-xl hover:shadow-[#00ff66]/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-[#00ff66] transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-[#00ff66] transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -114,11 +136,16 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-zinc-300 leading-relaxed font-sans">{proj.description}</p>
+                  <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, idx) => (
-                      <span key={idx} className="text-[10px] bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 px-2.5 py-0.5 rounded">
+                      <span
+                        key={idx}
+                        className="text-[10px] bg-[#00ff66]/10 text-[#00ff66] border border-[#00ff66]/30 px-2.5 py-0.5 rounded"
+                      >
                         [{t}]
                       </span>
                     ))}
@@ -133,16 +160,25 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-[#00ff66]/30 pb-3">
-              <Cpu className="w-5 h-5 text-[#00ff66]" /> // CORE_MODULES_AND_SKILLS
+              <Cpu className="w-5 h-5 text-[#00ff66]" /> //
+              CORE_MODULES_AND_SKILLS
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="bg-[#0b1017] border border-[#00ff66]/30 p-5 rounded-2xl space-y-3">
-                  <h3 className="text-xs font-bold text-[#00ff66] uppercase tracking-wider">[ {cat.category} ]</h3>
+                <div
+                  key={cat.id}
+                  className="bg-[#0b1017] border border-[#00ff66]/30 p-5 rounded-2xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-[#00ff66] uppercase tracking-wider">
+                    [ {cat.category} ]
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, idx) => (
-                      <span key={idx} className="text-xs bg-[#070a0d] text-emerald-300 border border-[#00ff66]/20 px-3 py-1 rounded-md">
+                      <span
+                        key={idx}
+                        className="text-xs bg-[#070a0d] text-emerald-300 border border-[#00ff66]/20 px-3 py-1 rounded-md"
+                      >
                         {s}
                       </span>
                     ))}
@@ -155,7 +191,8 @@ export default function CyberMatrixTheme({ data }: { data: PortfolioData }) {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-[#00ff66]/20 text-center text-xs text-[#00ff66]/60">
-          © {new Date().getFullYear()} {personal.name} // PORTIFY_AI_MATRIX_THEME
+          © {new Date().getFullYear()} {personal.name} //
+          PORTIFY_AI_MATRIX_THEME
         </footer>
       </div>
     </div>

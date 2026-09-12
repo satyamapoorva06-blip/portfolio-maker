@@ -1,4 +1,4 @@
-import { PortfolioData } from '@/types/portfolio';
+import { PortfolioData } from "@/types/portfolio";
 
 export interface CreateRepoParams {
   name: string;
@@ -9,37 +9,44 @@ export interface CreateRepoParams {
 }
 
 export function cleanGithubUsername(input?: string): string {
-  if (!input) return '';
+  if (!input) return "";
   let cleaned = input.trim();
-  cleaned = cleaned.replace(/^https?:\/\/(www\.)?github\.com\//i, '');
-  cleaned = cleaned.replace(/\/.*$/, '');
-  cleaned = cleaned.replace(/^@/, '');
+  cleaned = cleaned.replace(/^https?:\/\/(www\.)?github\.com\//i, "");
+  cleaned = cleaned.replace(/\/.*$/, "");
+  cleaned = cleaned.replace(/^@/, "");
   return cleaned;
 }
 
 export function formatGithubRepoUrl(owner: string, repoSlug: string): string {
-  const cleanOwner = cleanGithubUsername(owner) || 'user';
-  const cleanRepo = repoSlug.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+  const cleanOwner = cleanGithubUsername(owner) || "user";
+  const cleanRepo = repoSlug.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   return `https://github.com/${cleanOwner}/${cleanRepo}`;
 }
 
-export async function createGithubRepository({ name, isPrivate, portfolio, token, githubUsername }: CreateRepoParams) {
-  const cleanOwner = cleanGithubUsername(githubUsername) || 'user';
+export async function createGithubRepository({
+  name,
+  isPrivate,
+  portfolio,
+  token,
+  githubUsername,
+}: CreateRepoParams) {
+  const cleanOwner = cleanGithubUsername(githubUsername) || "user";
 
-  let cleanSlug = name.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
-  if (!cleanSlug.endsWith('-portfolio')) {
+  let cleanSlug = name.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
+  if (!cleanSlug.endsWith("-portfolio")) {
     cleanSlug = `${cleanSlug}-portfolio`;
   }
-  cleanSlug = cleanSlug.replace(/(-portfolio)+$/g, '-portfolio');
+  cleanSlug = cleanSlug.replace(/(-portfolio)+$/g, "-portfolio");
 
   const fallbackRepoUrl = formatGithubRepoUrl(cleanOwner, cleanSlug);
 
   // Strict check for GitHub Personal Access Token
-  if (!token || token.trim().length < 5 || token.includes('placeholder')) {
+  if (!token || token.trim().length < 5 || token.includes("placeholder")) {
     return {
       success: false,
       isTokenRequired: true,
-      error: 'GitHub Personal Access Token is required to create a repository on your GitHub account. Please paste your GitHub token below.',
+      error:
+        "GitHub Personal Access Token is required to create a repository on your GitHub account. Please paste your GitHub token below.",
       repoUrl: fallbackRepoUrl,
       cloneUrl: `${fallbackRepoUrl}.git`,
       fullName: `${cleanOwner}/${cleanSlug}`,
@@ -48,13 +55,13 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
 
   try {
     // 1. Create Repository on User's GitHub Account
-    const createRes = await fetch('https://api.github.com/user/repos', {
-      method: 'POST',
+    const createRes = await fetch("https://api.github.com/user/repos", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token.trim()}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'Portify-AI-App',
+        Accept: "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+        "User-Agent": "Portify-AI-App",
       },
       body: JSON.stringify({
         name: cleanSlug,
@@ -70,11 +77,15 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       return {
         success: false,
         isTokenRequired: true,
-        error: repoData.message || 'GitHub authentication failed. Please verify your token has "repo" scope.',
+        error:
+          repoData.message ||
+          'GitHub authentication failed. Please verify your token has "repo" scope.',
       };
     }
 
-    const actualOwner = cleanGithubUsername(repoData.owner?.login || cleanOwner);
+    const actualOwner = cleanGithubUsername(
+      repoData.owner?.login || cleanOwner,
+    );
     const repoFullName = repoData.full_name || `${actualOwner}/${cleanSlug}`;
     const repoHtmlUrl = formatGithubRepoUrl(actualOwner, cleanSlug);
 
@@ -86,9 +97,13 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'README.md',
-      content: generateReadmeContent(portfolio, `https://${cleanSlug}.vercel.app`, repoHtmlUrl),
-      message: 'docs: add professional README portfolio documentation',
+      path: "README.md",
+      content: generateReadmeContent(
+        portfolio,
+        `https://${cleanSlug}.vercel.app`,
+        repoHtmlUrl,
+      ),
+      message: "docs: add professional README portfolio documentation",
     });
 
     // portfolio.json
@@ -96,9 +111,9 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'portfolio.json',
+      path: "portfolio.json",
       content: JSON.stringify(portfolio, null, 2),
-      message: 'feat: add standalone portfolio dataset',
+      message: "feat: add standalone portfolio dataset",
     });
 
     // package.json
@@ -106,38 +121,38 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'package.json',
+      path: "package.json",
       content: JSON.stringify(
         {
           name: cleanSlug,
-          version: '1.0.0',
+          version: "1.0.0",
           private: true,
           scripts: {
-            dev: 'next dev',
-            build: 'next build',
-            start: 'next start',
+            dev: "next dev",
+            build: "next build",
+            start: "next start",
           },
           dependencies: {
-            next: '^14.2.35',
-            react: '^18.3.1',
-            'react-dom': '^18.3.1',
-            'lucide-react': '^0.378.0',
-            clsx: '^2.1.1',
+            next: "^14.2.35",
+            react: "^18.3.1",
+            "react-dom": "^18.3.1",
+            "lucide-react": "^0.378.0",
+            clsx: "^2.1.1",
           },
           devDependencies: {
-            typescript: '^5.4.5',
-            '@types/node': '^20.12.12',
-            '@types/react': '^18.3.2',
-            '@types/react-dom': '^18.3.0',
-            tailwindcss: '^3.4.3',
-            postcss: '^8.4.38',
-            autoprefixer: '^10.4.19',
+            typescript: "^5.4.5",
+            "@types/node": "^20.12.12",
+            "@types/react": "^18.3.2",
+            "@types/react-dom": "^18.3.0",
+            tailwindcss: "^3.4.3",
+            postcss: "^8.4.38",
+            autoprefixer: "^10.4.19",
           },
         },
         null,
-        2
+        2,
       ),
-      message: 'chore: initialize Next.js package configuration',
+      message: "chore: initialize Next.js package configuration",
     });
 
     // tsconfig.json
@@ -145,33 +160,33 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'tsconfig.json',
+      path: "tsconfig.json",
       content: JSON.stringify(
         {
           compilerOptions: {
-            target: 'es5',
-            lib: ['dom', 'dom.iterable', 'esnext'],
+            target: "es5",
+            lib: ["dom", "dom.iterable", "esnext"],
             allowJs: true,
             skipLibCheck: true,
             strict: false,
             noEmit: true,
             esModuleInterop: true,
-            module: 'esnext',
-            moduleResolution: 'bundler',
+            module: "esnext",
+            moduleResolution: "bundler",
             resolveJsonModule: true,
             isolatedModules: true,
-            jsx: 'preserve',
+            jsx: "preserve",
             incremental: true,
-            plugins: [{ name: 'next' }],
-            paths: { '@/*': ['./*'] },
+            plugins: [{ name: "next" }],
+            paths: { "@/*": ["./*"] },
           },
-          include: ['next-env.d.ts', '**/*.ts', '**/*.tsx'],
-          exclude: ['node_modules'],
+          include: ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+          exclude: ["node_modules"],
         },
         null,
-        2
+        2,
       ),
-      message: 'chore: add tsconfig configuration',
+      message: "chore: add tsconfig configuration",
     });
 
     // tailwind.config.js
@@ -179,14 +194,14 @@ export async function createGithubRepository({ name, isPrivate, portfolio, token
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'tailwind.config.js',
+      path: "tailwind.config.js",
       content: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: { extend: {} },
   plugins: [],
 };`,
-      message: 'chore: add tailwind configuration',
+      message: "chore: add tailwind configuration",
     });
 
     // postcss.config.js
@@ -194,14 +209,14 @@ module.exports = {
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'postcss.config.js',
+      path: "postcss.config.js",
       content: `module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
 };`,
-      message: 'chore: add postcss configuration',
+      message: "chore: add postcss configuration",
     });
 
     // app/globals.css
@@ -209,7 +224,7 @@ module.exports = {
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'app/globals.css',
+      path: "app/globals.css",
       content: `@tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -219,7 +234,7 @@ body {
   color: #f8fafc;
   font-family: system-ui, -apple-system, sans-serif;
 }`,
-      message: 'style: add global CSS styles',
+      message: "style: add global CSS styles",
     });
 
     // app/layout.tsx
@@ -227,7 +242,7 @@ body {
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'app/layout.tsx',
+      path: "app/layout.tsx",
       content: `import './globals.css';
 import React from 'react';
 
@@ -243,7 +258,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }`,
-      message: 'feat: add Next.js RootLayout',
+      message: "feat: add Next.js RootLayout",
     });
 
     // app/page.tsx - Clean, high-impact standalone Next.js Portfolio Component!
@@ -251,9 +266,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       token: authToken,
       owner: actualOwner,
       repo: cleanSlug,
-      path: 'app/page.tsx',
+      path: "app/page.tsx",
       content: generateStandalonePageCode(portfolio),
-      message: 'feat: add standalone portfolio Next.js application page',
+      message: "feat: add standalone portfolio Next.js application page",
     });
 
     return {
@@ -286,41 +301,54 @@ async function commitFileToRepo({
   message: string;
 }) {
   try {
-    const base64Content = typeof window !== 'undefined' ? btoa(unescape(encodeURIComponent(content))) : Buffer.from(content).toString('base64');
+    const base64Content =
+      typeof window !== "undefined"
+        ? btoa(unescape(encodeURIComponent(content)))
+        : Buffer.from(content).toString("base64");
 
     let sha: string | undefined;
-    const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github.v3+json',
-        'User-Agent': 'Portify-AI-App',
+    const getRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "Portify-AI-App",
+        },
       },
-    });
+    );
     if (getRes.ok) {
       const getJson = await getRes.json();
       sha = getJson.sha;
     }
 
-    await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'Portify-AI-App',
+    await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+          "Content-Type": "application/json",
+          "User-Agent": "Portify-AI-App",
+        },
+        body: JSON.stringify({
+          message,
+          content: base64Content,
+          sha,
+        }),
       },
-      body: JSON.stringify({
-        message,
-        content: base64Content,
-        sha,
-      }),
-    });
+    );
   } catch (err) {
     console.error(`Failed to commit ${path} to GitHub:`, err);
   }
 }
 
-export function generateReadmeContent(portfolio: PortfolioData, liveUrl: string, repoUrl: string): string {
+export function generateReadmeContent(
+  portfolio: PortfolioData,
+  liveUrl: string,
+  repoUrl: string,
+): string {
   return `# ${portfolio.personal.name} — Portfolio Website
 
 > Generated automatically by **Portify AI**

@@ -1,8 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { LayoutGrid, ExternalLink, Github, Linkedin, Mail, Sparkles, Code2, Award, Globe, ArrowUpRight } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  LayoutGrid,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Sparkles,
+  Code2,
+  Award,
+  Globe,
+  ArrowUpRight,
+} from "lucide-react";
 
 export default function BentoGridTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills, experience } = data;
@@ -20,8 +31,12 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
               {personal.name.charAt(0)}
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-white tracking-tight">{personal.name}</h1>
-              <p className="text-xs text-cyan-400 font-mono">{personal.title}</p>
+              <h1 className="text-xl font-extrabold text-white tracking-tight">
+                {personal.name}
+              </h1>
+              <p className="text-xs text-cyan-400 font-mono">
+                {personal.title}
+              </p>
             </div>
           </div>
 
@@ -43,25 +58,33 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
           <div className="md:col-span-2 p-8 bg-[#11131c] border border-slate-800 hover:border-slate-700 rounded-3xl space-y-6 flex flex-col justify-between transition shadow-xl">
             <div className="space-y-4">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-xs font-semibold text-blue-300">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" /> BENTO GRID PORTFOLIO
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" /> BENTO GRID
+                PORTFOLIO
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
                 Architecting modern web applications & scalable cloud systems.
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+                {about.summary}
+              </p>
             </div>
 
             <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
               <span className="text-xs font-mono text-slate-400 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Available for Hire
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>{" "}
+                Available for Hire
               </span>
-              <span className="text-xs font-mono text-slate-400">• {personal.location}</span>
+              <span className="text-xs font-mono text-slate-400">
+                • {personal.location}
+              </span>
             </div>
           </div>
 
           {/* Social Connections Bento Card */}
           <div className="p-8 bg-[#11131c] border border-slate-800 rounded-3xl space-y-6 flex flex-col justify-between shadow-xl">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Connect & Links</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">
+              Connect & Links
+            </h3>
             <div className="space-y-3">
               {personal.socials.github && (
                 <a
@@ -71,7 +94,8 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
                   className="p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl flex items-center justify-between text-xs font-medium text-slate-200 transition"
                 >
                   <span className="flex items-center gap-2">
-                    <Github className="w-4 h-4 text-cyan-400" /> GitHub Repository
+                    <Github className="w-4 h-4 text-cyan-400" /> GitHub
+                    Repository
                   </span>
                   <ArrowUpRight className="w-4 h-4 text-slate-500" />
                 </a>
@@ -84,7 +108,8 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
                   className="p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl flex items-center justify-between text-xs font-medium text-slate-200 transition"
                 >
                   <span className="flex items-center gap-2">
-                    <Linkedin className="w-4 h-4 text-blue-400" /> LinkedIn Profile
+                    <Linkedin className="w-4 h-4 text-blue-400" /> LinkedIn
+                    Profile
                   </span>
                   <ArrowUpRight className="w-4 h-4 text-slate-500" />
                 </a>
@@ -105,12 +130,14 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
                 <div
                   key={proj.id}
                   className={`p-6 bg-[#11131c] border border-slate-800 hover:border-cyan-500/50 rounded-3xl space-y-4 transition duration-300 flex flex-col justify-between shadow-xl ${
-                    idx === 0 ? 'md:col-span-2' : ''
+                    idx === 0 ? "md:col-span-2" : ""
                   }`}
                 >
                   <div className="space-y-3">
                     <div className="flex justify-between items-start">
-                      <h4 className="font-extrabold text-white text-base">{proj.name}</h4>
+                      <h4 className="font-extrabold text-white text-base">
+                        {proj.name}
+                      </h4>
                       {proj.liveUrl && (
                         <a
                           href={proj.liveUrl}
@@ -122,12 +149,17 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
                         </a>
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                    <p className="text-xs text-slate-300 leading-relaxed font-light">
+                      {proj.description}
+                    </p>
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-slate-900 text-cyan-300 px-2.5 py-1 rounded-xl border border-slate-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-slate-900 text-cyan-300 px-2.5 py-1 rounded-xl border border-slate-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -142,11 +174,19 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {skills.map((cat) => (
-              <div key={cat.id} className="p-6 bg-[#11131c] border border-slate-800 rounded-3xl space-y-3">
-                <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider font-mono">{cat.category}</h4>
+              <div
+                key={cat.id}
+                className="p-6 bg-[#11131c] border border-slate-800 rounded-3xl space-y-3"
+              >
+                <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider font-mono">
+                  {cat.category}
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {cat.skills.map((s, i) => (
-                    <span key={i} className="text-xs bg-slate-900 text-slate-200 px-3 py-1.5 rounded-2xl border border-slate-800 font-mono">
+                    <span
+                      key={i}
+                      className="text-xs bg-slate-900 text-slate-200 px-3 py-1.5 rounded-2xl border border-slate-800 font-mono"
+                    >
                       {s}
                     </span>
                   ))}
@@ -158,7 +198,8 @@ export default function BentoGridTheme({ data }: { data: PortfolioData }) {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 font-mono">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Bento Grid.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Bento Grid.
         </footer>
       </div>
     </div>

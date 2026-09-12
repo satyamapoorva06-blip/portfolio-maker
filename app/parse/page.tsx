@@ -1,20 +1,36 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Navbar from '@/components/landing/Navbar';
-import ProgressStepper from '@/components/navigation/ProgressStepper';
-import { getStoredPortfolio, saveStoredPortfolio } from '@/lib/storage/local-store';
-import { PortfolioData } from '@/types/portfolio';
-import { Sparkles, CheckCircle2, User, Code2, Briefcase, GraduationCap, ArrowRight, ArrowLeft, Save, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Navbar from "@/components/landing/Navbar";
+import ProgressStepper from "@/components/navigation/ProgressStepper";
+import {
+  getStoredPortfolio,
+  saveStoredPortfolio,
+} from "@/lib/storage/local-store";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Sparkles,
+  CheckCircle2,
+  User,
+  Code2,
+  Briefcase,
+  GraduationCap,
+  ArrowRight,
+  ArrowLeft,
+  Save,
+  Trash2,
+} from "lucide-react";
 
 function ParseReviewContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams.get("id");
 
   const [data, setData] = useState<PortfolioData | null>(null);
-  const [activeTab, setActiveTab] = useState<'personal' | 'skills' | 'projects' | 'experience' | 'education'>('personal');
+  const [activeTab, setActiveTab] = useState<
+    "personal" | "skills" | "projects" | "experience" | "education"
+  >("personal");
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
@@ -22,11 +38,16 @@ function ParseReviewContent() {
     if (p) {
       setData(p);
     } else {
-      router.push('/upload');
+      router.push("/upload");
     }
   }, [id, router]);
 
-  if (!data) return <div className="p-12 text-center text-slate-400 font-mono">Loading data...</div>;
+  if (!data)
+    return (
+      <div className="p-12 text-center text-slate-400 font-mono">
+        Loading data...
+      </div>
+    );
 
   const handleSave = () => {
     saveStoredPortfolio(data);
@@ -45,9 +66,12 @@ function ParseReviewContent() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-6">
         <div className="space-y-2">
           <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800 flex items-center gap-1.5 w-fit">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Step 2 of 4 — AI Extraction Verification
+            <CheckCircle2 className="w-3.5 h-3.5" /> Step 2 of 4 — AI Extraction
+            Verification
           </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">Review & Edit Parsed Data</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
+            Review & Edit Parsed Data
+          </h1>
           <p className="text-slate-400 text-sm font-light">
             Verify your parsed resume info before choosing your portfolio theme.
           </p>
@@ -58,7 +82,8 @@ function ParseReviewContent() {
             onClick={handleSave}
             className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 flex items-center gap-1.5 transition"
           >
-            <Save className="w-4 h-4 text-emerald-400" /> {savedSuccess ? 'Saved!' : 'Save Changes'}
+            <Save className="w-4 h-4 text-emerald-400" />{" "}
+            {savedSuccess ? "Saved!" : "Save Changes"}
           </button>
           <button
             onClick={handleProceed}
@@ -72,11 +97,11 @@ function ParseReviewContent() {
       {/* Tab Selection Navigation */}
       <div className="flex gap-2 border-b border-slate-800 overflow-x-auto scrollbar-none pb-2">
         {[
-          { id: 'personal', label: 'Personal & Contact', icon: User },
-          { id: 'skills', label: 'Skills & Stack', icon: Code2 },
-          { id: 'projects', label: 'Projects', icon: Sparkles },
-          { id: 'experience', label: 'Experience', icon: Briefcase },
-          { id: 'education', label: 'Education', icon: GraduationCap },
+          { id: "personal", label: "Personal & Contact", icon: User },
+          { id: "skills", label: "Skills & Stack", icon: Code2 },
+          { id: "projects", label: "Projects", icon: Sparkles },
+          { id: "experience", label: "Experience", icon: Briefcase },
+          { id: "education", label: "Education", icon: GraduationCap },
         ].map((tab) => {
           const IconComp = tab.icon;
           return (
@@ -85,8 +110,8 @@ function ParseReviewContent() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition shrink-0 ${
                 activeTab === tab.id
-                  ? 'bg-[#e50914] text-white shadow-lg'
-                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800'
+                  ? "bg-[#e50914] text-white shadow-lg"
+                  : "bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800"
               }`}
             >
               <IconComp className="w-4 h-4" /> {tab.label}
@@ -96,59 +121,23 @@ function ParseReviewContent() {
       </div>
 
       {/* TAB 1: PERSONAL & CONTACT */}
-      {activeTab === 'personal' && (
+      {activeTab === "personal" && (
         <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
-          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Personal Profile & Bio</h3>
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">
+            Personal Profile & Bio
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">Full Name</label>
+              <label className="text-xs font-bold text-slate-300">
+                Full Name
+              </label>
               <input
                 type="text"
-                value={data.personal.name || ''}
-                onChange={(e) => setData({ ...data, personal: { ...data.personal, name: e.target.value } })}
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">Professional Title</label>
-              <input
-                type="text"
-                value={data.personal.title || ''}
-                onChange={(e) => setData({ ...data, personal: { ...data.personal, title: e.target.value } })}
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">Email Address</label>
-              <input
-                type="email"
-                value={data.personal.email || ''}
-                onChange={(e) => setData({ ...data, personal: { ...data.personal, email: e.target.value } })}
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">Location</label>
-              <input
-                type="text"
-                value={data.personal.location || ''}
-                onChange={(e) => setData({ ...data, personal: { ...data.personal, location: e.target.value } })}
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">GitHub Profile URL</label>
-              <input
-                type="text"
-                value={data.personal.socials?.github || ''}
+                value={data.personal.name || ""}
                 onChange={(e) =>
                   setData({
                     ...data,
-                    personal: { ...data.personal, socials: { ...data.personal.socials, github: e.target.value } },
+                    personal: { ...data.personal, name: e.target.value },
                   })
                 }
                 className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
@@ -156,14 +145,96 @@ function ParseReviewContent() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-300">LinkedIn Profile URL</label>
+              <label className="text-xs font-bold text-slate-300">
+                Professional Title
+              </label>
               <input
                 type="text"
-                value={data.personal.socials?.linkedin || ''}
+                value={data.personal.title || ""}
                 onChange={(e) =>
                   setData({
                     ...data,
-                    personal: { ...data.personal, socials: { ...data.personal.socials, linkedin: e.target.value } },
+                    personal: { ...data.personal, title: e.target.value },
+                  })
+                }
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-300">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={data.personal.email || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    personal: { ...data.personal, email: e.target.value },
+                  })
+                }
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-300">
+                Location
+              </label>
+              <input
+                type="text"
+                value={data.personal.location || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    personal: { ...data.personal, location: e.target.value },
+                  })
+                }
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-300">
+                GitHub Profile URL
+              </label>
+              <input
+                type="text"
+                value={data.personal.socials?.github || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    personal: {
+                      ...data.personal,
+                      socials: {
+                        ...data.personal.socials,
+                        github: e.target.value,
+                      },
+                    },
+                  })
+                }
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-300">
+                LinkedIn Profile URL
+              </label>
+              <input
+                type="text"
+                value={data.personal.socials?.linkedin || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    personal: {
+                      ...data.personal,
+                      socials: {
+                        ...data.personal.socials,
+                        linkedin: e.target.value,
+                      },
+                    },
                   })
                 }
                 className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
@@ -172,11 +243,18 @@ function ParseReviewContent() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-300">About Summary & Bio</label>
+            <label className="text-xs font-bold text-slate-300">
+              About Summary & Bio
+            </label>
             <textarea
               rows={4}
-              value={data.about.summary || ''}
-              onChange={(e) => setData({ ...data, about: { ...data.about, summary: e.target.value } })}
+              value={data.about.summary || ""}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  about: { ...data.about, summary: e.target.value },
+                })
+              }
               className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-[#e50914]"
             />
           </div>
@@ -184,12 +262,17 @@ function ParseReviewContent() {
       )}
 
       {/* TAB 2: SKILLS */}
-      {activeTab === 'skills' && (
+      {activeTab === "skills" && (
         <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
-          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Technical Skills & Categories</h3>
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">
+            Technical Skills & Categories
+          </h3>
           <div className="space-y-6">
             {data.skills.map((grp, idx) => (
-              <div key={grp.id} className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
+              <div
+                key={grp.id}
+                className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3"
+              >
                 <div className="flex justify-between items-center">
                   <input
                     type="text"
@@ -213,13 +296,17 @@ function ParseReviewContent() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] text-slate-400 font-mono">Skills (comma-separated):</label>
+                  <label className="text-[11px] text-slate-400 font-mono">
+                    Skills (comma-separated):
+                  </label>
                   <input
                     type="text"
-                    value={grp.skills.join(', ')}
+                    value={grp.skills.join(", ")}
                     onChange={(e) => {
                       const newSkills = [...data.skills];
-                      newSkills[idx].skills = e.target.value.split(',').map((s) => s.trim());
+                      newSkills[idx].skills = e.target.value
+                        .split(",")
+                        .map((s) => s.trim());
                       setData({ ...data, skills: newSkills });
                     }}
                     className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 outline-none focus:border-[#e50914]"
@@ -232,12 +319,17 @@ function ParseReviewContent() {
       )}
 
       {/* TAB 3: PROJECTS */}
-      {activeTab === 'projects' && (
+      {activeTab === "projects" && (
         <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
-          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Projects Showcase</h3>
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">
+            Projects Showcase
+          </h3>
           <div className="space-y-6">
             {data.projects.map((proj, idx) => (
-              <div key={proj.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+              <div
+                key={proj.id}
+                className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4"
+              >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <input
                     type="text"
@@ -253,7 +345,7 @@ function ParseReviewContent() {
                   <input
                     type="text"
                     placeholder="Live URL / Demo Link"
-                    value={proj.liveUrl || ''}
+                    value={proj.liveUrl || ""}
                     onChange={(e) => {
                       const newProjects = [...data.projects];
                       newProjects[idx].liveUrl = e.target.value;
@@ -276,10 +368,12 @@ function ParseReviewContent() {
                 <input
                   type="text"
                   placeholder="Technologies (comma-separated)"
-                  value={proj.technologies.join(', ')}
+                  value={proj.technologies.join(", ")}
                   onChange={(e) => {
                     const newProjects = [...data.projects];
-                    newProjects[idx].technologies = e.target.value.split(',').map((t) => t.trim());
+                    newProjects[idx].technologies = e.target.value
+                      .split(",")
+                      .map((t) => t.trim());
                     setData({ ...data, projects: newProjects });
                   }}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-cyan-300"
@@ -291,15 +385,23 @@ function ParseReviewContent() {
       )}
 
       {/* TAB 4: EXPERIENCE */}
-      {activeTab === 'experience' && (
+      {activeTab === "experience" && (
         <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
-          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Work Experience</h3>
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">
+            Work Experience
+          </h3>
           <div className="space-y-6">
             {data.experience.length === 0 ? (
-              <p className="text-xs text-slate-400 font-mono">No work experience entries parsed. You can add them in the customize editor.</p>
+              <p className="text-xs text-slate-400 font-mono">
+                No work experience entries parsed. You can add them in the
+                customize editor.
+              </p>
             ) : (
               data.experience.map((exp, idx) => (
-                <div key={exp.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                <div
+                  key={exp.id}
+                  className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4"
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       type="text"
@@ -328,7 +430,7 @@ function ParseReviewContent() {
                     <input
                       type="text"
                       placeholder="Start Date"
-                      value={exp.startDate || ''}
+                      value={exp.startDate || ""}
                       onChange={(e) => {
                         const newExp = [...data.experience];
                         newExp[idx].startDate = e.target.value;
@@ -339,7 +441,7 @@ function ParseReviewContent() {
                     <input
                       type="text"
                       placeholder="End Date"
-                      value={exp.endDate || ''}
+                      value={exp.endDate || ""}
                       onChange={(e) => {
                         const newExp = [...data.experience];
                         newExp[idx].endDate = e.target.value;
@@ -351,7 +453,7 @@ function ParseReviewContent() {
                   <textarea
                     rows={2}
                     placeholder="Description / Key Responsibilities"
-                    value={exp.description || ''}
+                    value={exp.description || ""}
                     onChange={(e) => {
                       const newExp = [...data.experience];
                       newExp[idx].description = e.target.value;
@@ -367,15 +469,23 @@ function ParseReviewContent() {
       )}
 
       {/* TAB 5: EDUCATION */}
-      {activeTab === 'education' && (
+      {activeTab === "education" && (
         <div className="p-8 bg-slate-900/90 border border-slate-800 rounded-3xl space-y-6">
-          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">Education & Qualifications</h3>
+          <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider">
+            Education & Qualifications
+          </h3>
           <div className="space-y-6">
             {data.education.length === 0 ? (
-              <p className="text-xs text-slate-400 font-mono">No education entries parsed. You can add them in the customize editor.</p>
+              <p className="text-xs text-slate-400 font-mono">
+                No education entries parsed. You can add them in the customize
+                editor.
+              </p>
             ) : (
               data.education.map((edu, idx) => (
-                <div key={edu.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                <div
+                  key={edu.id}
+                  className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4"
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       type="text"
@@ -404,7 +514,7 @@ function ParseReviewContent() {
                     <input
                       type="text"
                       placeholder="Field of Study"
-                      value={edu.field || ''}
+                      value={edu.field || ""}
                       onChange={(e) => {
                         const newEdu = [...data.education];
                         newEdu[idx].field = e.target.value;
@@ -415,7 +525,7 @@ function ParseReviewContent() {
                     <input
                       type="text"
                       placeholder="Graduation Year / Dates"
-                      value={edu.endDate || ''}
+                      value={edu.endDate || ""}
                       onChange={(e) => {
                         const newEdu = [...data.education];
                         newEdu[idx].endDate = e.target.value;
@@ -426,7 +536,7 @@ function ParseReviewContent() {
                     <input
                       type="text"
                       placeholder="GPA / Score"
-                      value={edu.gpa || ''}
+                      value={edu.gpa || ""}
                       onChange={(e) => {
                         const newEdu = [...data.education];
                         newEdu[idx].gpa = e.target.value;
@@ -445,7 +555,7 @@ function ParseReviewContent() {
       {/* Navigation Action Footer */}
       <div className="flex justify-between items-center pt-4 border-t border-slate-800">
         <button
-          onClick={() => router.push('/upload')}
+          onClick={() => router.push("/upload")}
           className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold rounded-xl border border-slate-800 flex items-center gap-2 transition"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Upload
@@ -466,7 +576,13 @@ export default function ParseReviewPage() {
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
       <ProgressStepper currentStep={2} />
-      <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono">Loading parsed data...</div>}>
+      <Suspense
+        fallback={
+          <div className="p-12 text-center text-slate-400 font-mono">
+            Loading parsed data...
+          </div>
+        }
+      >
         <ParseReviewContent />
       </Suspense>
     </div>

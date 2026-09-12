@@ -1,18 +1,26 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Folders, Rocket, Shield, ArrowLeft, Sparkles } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Users,
+  Folders,
+  Rocket,
+  Shield,
+  ArrowLeft,
+  Sparkles,
+} from "lucide-react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin', label: 'Overview', icon: LayoutDashboard },
-    { href: '/admin/users', label: 'User Management', icon: Users },
-    { href: '/admin/portfolios', label: 'Portfolios', icon: Folders },
-    { href: '/admin/deployments', label: 'Deployments', icon: Rocket },
+    { href: "/admin", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/users", label: "User Management", icon: Users },
+    { href: "/admin/portfolios", label: "Portfolios", icon: Folders },
+    { href: "/admin/deployments", label: "Deployments", icon: Rocket },
   ];
 
   return (
@@ -23,8 +31,12 @@ export default function AdminSidebar() {
             <Shield className="w-5 h-5" />
           </div>
           <div>
-            <span className="font-extrabold text-base tracking-tight text-white block">Portify Admin</span>
-            <span className="text-[10px] text-rose-400 font-mono">ROLE: ADMIN_ROOT</span>
+            <span className="font-extrabold text-base tracking-tight text-white block">
+              Portify Admin
+            </span>
+            <span className="text-[10px] text-rose-400 font-mono">
+              ROLE: ADMIN_ROOT
+            </span>
           </div>
         </Link>
 
@@ -37,7 +49,9 @@ export default function AdminSidebar() {
                 key={item.href}
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
-                  isActive ? 'bg-rose-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  isActive
+                    ? "bg-rose-600 text-white shadow-sm"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800"
                 }`}
               >
                 <Icon className="w-4 h-4" />

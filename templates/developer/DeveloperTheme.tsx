@@ -1,11 +1,36 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Terminal, Github, Linkedin, Mail, Code2, GitBranch, Cpu, Database, Server, ExternalLink, Sparkles, FolderGit2, GraduationCap, Award, MapPin, CheckCircle2 } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Terminal,
+  Github,
+  Linkedin,
+  Mail,
+  Code2,
+  GitBranch,
+  Cpu,
+  Database,
+  Server,
+  ExternalLink,
+  Sparkles,
+  FolderGit2,
+  GraduationCap,
+  Award,
+  MapPin,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function DeveloperTheme({ data }: { data: PortfolioData }) {
-  const { personal, about, skills, experience, projects, education, sectionVisibility } = data;
+  const {
+    personal,
+    about,
+    skills,
+    experience,
+    projects,
+    education,
+    sectionVisibility,
+  } = data;
 
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100 font-mono selection:bg-cyan-500 selection:text-slate-950">
@@ -19,7 +44,7 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
           </div>
           <span className="text-xs text-cyan-300/80 pl-3 border-l border-slate-800 flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-            {personal.name.toLowerCase().replace(/\s+/g, '-')}.dev.ts
+            {personal.name.toLowerCase().replace(/\s+/g, "-")}.dev.ts
           </span>
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-400">
@@ -47,33 +72,51 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
               </div>
               {personal.location && (
                 <div className="text-xs text-slate-400 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-cyan-400" /> {personal.location}
+                  <MapPin className="w-3.5 h-3.5 text-cyan-400" />{" "}
+                  {personal.location}
                 </div>
               )}
             </div>
 
             {/* Code Declaration Block */}
             <div className="space-y-2 font-mono text-sm sm:text-base bg-[#070a12] p-5 rounded-xl border border-slate-800">
-              <div className="text-slate-500 text-xs">// Developer Profile Object Initialization</div>
+              <div className="text-slate-500 text-xs">
+                // Developer Profile Object Initialization
+              </div>
               <div>
-                <span className="text-cyan-400">const</span> <span className="text-amber-300 font-bold">developer</span> = <span className="text-emerald-400">{'{'}</span>
+                <span className="text-cyan-400">const</span>{" "}
+                <span className="text-amber-300 font-bold">developer</span> ={" "}
+                <span className="text-emerald-400">{"{"}</span>
               </div>
               <div className="pl-6 space-y-1.5 text-xs sm:text-sm">
                 <div>
-                  <span className="text-slate-400">name:</span> <span className="text-emerald-300 font-bold">"{personal.name}"</span>,
+                  <span className="text-slate-400">name:</span>{" "}
+                  <span className="text-emerald-300 font-bold">
+                    "{personal.name}"
+                  </span>
+                  ,
                 </div>
                 <div>
-                  <span className="text-slate-400">role:</span> <span className="text-cyan-300 font-semibold">"{personal.title}"</span>,
+                  <span className="text-slate-400">role:</span>{" "}
+                  <span className="text-cyan-300 font-semibold">
+                    "{personal.title}"
+                  </span>
+                  ,
                 </div>
                 <div>
-                  <span className="text-slate-400">status:</span> <span className="text-amber-300">"Building Next-Gen Web & Backend Systems"</span>,
+                  <span className="text-slate-400">status:</span>{" "}
+                  <span className="text-amber-300">
+                    "Building Next-Gen Web & Backend Systems"
+                  </span>
+                  ,
                 </div>
                 <div>
-                  <span className="text-slate-400">tagline:</span> <span className="text-slate-300">"{personal.tagline}"</span>
+                  <span className="text-slate-400">tagline:</span>{" "}
+                  <span className="text-slate-300">"{personal.tagline}"</span>
                 </div>
               </div>
               <div>
-                <span className="text-emerald-400">{'}'}</span>;
+                <span className="text-emerald-400">{"}"}</span>;
               </div>
             </div>
 
@@ -86,7 +129,10 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
             {about.highlights && about.highlights.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 font-sans">
                 {about.highlights.map((h, idx) => (
-                  <div key={idx} className="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-slate-200 flex items-start gap-2.5">
+                  <div
+                    key={idx}
+                    className="p-3 bg-slate-900/80 border border-slate-800 rounded-xl text-xs text-slate-200 flex items-start gap-2.5"
+                  >
                     <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                     <span>{h}</span>
                   </div>
@@ -133,19 +179,27 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
               <h2 className="text-base font-bold text-cyan-400 flex items-center gap-2">
                 <Cpu className="w-5 h-5 text-cyan-400" /> // TECH_STACK_MATRIX
               </h2>
-              <span className="text-xs text-slate-500 font-mono">01 // SKILLS</span>
+              <span className="text-xs text-slate-500 font-mono">
+                01 // SKILLS
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4 hover:border-cyan-500/40 transition shadow-lg">
+                <div
+                  key={cat.id}
+                  className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4 hover:border-cyan-500/40 transition shadow-lg"
+                >
                   <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                     {cat.category}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, idx) => (
-                      <span key={idx} className="text-xs bg-slate-950 text-cyan-300 font-mono px-3 py-1.5 rounded-lg border border-cyan-900/40 hover:border-cyan-500/60 transition">
+                      <span
+                        key={idx}
+                        className="text-xs bg-slate-950 text-cyan-300 font-mono px-3 py-1.5 rounded-lg border border-cyan-900/40 hover:border-cyan-500/60 transition"
+                      >
                         {s}
                       </span>
                     ))}
@@ -161,17 +215,25 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
           <section className="space-y-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-base font-bold text-cyan-400 flex items-center gap-2">
-                <FolderGit2 className="w-5 h-5 text-emerald-400" /> // FEATURED_PROJECTS
+                <FolderGit2 className="w-5 h-5 text-emerald-400" /> //
+                FEATURED_PROJECTS
               </h2>
-              <span className="text-xs text-slate-500 font-mono">02 // PROJECTS</span>
+              <span className="text-xs text-slate-500 font-mono">
+                02 // PROJECTS
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((proj) => (
-                <div key={proj.id} className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-5 flex flex-col justify-between hover:border-cyan-500/50 hover:shadow-cyan-950/40 hover:shadow-xl transition duration-300">
+                <div
+                  key={proj.id}
+                  className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-5 flex flex-col justify-between hover:border-cyan-500/50 hover:shadow-cyan-950/40 hover:shadow-xl transition duration-300"
+                >
                   <div className="space-y-3">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-bold text-emerald-400 text-lg leading-snug font-sans">{proj.name}</h3>
+                      <h3 className="font-bold text-emerald-400 text-lg leading-snug font-sans">
+                        {proj.name}
+                      </h3>
                       {proj.githubUrl && (
                         <a
                           href={proj.githubUrl}
@@ -185,7 +247,9 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
                       )}
                     </div>
 
-                    <p className="text-xs text-slate-300 font-sans leading-relaxed">{proj.description}</p>
+                    <p className="text-xs text-slate-300 font-sans leading-relaxed">
+                      {proj.description}
+                    </p>
 
                     {/* Features list */}
                     {proj.features && proj.features.length > 0 && (
@@ -202,7 +266,10 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
 
                   <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-800">
                     {proj.technologies.map((tech, idx) => (
-                      <span key={idx} className="text-[11px] font-mono bg-cyan-950/80 text-cyan-300 px-2.5 py-1 rounded-md border border-cyan-800/60">
+                      <span
+                        key={idx}
+                        className="text-[11px] font-mono bg-cyan-950/80 text-cyan-300 px-2.5 py-1 rounded-md border border-cyan-800/60"
+                      >
                         {tech}
                       </span>
                     ))}
@@ -218,18 +285,28 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
           <section className="space-y-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-base font-bold text-cyan-400 flex items-center gap-2">
-                <GraduationCap className="w-5 h-5 text-amber-400" /> // EDUCATION_&_ACADEMICS
+                <GraduationCap className="w-5 h-5 text-amber-400" /> //
+                EDUCATION_&_ACADEMICS
               </h2>
-              <span className="text-xs text-slate-500 font-mono">03 // EDUCATION</span>
+              <span className="text-xs text-slate-500 font-mono">
+                03 // EDUCATION
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {education.map((edu) => (
-                <div key={edu.id} className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-3 font-sans">
+                <div
+                  key={edu.id}
+                  className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-3 font-sans"
+                >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-bold text-white text-base">{edu.institution}</h3>
-                      <p className="text-xs text-cyan-400 font-medium">{edu.degree} — {edu.field}</p>
+                      <h3 className="font-bold text-white text-base">
+                        {edu.institution}
+                      </h3>
+                      <p className="text-xs text-cyan-400 font-medium">
+                        {edu.degree} — {edu.field}
+                      </p>
                     </div>
                     {edu.gpa && (
                       <span className="px-2.5 py-1 bg-amber-950 text-amber-300 text-xs font-mono font-bold rounded-lg border border-amber-800/80">
@@ -237,7 +314,9 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 font-mono">{edu.startDate} – {edu.current ? 'Present' : edu.endDate}</p>
+                  <p className="text-xs text-slate-500 font-mono">
+                    {edu.startDate} – {edu.current ? "Present" : edu.endDate}
+                  </p>
                 </div>
               ))}
             </div>
@@ -246,7 +325,9 @@ export default function DeveloperTheme({ data }: { data: PortfolioData }) {
 
         {/* Footer */}
         <footer className="pt-12 border-t border-slate-800 text-center text-xs text-slate-500 space-y-2">
-          <p>© {new Date().getFullYear()} {personal.name}. Built with Portify AI.</p>
+          <p>
+            © {new Date().getFullYear()} {personal.name}. Built with Portify AI.
+          </p>
         </footer>
       </div>
     </div>

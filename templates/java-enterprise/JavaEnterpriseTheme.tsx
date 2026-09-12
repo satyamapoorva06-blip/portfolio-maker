@@ -1,8 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { PortfolioData } from '@/types/portfolio';
-import { Server, Database, Shield, ExternalLink, Github, Linkedin, Mail, CheckCircle2, Code2 } from 'lucide-react';
+import React from "react";
+import { PortfolioData } from "@/types/portfolio";
+import {
+  Server,
+  Database,
+  Shield,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  CheckCircle2,
+  Code2,
+} from "lucide-react";
 
 export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
   const { personal, about, projects, skills } = data;
@@ -18,8 +28,12 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
                 ☕
               </div>
               <div>
-                <h1 className="text-2xl font-black text-white">{personal.name}</h1>
-                <span className="text-xs font-mono text-amber-400 font-semibold">{personal.title}</span>
+                <h1 className="text-2xl font-black text-white">
+                  {personal.name}
+                </h1>
+                <span className="text-xs font-mono text-amber-400 font-semibold">
+                  {personal.title}
+                </span>
               </div>
             </div>
 
@@ -28,7 +42,9 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
             </span>
           </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-light">{about.summary}</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-light">
+            {about.summary}
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {personal.email && (
@@ -56,7 +72,8 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
         {projects && projects.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Server className="w-5 h-5 text-amber-400" /> Enterprise Systems & Microservices
+              <Server className="w-5 h-5 text-amber-400" /> Enterprise Systems &
+              Microservices
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -66,7 +83,9 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
                   className="p-6 bg-[#0f1726] border border-slate-800 hover:border-amber-500/50 rounded-3xl space-y-4 transition duration-300 group hover:shadow-xl hover:shadow-amber-500/10"
                 >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-extrabold text-white text-base group-hover:text-amber-400 transition">{proj.name}</h3>
+                    <h3 className="font-extrabold text-white text-base group-hover:text-amber-400 transition">
+                      {proj.name}
+                    </h3>
                     {proj.liveUrl && (
                       <a
                         href={proj.liveUrl}
@@ -79,11 +98,16 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-light">{proj.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">
+                    {proj.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {proj.technologies.map((t, i) => (
-                      <span key={i} className="text-[10px] bg-amber-950/80 text-amber-300 px-2.5 py-0.5 rounded-lg border border-amber-800 font-mono">
+                      <span
+                        key={i}
+                        className="text-[10px] bg-amber-950/80 text-amber-300 px-2.5 py-0.5 rounded-lg border border-amber-800 font-mono"
+                      >
                         {t}
                       </span>
                     ))}
@@ -98,16 +122,25 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
         {skills && skills.length > 0 && (
           <section className="space-y-6">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Database className="w-5 h-5 text-amber-400" /> Backend Stack & Databases
+              <Database className="w-5 h-5 text-amber-400" /> Backend Stack &
+              Databases
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((cat) => (
-                <div key={cat.id} className="p-6 bg-[#0f1726] border border-slate-800 rounded-3xl space-y-3">
-                  <h3 className="text-xs font-bold text-amber-400 font-mono uppercase">{cat.category}</h3>
+                <div
+                  key={cat.id}
+                  className="p-6 bg-[#0f1726] border border-slate-800 rounded-3xl space-y-3"
+                >
+                  <h3 className="text-xs font-bold text-amber-400 font-mono uppercase">
+                    {cat.category}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((s, i) => (
-                      <span key={i} className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700 font-mono">
+                      <span
+                        key={i}
+                        className="text-xs bg-slate-900 text-slate-200 px-3 py-1 rounded-xl border border-slate-700 font-mono"
+                      >
                         {s}
                       </span>
                     ))}
@@ -119,7 +152,8 @@ export default function JavaEnterpriseTheme({ data }: { data: PortfolioData }) {
         )}
 
         <footer className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 font-mono">
-          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI Java Enterprise Engine.
+          © {new Date().getFullYear()} {personal.name}. Powered by Portify AI
+          Java Enterprise Engine.
         </footer>
       </div>
     </div>
