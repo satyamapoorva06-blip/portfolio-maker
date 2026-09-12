@@ -73,6 +73,25 @@ export default function LoginPage() {
         }
       };
 
+      // Check existing session or PKCE exchange
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          handleUserSession(session.user);
+        }
+      }).catch(() => {});
+
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        if (code) {
+          supabase.auth.exchangeCodeForSession(code).then(({ data: { session } }) => {
+            if (session?.user) {
+              handleUserSession(session.user);
+            }
+          }).catch(console.error);
+        }
+      }
+
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -105,31 +124,42 @@ export default function LoginPage() {
     return null;
   };
 
-  const handleGoogleLogin = (e?: React.MouseEvent) => {
+  const handleGoogleLogin = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
     setProviderError("");
 
-    const googleProfile: UserProfile = {
-      id: `usr_g_${Date.now().toString().slice(-4)}`,
-      name: userName.trim() || "Google User",
-      email: userEmail.trim() || "user.google@gmail.com",
-      avatar_url:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
-      github_username: githubUsername || undefined,
-      github_token: githubToken || undefined,
-      vercel_token: vercelToken || undefined,
-      role: "user",
-      status: "active",
-      created_at: new Date().toISOString(),
-      last_login: new Date().toISOString(),
-    };
+    try {
+      const supabase = createClient();
+      const rawOrigin =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : "https://portfolio-maker-topaz.vercel.app";
+      const cleanOrigin = rawOrigin.replace(/\s+/g, "-");
 
-    setUserLoggedIn(true, googleProfile);
-    if (typeof window !== "undefined") {
-      window.location.href = nextTarget || "/upload";
-    } else {
-      router.push(nextTarget || "/upload");
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${cleanOrigin}/login?next=${encodeURIComponent(nextTarget)}`,
+        },
+      });
+
+      if (error) {
+        setProviderError(`Google Auth Notice: ${error.message}`);
+        setLoading(false);
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        setProviderError("Could not generate Google sign-in URL.");
+        setLoading(false);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Google Auth Error";
+      setProviderError(msg);
+      setLoading(false);
     }
   };
 
