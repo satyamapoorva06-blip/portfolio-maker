@@ -107,10 +107,25 @@ export default function LoginPage() {
     }
   }, [router, nextTarget]);
 
-  const handleGoogleLogin = (e?: React.MouseEvent) => {
+  const handleGoogleLogin = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
     setProviderError("");
+
+    try {
+      const supabase = createClient();
+      if (supabase) {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: `${window.location.origin}/login?next=${encodeURIComponent(nextTarget)}`,
+          },
+        });
+        if (!error) return; // Google OAuth redirect initiated!
+      }
+    } catch (err: any) {
+      console.warn("Supabase OAuth attempt skipped:", err);
+    }
 
     const googleProfile: UserProfile = {
       id: `usr_g_${Date.now().toString().slice(-4)}`,
